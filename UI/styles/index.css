@@ -1,0 +1,395 @@
+body {
+    margin: 0 ;
+    padding: 0;
+    font-family: Verdana;
+    min-height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+}
+
+li a {
+    list-style-type: none;
+    text-decoration: none;
+}
+.navbar-container {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    width: 73%;
+    margin: auto;
+    min-height: 20%;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align:center;
+}
+
+.question {
+    padding: 2%;
+    line-height: 2rem;
+}
+.answer-no {
+    flex: 40%;
+    margin-left: 5%;
+    font-weight: bold;
+    color: darkgrey;
+}
+.tag-name {
+    flex:60%;
+    margin-left: 5%;
+    
+}
+
+.upvotes {
+  flex: 20%;
+  margin-left: 5%
+}
+.downvotes {
+flex: 20%;
+margin-left: 5%;
+}
+.comments {
+flex: 20%;
+margin-left: 5%
+}
+.read {
+flex: 40%;
+margin-left: 5%;
+margin-bottom: 5%;
+}
+
+.question-info {
+    margin-top: 5%;
+    text-align: right;
+    margin-bottom: 5%;
+}
+.answer-number {
+    margin-top:3%;
+}
+button {
+    background-color: white;;
+    color: darkblue;
+    padding: 10%;
+    border-radius: 20px;
+    border: 1px solid darkblue;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+button[type="load"]  {
+    padding: 5%;
+    width: 100%;
+    font-weight: bold;
+    font-size: 12pt;
+}
+button:hover {
+    background-color:darkblue;
+    color: white;
+}
+.thumbnail {
+    border: 1px solid darkblue;
+    border-radius: 20px;
+    text-align: center;
+    margin: auto;
+    padding: 5%;
+}
+.container {
+    display: flex;
+}
+
+.packet {
+    width: 100%;
+    padding-right: 5%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ml-1 {
+    margin-left: 10%;
+}
+
+.mt-1 {
+    margin-top: 10%;
+}
+.menu-header {
+    border-bottom: 1px solid darkblue;
+    padding: 2%;
+    
+}
+
+.menu {
+    margin-top: 20%;
+    margin-left: 10%;
+}
+
+.menu-body {
+margin-left: 0;
+padding: 0;
+line-height: 2rem;
+margin-top: 3%;
+margin-bottom: 5%;
+}
+.main {
+    width: 100%;
+}
+.Header {
+    flex: 5%;
+    padding: 1%;
+    margin-left: 3%;
+}
+
+
+.header-icon {
+    font-size: 14pt;
+    color: darkblue;
+}
+.stack-icon {
+    font-weight: bold;
+}
+
+.overflowHeader {
+    text-shadow: 2px 2px lightblue;
+}
+
+.home {
+    flex:5%;
+    padding: 1%;
+    margin-left:3%;
+}
+.search-bar {
+    flex: 30%;
+    width: 100%;
+    padding: 1%;
+    margin-left:3%;
+}
+
+.login, .signup {
+   flex: 1%;
+    padding: 1%;
+   margin-left: 3%;
+}
+
+.login:hover, .signup:hover, .home:hover {
+    margin-bottom: -0.5%;
+    border-bottom:4px solid darkblue;
+    width: 100%;
+    cursor: pointer;
+}
+
+input[type="search"] {
+   width: 100%;
+   padding: 1%;
+   border : 1px solid darkblue;
+}
+
+.blue {
+    color: darkblue;
+    display: inline;
+}
+
+.dropdown-icon {
+    display: none;
+}
+.symbol {
+    border: 1px solid darkblue;
+    padding: 13px;
+    border-radius: 5px;
+    color: white;
+    background-color: darkblue;
+}
+
+
+
+.left-section {
+    flex: 15%;
+}
+
+.right-section {
+    flex: 20%;
+}
+
+.center {
+    flex: 40%;
+}
+
+.advert-card {
+    width: auto;
+    height: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 10%;
+
+}
+
+.question-card {
+    width: 100%;
+    min-height: 40%;
+    margin: 0 auto;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
+   margin-top: 10%;
+}
+.advert {
+    overflow: hidden;
+    height: 400px;
+    width: 600px;
+    margin: 0 auto;
+}
+
+.advert-slide {
+    float: left;
+    width: 600px;
+    height: 400px;
+}
+
+.advert-gallery {
+    width : 500%;
+    animation: slide 15s ease infinite;
+}
+
+.slide-a {
+    background: url('../images/code.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.slide-b {
+    background: url('../images/raspberry.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.slide-c {
+    background: url('../images/rocket1.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.slide-d {
+    background: url('../images/rocket2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.slide-e {
+    background: url('../images/questions.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.advert-text {
+    text-align: center;
+    font-size: 18pt;
+    color: white;
+    font-weight: bold;
+    padding: 3%;
+    padding-top: 5%;
+    line-height: 2.5rem;
+    text-shadow: 2px 3px darkblue;
+}
+
+@-webkit-keyframes slide {
+    20% {margin-left: 0;}
+    30% {margin-left: -600px;}
+    50% {margin-left: -600px;}
+    60% {margin-left: -1200px;}
+    70% {margin-left: -1200px;}
+    75% {margin-left: -1800px;}
+    80% {margin-left: -1800px;}
+    85% {margin-left: -2400px;}
+    95% {margin-left: -2400px;}
+  }
+
+@media(max-width: 700px) {
+
+.navbar {
+    flex-direction: column;
+    width: 100%;
+    padding: 1%;
+    height: 4%;
+}
+.Header {
+    display: flex;
+    width: 100%;
+    text-align: right;
+}
+.dropdown-icon {
+    display: block;
+    margin: auto;
+    flex: 40%;
+    padding: 2%;
+    padding-top:0;
+}
+.header-icon {
+   flex: 10%;
+   font-size: 18pt;
+}
+
+.home, .search-bar, .login, .signup {
+    flex: 100%;
+    width: 95%;
+    padding-top:2%;
+    text-align: left;
+    display: none;
+}
+.invisible {
+    display: none;
+}
+.render {
+    display: 'block';
+}
+.home:hover .blue, .home:hover, .login:hover, .signup:hover {
+    width: 95%;
+    background-color: darkblue;
+    color: white;
+}
+
+.advert-card {
+    width: 300px;
+}
+
+.advert {
+    width: 100% ;
+}
+
+.advert-slide {
+    width: 300px;
+    font-size: 12pt;
+}
+
+.advert-gallery {
+    width: 500%;
+}
+.container {
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.tag-name {
+    margin-top: 10%;
+}
+.menu {
+    width: 100%;
+}
+
+button {
+    padding:4%;
+}
+@-webkit-keyframes slide {
+    20% {margin-left: 0;}
+    30% {margin-left: -100%;}
+    50% {margin-left: -100%;}
+    60% {margin-left: -200%;}
+    70% {margin-left: -200%;}
+    75% {margin-left: -300%;}
+    80% {margin-left: -300%;}
+    85% {margin-left: -400%;}
+    95% {margin-left: -400%;}
+  }
+}
