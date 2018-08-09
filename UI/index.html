@@ -7,28 +7,24 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 <link rel ="stylesheet" type = "text/css" href = "./styles/index.css">
-
+<link rel ="stylesheet" type = "text/css" href = "./styles/nav.css">
 </head>
 
 <body>
-    <div class = "navbar-container">
-        <div class = "navbar">
-
-            <div class = "Header">
-                <span class = "header-icon">
-                    <span class = "stack-icon">Stack</span><span class ="overflowHeader">OverFlow</span>Lite
-                </span>
-                <span class = "dropdown-icon"  onclick ="toggle()"><i class = "symbol fa fa-bars"></i></span>
-            </div>
+  
+    <div class = "nav-bar">
+        <div class ="nav-bar-brand-logo">StackOverFlow-Lite &nbsp  </div>
+         <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
             
-            <div class = "home callNav invisible" > <span class = "blue"><i class ="fa fa-home"></i></span>&nbsp Home</div>
-            <div class = "search-bar callNav invisible"><input type="search"></div>
-            <div class = "login callNav invisible">Login</div>
-            <div class = "signup callNav invisible">Signup</div>
-        
-        </div>   
-    </div>
+            <nav class="getNav nav-bar-right">
 
+                    <div class = "nav-bar-link"><input type="search" placeholder="  Search questions ..."></input></div>
+                   <div class ="nav-bar-link">Home</div>
+                    
+                    <div class ="nav-bar-link" >Login</div>
+                    <div class ="nav-bar-link">Sign up</div>
+            </nav>
+            </div>
     <div class = "main">
         <div class = "container">
           <div class ="left-section" style = "padding: 5%">
@@ -61,7 +57,7 @@
               
           </div>
           <div class = "center">
-             <div class = "advert-card">
+             <div class = "advert-card" >
                  <div class = "advert">
                      <div class = "advert-gallery">
                          <div class = "advert-slide slide-a advert-text">Welcome To StackOverFlowLite!</div>

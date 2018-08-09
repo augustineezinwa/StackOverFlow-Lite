@@ -21,22 +21,9 @@ li a {
     list-style-type: none;
     text-decoration: none;
 }
-.navbar-container {
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
-    width: 100%;
-    height:auto;
-}
 
-.navbar {
-    display: flex;
-    width: 73%;
-    margin: auto;
-    min-height: 20%;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    text-align:center;
-}
+
+
 
 .question {
     padding: 2%;
@@ -82,10 +69,10 @@ margin-bottom: 5%;
 }
 button {
     background-color: white;;
-    color: darkblue;
+    color: blue;
     padding: 10%;
     border-radius: 20px;
-    border: 1px solid darkblue;
+    border: 1px solid blue;
     font-weight: bold;
     font-size: 12pt;
 }
@@ -97,11 +84,11 @@ button[type="load"]  {
     font-size: 12pt;
 }
 button:hover {
-    background-color:darkblue;
+    background-color: blue;
     color: white;
 }
 .thumbnail {
-    border: 1px solid darkblue;
+    border: 1px solid blue;
     border-radius: 20px;
     text-align: center;
     margin: auto;
@@ -126,9 +113,10 @@ button:hover {
     margin-top: 10%;
 }
 .menu-header {
-    border-bottom: 1px solid darkblue;
+    border-bottom: 1px solid blue;
     padding: 2%;
-    
+    font-weight: bolder;
+    color: blue;
 }
 
 .menu {
@@ -146,76 +134,26 @@ margin-bottom: 5%;
 .main {
     width: 100%;
 }
-.Header {
-    flex: 5%;
-    padding: 1%;
-    margin-left: 3%;
-}
 
 
-.header-icon {
-    font-size: 14pt;
-    color: darkblue;
-}
-.stack-icon {
-    font-weight: bold;
-}
-
-.overflowHeader {
-    text-shadow: 2px 2px lightblue;
-}
-
-.home {
-    flex:5%;
-    padding: 1%;
-    margin-left:3%;
-}
-.search-bar {
-    flex: 30%;
-    width: 100%;
-    padding: 1%;
-    margin-left:3%;
-}
-
-.login, .signup {
-   flex: 1%;
-    padding: 1%;
-   margin-left: 3%;
-}
-
-.login:hover, .signup:hover, .home:hover {
-    margin-bottom: -0.5%;
-    border-bottom:4px solid darkblue;
-    width: 100%;
-    cursor: pointer;
-}
-
-input[type="search"] {
-   width: 100%;
-   padding: 1%;
-   border : 1px solid darkblue;
-}
 
 .blue {
-    color: darkblue;
+    color: blue;
     display: inline;
 }
 
-.dropdown-icon {
-    display: none;
-}
 .symbol {
-    border: 1px solid darkblue;
+    border: 1px solid blue;
     padding: 13px;
     border-radius: 5px;
     color: white;
-    background-color: darkblue;
+    background-color: blue;
 }
 
 
 
 .left-section {
-    flex: 15%;
+    flex: 20%;
 }
 
 .right-section {
@@ -231,9 +169,7 @@ input[type="search"] {
     width: auto;
     height: 400px;
     margin: 0 auto;
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
     margin-top: 10%;
-
 }
 
 .question-card {
@@ -294,7 +230,7 @@ input[type="search"] {
     padding: 3%;
     padding-top: 5%;
     line-height: 2.5rem;
-    text-shadow: 2px 3px darkblue;
+    text-shadow: 2px 3px blue;
 }
 
 @-webkit-keyframes slide {
@@ -311,48 +247,7 @@ input[type="search"] {
 
 @media(max-width: 700px) {
 
-.navbar {
-    flex-direction: column;
-    width: 100%;
-    padding: 1%;
-    min-height: 4%;
-}
-.Header {
-    display: flex;
-    width: 100%;
-    text-align: right;
-}
-.dropdown-icon {
-    margin: auto;
-    flex: 40%;
-    padding: 2%;
-    padding-top:0;
-    cursor: pointer;
-    display: inline;
-}
-.header-icon {
-   flex: 10%;
-   font-size: 18pt;
-}
 
-.home, .search-bar, .login, .signup {
-    flex: 100%;
-    width: 95%;
-    padding-top:3%;
-    text-align: left;
-    margin: 1% auto;
-}
-.invisible {
-    display: none;
-}
-.render {
-    display: 'block';
-}
-.home:hover .blue, .home:hover, .login:hover, .signup:hover {
-    width: 95%;
-    background-color: darkblue;
-    color: white;
-}
 
 .advert-card {
     width: 300px;
