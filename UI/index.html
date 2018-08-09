@@ -3,7 +3,7 @@
 <head>
 <title>StackOverFlowLite | home</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 <link rel ="stylesheet" type = "text/css" href = "./styles/index.css">
@@ -18,12 +18,14 @@
                 <span class = "header-icon">
                     <span class = "stack-icon">Stack</span><span class ="overflowHeader">OverFlow</span>Lite
                 </span>
-                <span class = "dropdown-icon "><i class = "symbol fa fa-bars"></i></span>
+                <span class = "dropdown-icon"  onclick ="toggle()"><i class = "symbol fa fa-bars"></i></span>
             </div>
-            <div class = "home callNav " > <span class = "blue"><i class ="fa fa-home"></i></span>&nbsp Home</div>
-            <div class = "search-bar callNav"><input type="search"></div>
-            <div class = "login callNav">Login</div>
-            <div class = "signup callNav">Signup</div>
+            
+            <div class = "home callNav invisible" > <span class = "blue"><i class ="fa fa-home"></i></span>&nbsp Home</div>
+            <div class = "search-bar callNav invisible"><input type="search"></div>
+            <div class = "login callNav invisible">Login</div>
+            <div class = "signup callNav invisible">Signup</div>
+        
         </div>   
     </div>
 

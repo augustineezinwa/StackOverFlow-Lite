@@ -24,6 +24,7 @@ li a {
 .navbar-container {
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
     width: 100%;
+    height:auto;
 }
 
 .navbar {
@@ -225,6 +226,7 @@ input[type="search"] {
     flex: 40%;
 }
 
+
 .advert-card {
     width: auto;
     height: 400px;
@@ -313,7 +315,7 @@ input[type="search"] {
     flex-direction: column;
     width: 100%;
     padding: 1%;
-    height: 4%;
+    min-height: 4%;
 }
 .Header {
     display: flex;
@@ -321,11 +323,12 @@ input[type="search"] {
     text-align: right;
 }
 .dropdown-icon {
-    display: block;
     margin: auto;
     flex: 40%;
     padding: 2%;
     padding-top:0;
+    cursor: pointer;
+    display: inline;
 }
 .header-icon {
    flex: 10%;
@@ -335,9 +338,9 @@ input[type="search"] {
 .home, .search-bar, .login, .signup {
     flex: 100%;
     width: 95%;
-    padding-top:2%;
+    padding-top:3%;
     text-align: left;
-    display: none;
+    margin: 1% auto;
 }
 .invisible {
     display: none;
