@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>StackOverFlowLite | Questions</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel ="stylesheet" type = "text/css" href = "./styles/index.css">
+<link rel ="stylesheet" type = "text/css" href = "./styles/nav.css">
+</head>
+
+<body>
+  
+    <div class = "nav-bar">
+        <div class ="nav-bar-brand-logo">StackOverFlow-Lite &nbsp  </div>
+         <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+            
+            <nav class="getNav nav-bar-right">
+
+                    <div class = "nav-bar-link"><input type="search" placeholder="  Search questions ..."></input></div>
+                   <div class ="nav-bar-link">Home</div>
+                    
+                    <div class ="nav-bar-link" >Ask <span><i class ="fa fa-question"></i></span></div>
+                    <div class ="nav-bar-link">My Profile</div>
+            </nav>
+            </div>
+   
+            <div class = "main"> 
+                  <div class = "packet">
+                        <div class = "container">
+                            
+                                <div class ="question-section">
+                                        <div class = "question-view-card">
+                                            <div class ="question-title">
+                                                <h2>How do I recursively return an integer from a sigmoid function?</h2>
+                                            </div>
+                                            <div class = "question-detail">
+                                                <p>I am new to Game programming. We are working on a project that sort of needs a 
+                                                    real time simulation of a snake movement. I have heard of the sigmoid function,
+                                                    how do I use this function to return an integer, so I can take some actions based on
+                                                    its movement on the screen?
+                                                </p>
+                                            </div>
+
+                                            <div class = "question-actions">
+                                                    <div class ="packet">
+                                                   <div class ="container">
+                                                        <div class = "upvotes"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>&nbsp 200   </div>
+                                                        <div class ="comments blue" >  500 comments</div>
+                                                        <div class = "downvotes"><span><i class="fas fa-arrow-alt-circle-down  resize blue"></i></span>&nbsp 6</div>
+                                                        
+                                                        <div class ="read"><button>Answer Question</button></div>
+
+                                                   </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                        <div class = "question-view-card">
+                                                <div class = "answer-no resize answer-number-title" >10 Answers</div> 
+                                                <div class ="packet">
+                                                  <div class = "container">
+                                                      <div class = "profile-pic-section">
+                                                          <div class = "user-icon-div"><span><i class ="fa fa-user user-icon" ></i></span></div>
+                                                      </div>
+                                                      <div class = "profile-details">
+                                                          <div class = "profile-name"> <p>Petit Jackson</p>  </div>
+                                                          <div class = "profile-portfolio"> <p>Senior Team Leader, KSV NY</p>  </div>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  <div class = "question-detail" >
+                                                      <p>
+                                                        A sigmoid function is a mathematical function having a characteristic "S"-shaped curve or sigmoid curve. 
+                                                        Often, sigmoid function refers to the special case of the logistic function shown
+                                                         in the first figure and defined by the formula
+                                                         <div class ="code-snippet"><p><code>1/(1+e^(-x))</code></p>
+                                                            </div>
+
+                                                        Obtaining finite values from this function is possible , but be made
+                                                        known that the only two stable finite integers that can be obtained form
+                                                        the sigmoid function as  output  are 
+                                                        1 and -1. It will approach this output once its input approaches infinity.
+                                                        In other words, The larger the value you feed in to the sigmoid function, the more
+                                                        stable it becomes,  and it tends to approach 1 or -1.
+
+                                                        This function is extensively used in games, animations to mimic trying to push objects
+                                                        at rest, the stubborn behaviour exibited by this object formally at rest to resist
+                                                        pull or push to its new position is what this function carefully mimics. 
+
+                                                        <div class ="code-snippet">
+                                                            
+                                                            <span><code>
+                                                                   
+                                                            while (y < 1) {
+                                                                let i = 0;
+                                                                let y = 1/(1+Math.exp(-i));
+                                                                i+= 1;
+                                                            }
+                                                            console.log(y);
+                                                            
+                                                             </code></span>
+                                                        </div>
+                                                      </p>
+
+                                                      
+                                                  </div>
+                                                  <div class = "comment-no-display ">500 comments  <span> &nbsp &nbsp Upvote</span></div>
+                                                  
+                                                  <div class = "question-actions">
+                                                    <div class ="packet">
+                                                   <div class ="container">
+                                                        <div class = "upvotes"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200   </div>
+                                                        <div class ="comments blue" ><span><i class ="fa fa-star not-preferred"></i></span> &nbsp<span>Preferred</span></div>
+                                                        <div class = "downvotes"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span>&nbsp 6</div>
+                                                        
+                                                        <div class ="read"><button>Load Comments</button></div>
+
+                                                   </div>
+                                                    </div>
+                                            </div>
+                                            <div class ="comment-box ">
+                                                <div class = "comment-no-display adjust" >comments  </div>
+                                                <div class ="code-snippet adjust-comments">
+                                                        <div class = " ">
+                                                            <span class = "name-of-commenter">Augustine Ezinwa</span> <span>wrote:</span></div>
+                                                       
+                                                            <div class ="comment-message" style = "font-size: 11pt"> Consider running this function, and see its output</div>
+                                                            <div class ="comment-code-snippet" >
+                                                                
+                                                                <code>
+                                                                    while (y < 1) {
+                                                                        let i = 0;
+                                                                        let y = 1/(1+Math.exp(-i));
+                                                                        i+= 1;
+                                                                    }
+                                                                    console.log(y);
+                                                                    
+                                                                     </code></div>
+                                                </div>
+                                                
+                                                <div class = "question-actions">
+                                                    <div class ="packet">
+                                                   <div class ="container">
+                                                        <div class = "upvote-comment"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200  &nbsp &nbsp Upvote  </div>
+                                                        
+                                                        <div class = "downvote-comment"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span> &nbsp 6 &nbsp &nbsp downvote</div>
+                                                        
+                                                   </div>
+                                                    </div>
+                                            </div>
+
+                                            <div class ="code-snippet adjust-comments">
+                                                    <div class = " ">
+                                                        <span class = "name-of-commenter">Augustine Ezinwa</span> <span>wrote:</span></div>
+                                                   
+                                                        <div class ="comment-message" style = "font-size: 11pt"> Consider running this function, and see its output</div>
+                                                        <div class ="comment-code-snippet" >
+                                                            
+                                                            <code>
+                                                                while (y < 1) {
+                                                                    let i = 0;
+                                                                    let y = 1/(1+Math.exp(-i));
+                                                                    i+= 1;
+                                                                }
+                                                                console.log(y);
+                                                                
+                                                                 </code></div>
+                                            </div>
+                                            
+                                            <div class = "question-actions">
+                                                <div class ="packet">
+                                               <div class ="container">
+                                                    <div class = "upvote-comment"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200  &nbsp &nbsp Upvote  </div>
+                                                    
+                                                    <div class = "downvote-comment"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span> &nbsp 6 &nbsp &nbsp downvote</div>
+                                                    
+                                               </div>
+                                                </div>
+                                        </div>
+
+                                        <div class ="code-snippet adjust-comments">
+                                                <div class = " ">
+                                                    <span class = "name-of-commenter">July Lee</span> <span>wrote:</span></div>
+                                               
+                                                    <div class ="comment-message" style = "font-size: 11pt"> Nice post!</div>
+                                                  
+                                        </div>
+                                        
+                                        <div class = "question-actions">
+                                            <div class ="packet">
+                                           <div class ="container">
+                                                <div class = "upvote-comment"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200  &nbsp &nbsp Upvote  </div>
+                                                
+                                                <div class = "downvote-comment"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span> &nbsp 6 &nbsp &nbsp downvote</div>
+                                                
+                                           </div>
+                                            </div>
+                                    </div>
+
+                                    <div class = "code-snippet adjust-comments"> 
+                                        <div class ="add-comment">
+                                            <div class = "container">
+                                                <div class = "comment-input-bar"> <textarea class= "comment-input"placeholder ="write your comments"></textarea></div>
+                                                <div class = "comment-submit-button"> <button type ="comment">Comment</button></div></div>
+                                            </div>
+                                        </div>
+                                        
+
+                                              
+                                         
+                                            </div>
+                                            
+                                                </div>
+
+                                                <div class = "answer-no resize answer-number-title" > &nbsp</div> 
+                                                <div class ="packet">
+                                                        <div class = "container">
+                                                            <div class = "profile-pic-section">
+                                                                <div class = "user-icon-div"><span><i class ="fa fa-user user-icon" ></i></span></div>
+                                                            </div>
+                                                            <div class = "profile-details">
+                                                                <div class = "profile-name"> <p>Petit Jackson</p>  </div>
+                                                                <div class = "profile-portfolio"> <p>Senior Team Leader, KSV NY</p>  </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class = "question-detail" >
+                                                            <p>
+                                                              A sigmoid function is a mathematical function having a characteristic "S"-shaped curve or sigmoid curve. 
+                                                              Often, sigmoid function refers to the special case of the logistic function shown
+                                                               in the first figure and defined by the formula
+                                                               <div class ="code-snippet"><p><code>1/(1+e^(-x))</code></p>
+                                                                  </div>
+      
+                                                              Obtaining finite values from this function is possible , but be made
+                                                              known that the only two stable finite integers that can be obtained form
+                                                              the sigmoid function as  output  are 
+                                                              1 and -1. It will approach this output once its input approaches infinity.
+                                                              In other words, The larger the value you feed in to the sigmoid function, the more
+                                                              stable it becomes,  and it tends to approach 1 or -1.
+      
+                                                              This function is extensively used in games, animations to mimic trying to push objects
+                                                              at rest, the stubborn behaviour exibited by this object formally at rest to resist
+                                                              pull or push to its new position is what this function carefully mimics. 
+      
+                                                              <div class ="code-snippet">
+                                                                  
+                                                                  <span><code>
+                                                                         
+                                                                  while (y < 1) {
+                                                                      let i = 0;
+                                                                      let y = 1/(1+Math.exp(-i));
+                                                                      i+= 1;
+                                                                  }
+                                                                  console.log(y);
+                                                                  
+                                                                   </code></span>
+                                                              </div>
+                                                            </p>
+      
+                                                            
+                                                        </div>
+                                                        <div class = "comment-no-display ">500 comments  <span> &nbsp &nbsp Upvote</span></div>
+                                                        
+                                                        <div class = "question-actions">
+                                                          <div class ="packet">
+                                                         <div class ="container">
+                                                              <div class = "upvotes"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200   </div>
+                                                              <div class ="comments blue" ><span><i class ="fa fa-star not-preferred"></i></span> &nbsp<span>Preferred</span></div>
+                                                              <div class = "downvotes"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span>&nbsp 6</div>
+                                                              
+                                                              <div class ="read"><button>Load Comments</button></div>
+      
+                                                         </div>
+                                                          </div>
+                                                  </div>
+                                                  <div class ="comment-box ">
+                                                      <div class = "comment-no-display adjust" >comments  </div>
+                                                      <div class ="code-snippet adjust-comments">
+                                                              <div class = " ">
+                                                                  <span class = "name-of-commenter">Augustine Ezinwa</span> <span>wrote:</span></div>
+                                                             
+                                                                  <div class ="comment-message" style = "font-size: 11pt"> Consider running this function, and see its output</div>
+                                                                  <div class ="comment-code-snippet" >
+                                                                      
+                                                                      <code>
+                                                                          while (y < 1) {
+                                                                              let i = 0;
+                                                                              let y = 1/(1+Math.exp(-i));
+                                                                              i+= 1;
+                                                                          }
+                                                                          console.log(y);
+                                                                          
+                                                                           </code></div>
+                                                      </div>
+                                                      
+                                                      <div class = "question-actions">
+                                                          <div class ="packet">
+                                                         <div class ="container">
+                                                              <div class = "upvote-comment"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200  &nbsp &nbsp Upvote  </div>
+                                                              
+                                                              <div class = "downvote-comment"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span> &nbsp 6 &nbsp &nbsp downvote</div>
+                                                              
+                                                         </div>
+                                                          </div>
+                                                  </div>
+      
+                                                  <div class ="code-snippet adjust-comments">
+                                                          <div class = " ">
+                                                              <span class = "name-of-commenter">Augustine Ezinwa</span> <span>wrote:</span></div>
+                                                         
+                                                              <div class ="comment-message" style = "font-size: 11pt"> Consider running this function, and see its output</div>
+                                                              <div class ="comment-code-snippet" >
+                                                                  
+                                                                  <code>
+                                                                      while (y < 1) {
+                                                                          let i = 0;
+                                                                          let y = 1/(1+Math.exp(-i));
+                                                                          i+= 1;
+                                                                      }
+                                                                      console.log(y);
+                                                                      
+                                                                       </code></div>
+                                                  </div>
+                                                  
+                                                  <div class = "question-actions">
+                                                      <div class ="packet">
+                                                     <div class ="container">
+                                                          <div class = "upvote-comment"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200  &nbsp &nbsp Upvote  </div>
+                                                          
+                                                          <div class = "downvote-comment"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span> &nbsp 6 &nbsp &nbsp downvote</div>
+                                                          
+                                                     </div>
+                                                      </div>
+                                              </div>
+      
+                                              <div class ="code-snippet adjust-comments">
+                                                      <div class = " ">
+                                                          <span class = "name-of-commenter">July Lee</span> <span>wrote:</span></div>
+                                                     
+                                                          <div class ="comment-message" style = "font-size: 11pt"> Nice post!</div>
+                                                        
+                                              </div>
+                                              
+                                              <div class = "question-actions">
+                                                  <div class ="packet">
+                                                 <div class ="container">
+                                                      <div class = "upvote-comment"> <span> <i class="fas fa-arrow-alt-circle-up blue resize"></i></span>  &nbsp 200  &nbsp &nbsp Upvote  </div>
+                                                      
+                                                      <div class = "downvote-comment"><span><i class="fas fa-arrow-alt-circle-down  resize  blue"></i></span> &nbsp 6 &nbsp &nbsp downvote</div>
+                                                      
+                                                 </div>
+                                                  </div>
+                                          </div>
+      
+                                          <div class = "code-snippet adjust-comments"> 
+                                              <div class ="add-comment">
+                                                  <div class = "container">
+                                                      <div class = "comment-input-bar"> <textarea class= "comment-input"placeholder ="write your comments"></textarea></div>
+                                                      <div class = "comment-submit-button"> <button type ="comment">Comment</button></div></div>
+                                                  </div>
+                                              </div>
+                                              
+      
+                                                    
+                                               
+                                                  </div>
+                                                  
+                                                      </div>
+
+                                                     
+
+                                        </div>
+                                </div>
+                          
+    
+                          <div class = "similar-question-section">
+                             <div class = "packet">
+                                 <div class = "similar-question" >
+                                     
+                                     
+
+                                     <div class = "code-snippet">
+                                            <div class ="code-snippet"><h3>Related Questions</h3></div>
+                                         <div class = "recent-questions"> 
+                                             <a href ="#"><li ><p>Does JVM in any way slows down the speed of JAVA?</p> </li></a>
+                                             </div>
+                                             <div class = "recent-questions"> 
+                                                    <a href ="#"><li ><p>Why do I loose my event listeners whenever am
+                                                            writing to DOM?</p> </li></a>
+                                                    </div>
+                                                    <div class = "recent-questions"> 
+                                                            <a href ="#"><li ><p>What python library could be useful in image processing?</p> </li></a>
+                                                            </div>
+                                                            <div class = "recent-questions"> 
+                                                                    <a href ="#"><li ><p>Can an arduino be programmed using JAVA?</p> </li></a>
+                                                                    </div>
+                                     </div>
+                                     
+                                 </div>
+                             </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+            </div>
+   <div class = "footer">
+
+    &copy 2018 StackOverFlow-Lite 
+   </div>
+
+    <script src = "./js/toggle.js"></script>
+</body>
+
+</html>

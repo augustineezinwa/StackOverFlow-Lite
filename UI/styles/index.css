@@ -22,6 +22,18 @@ li a {
     text-decoration: none;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    color: blue;
+}
+.similar-question {
+    
+    min-height: 50%;
+    margin-top: 10%;
+}
 
 
 
@@ -29,36 +41,98 @@ li a {
     padding: 2%;
     line-height: 2rem;
 }
+
+.question-title {
+    padding: 3%;
+    line-height: 2.5rem;
+}
+.question-detail {
+    padding: 3%;
+    line-height: 2rem;
+    
+}
+.question-stars {
+    flex: 50%;
+}
 .answer-no {
     flex: 40%;
     margin-left: 5%;
     font-weight: bold;
     color: darkgrey;
 }
+.answer-now {
+    flex: 40%;
+    margin-left: 5%;
+}
 .tag-name {
     flex:60%;
     margin-left: 5%;
     
 }
-
+.code-snippet {
+    padding: 3%;
+     background-color: lightgrey; 
+     border-radius: 15px;
+     margin-top: 1%;
+     margin-bottom: 1%;
+     min-height: 20%;
+}
+.recent-questions {
+    background-color:rgb(245, 245, 245); 
+    border-radius: 23px; 
+    padding: 5%;
+    margin-top: 5%;
+    min-height: 20%;
+    font-weight: lighter;
+    line-height: 1.7rem;
+}
+.name-of-commenter {
+    font-weight: bold;
+    line-height: 2rem; 
+    font-size: 13pt;
+}
+.upvote-comment {
+    flex: 50%;
+    margin-left: 5%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+.downvote-comment {
+    flex: 50%;
+    margin-left: 5%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
 .upvotes {
-  flex: 20%;
-  margin-left: 5%
+  flex: 15%;
+  margin-left: 5%;
+  margin-top: 3%;
+  margin-bottom: 3%;
 }
 .downvotes {
-flex: 20%;
+flex: 15%;
 margin-left: 5%;
+margin-top: 3%;
+margin-bottom: 3%;
 }
 .comments {
 flex: 20%;
-margin-left: 5%
+margin-left: 5%;
+margin-top: 3%;
+margin-bottom: 3%;
 }
 .read {
-flex: 40%;
+flex: 30%;
 margin-left: 5%;
-margin-bottom: 5%;
+margin-bottom: 3%;
 }
 
+.comment-input-bar {
+    flex: 70%
+}
+.comment-submit-button {
+    flex: 30%;
+}
 .question-info {
     margin-top: 5%;
     text-align: right;
@@ -76,12 +150,27 @@ button {
     font-weight: bold;
     font-size: 12pt;
 }
-
+button[type= answer]{
+   background-color: white;
+   color: blue;
+   padding: 7%;
+   padding-left: 10%;
+   padding-right: 10%;
+}
 button[type="load"]  {
     padding: 5%;
     width: 100%;
     font-weight: bold;
     font-size: 12pt;
+}
+button[type=comment] {
+    background-color: white;
+    color: blue;
+    padding: 5%;
+    width: 100%;
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-bottom: 20%;
 }
 button:hover {
     background-color: blue;
@@ -96,7 +185,10 @@ button:hover {
 }
 .container {
     display: flex;
+   
 }
+
+
 
 .packet {
     width: 100%;
@@ -135,13 +227,26 @@ margin-bottom: 5%;
     width: 100%;
 }
 
-
+.footer {
+    background-color: black;
+     color: white;
+      margin: auto;
+       padding: 2%; 
+       margin-top: 10%; 
+       text-align: center;
+       min-height: 30%;
+        width: 100%
+}
 
 .blue {
     color: blue;
     display: inline;
 }
-
+.not-preferred {
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: blue;
+}
 .symbol {
     border: 1px solid blue;
     padding: 13px;
@@ -150,8 +255,17 @@ margin-bottom: 5%;
     background-color: blue;
 }
 
-
-
+.resize {
+    font-size: 18pt;
+}
+.question-section {
+    flex: 70%;
+    margin-left: 10%;
+}
+.similar-question-section {
+    flex: 30%;
+    margin-left: 10%;
+}
 .left-section {
     flex: 20%;
 }
@@ -177,7 +291,80 @@ margin-bottom: 5%;
     min-height: 40%;
     margin: 0 auto;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
-   margin-top: 10%;
+    margin-top: 10%;
+}
+
+.question-view-card {
+    width: 100%;
+    min-height: 10%;
+    margin: 0 auto;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 5%;
+    margin-left: 5%;
+    padding: 2%;
+}
+.answer-number-title {
+    padding-top:1%;
+    border-bottom: 1px solid lightgrey; 
+     padding-bottom: 3% ; 
+     margin-right: 10%
+}
+
+.profile-pic-section {
+    flex: 20%;
+}
+.profile-details {
+    flex: 60%;
+    flex-direction: column;
+    width: 100%;
+}
+.profile-name, .profile-portfolio {
+    color: grey;
+    padding: 3%;
+}
+.profile-name {
+    margin-top: 5%;
+}
+.comment-no-display {
+    color: darkgrey;
+     margin-left: 3%;
+}
+
+.comment-code-snippet {
+    border: 1px solid grey;
+     border-radius:12px;
+      padding: 3%;
+       margin-top: 5%;
+}
+.adjust {
+    margin-left: 0;
+    margin-bottom: 2%;
+}
+.adjust-comments {
+    margin-top: 4%;
+}
+.comment-box {
+    margin-left: 5%;
+    margin-top: 2%;
+}
+.comment-input {
+    width: 100%;
+    padding: 3%;
+    border-radius: 12px;
+}
+.space-comments {
+    margin-top: 2.5%;
+}
+.user-icon {
+    padding: 15%;
+    border: 1px solid blue;
+     border-radius: 50%;
+     font-size: 18pt;
+}
+.user-icon-div {
+    margin-top: 10%;
+    margin-left: 10%;
+    margin-bottom: 10%;
 }
 .advert {
     overflow: hidden;
@@ -233,6 +420,8 @@ margin-bottom: 5%;
     text-shadow: 2px 3px blue;
 }
 
+
+
 @-webkit-keyframes slide {
     20% {margin-left: 0;}
     30% {margin-left: -600px;}
@@ -247,7 +436,27 @@ margin-bottom: 5%;
 
 @media(max-width: 700px) {
 
-
+    
+.similar-question {
+    
+    min-height: 50%;
+    margin-top: 10%;
+    margin-left: 10%
+}
+    .question-section {
+        flex: 100%;
+        margin: auto;
+    }
+    .similar-question-section {
+        flex: 100%;
+        margin:auto;
+    }
+    .question-view-card {
+        margin-left: 2%;
+    }
+.profile-name {
+    margin-top:25%;
+}
 
 .advert-card {
     width: 300px;
@@ -278,6 +487,12 @@ margin-bottom: 5%;
 
 button {
     padding:4%;
+}
+button[type=comment] {
+    margin-top: 4%;
+}
+.read {
+    margin-bottom: 5%;
 }
 @-webkit-keyframes slide {
     20% {margin-left: 0;}
