@@ -369,6 +369,14 @@ margin-bottom: 5%;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
     margin-top: 10%; 
 }
+
+.update-profile-card {
+    width: 60%;
+    min-height: 40%;
+    margin: 0 auto;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 10%; 
+}
 .answer-question-card {
     width: 45%;
     min-height: 40%;
@@ -610,7 +618,12 @@ margin-bottom: 5%;
         padding:1%;
     }
     
-    .login-card {
+    .login-card  {
+        width: 100%;
+        margin: 3%;
+        padding:1%;
+    }
+    .update-profile-card  {
         width: 100%;
         margin: 3%;
         padding:1%;
