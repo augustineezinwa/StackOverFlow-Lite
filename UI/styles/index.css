@@ -22,12 +22,12 @@ li a {
     text-decoration: none;
 }
 
-a {
+a , a:hover, a:visited, a:active{
     text-decoration: none;
-    color: black;
+    color: inherit;
 }
 a:hover {
-    color: blue;
+    color: inherit;
 }
 .similar-question {
     
