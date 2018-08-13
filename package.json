@@ -1,0 +1,33 @@
+{
+  "name": "stackoverflow-lite",
+  "version": "1.0.0",
+  "description": "An application that allows users to ask question and get answerts to their question",
+  "main": "app.js",
+  "scripts": {
+    "start": "babel-node server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/augustineezinwa/StackOverFlow-Lite.git"
+  },
+  "author": "Augustine Ezinwa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/augustineezinwa/StackOverFlow-Lite/issues"
+  },
+  "homepage": "https://github.com/augustineezinwa/StackOverFlow-Lite#readme",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}
