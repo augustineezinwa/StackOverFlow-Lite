@@ -1,4 +1,9 @@
 # StackOverFlow-Lite
+[![Build Status](https://travis-ci.org/augustineezinwa/StackOverFlow-Lite.svg?branch=develop)](https://travis-ci.org/augustineezinwa/StackOverFlow-Lite) [![Coverage Status](https://coveralls.io/repos/github/augustineezinwa/StackOverFlow-Lite/badge.svg?branch=develop)](https://coveralls.io/github/augustineezinwa/StackOverFlow-Lite?branch=develop) 
+[![Test Coverage](https://api.codeclimate.com/v1/badges/cd1c46d508833af27275/test_coverage)](https://codeclimate.com/github/augustineezinwa/StackOverFlow-Lite/test_coverage) 
+[![Maintainability](https://api.codeclimate.com/v1/badges/cd1c46d508833af27275/maintainability)](https://codeclimate.com/github/augustineezinwa/StackOverFlow-Lite/maintainability)
+
+#
 StackOverFlow-Lite Application is a platform where users can ask questions and get answers to their questions
 
 * *Pivotal Tracker Project Management Board Link* : https://www.pivotaltracker.com/n/projects/2189325 

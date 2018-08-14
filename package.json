@@ -1,17 +1,20 @@
 {
-  "name": "stackoverflow-lite",
+  "name": "StackOverFlow-Lite",
   "version": "1.0.0",
-  "description": "An application that allows users to ask question and get answerts to their question",
-  "main": "app.js",
+  "description": "StackOverFlow-Lite Application is a platform where users can ask questions and get answers to their questions",
+  "main": "index.js",
   "scripts": {
+    "test": "nyc --require babel-register --require babel-polyfill mocha --timeout 10000 server/tests/**/*.js --exit",
     "start": "babel-node server/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit "
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/augustineezinwa/StackOverFlow-Lite.git"
   },
-  "author": "Augustine Ezinwa",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/augustineezinwa/StackOverFlow-Lite/issues"
@@ -20,9 +23,14 @@
   "dependencies": {
     "babel-preset-env": "^1.7.0",
     "body-parser": "^1.18.3",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "cors": "^2.8.4",
+    "coveralls": "^3.0.2",
     "express": "^4.16.3",
-    "morgan": "^1.9.0"
+    "mocha": "^5.2.0",
+    "morgan": "^1.9.0",
+    "nyc": "^12.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
