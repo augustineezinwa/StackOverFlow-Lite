@@ -7,6 +7,24 @@ chai.use(chaiHttp);
 const should = chai.should();
 
 describe('Testing operations on answer', () => {
+  it('should return error if trying to get answers for a question that has no answer', (done) => {
+    chai.request(app).get('/api/v1/questions/2/answers')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.eql(404);
+        res.body.data.message.should.be.eql('We cant find answers for the specified question');
+        done();
+      });
+  });
+  it('should get all answers for a particular question', (done) => {
+    chai.request(app).get('/api/v1/questions/1/answers')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.eql(200);
+        res.body.data.foundAnswers.should.be.eql(answers);
+        done();
+      });
+  });
   it('should return error if trying to post answers to a non-existent question', (done) => {
     chai.request(app).post('/api/v1/questions/5/answers')
       .end((err, res) => {
