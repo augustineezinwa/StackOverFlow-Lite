@@ -11,6 +11,10 @@ StackOverFlow-Lite Application is a platform where users can ask questions and g
 ## Table of content
 * [Problem Statement](#problem)
 * [Features](#features)
+* [Background](#background)
+* [Installation](#installation)
+* [Tests](#tests)
+* [Endpoints](#endpoints)
 
 ## Problem Statement
 * Life is a complex scene. Most at times, people are faced with problems and need urgent solutions or answers to their problem. This application sees to it that the technological gap in the lifes of people are filled up by building a community or a platform where people can answer questions or get answers to their question in a vital field of life which is technology.
@@ -28,5 +32,40 @@ StackOverFlow-Lite Application consists of the following features:
 * Users can search for questions on the platform
 * Users can view questions with the most answers
 
-*Application APIs is currently under construction ....*
+## Background
+
+* Stack-OverFlow-Lite Application makes use of the below mentioned technologies.
+
+* ECMAScript 6: Also known as ES2015, this is a version of Javascript with
+    next-generation features like arrow functions, generators, enhanced object literals,
+    spread operators and more. The ES2015 is used in many areas of this project. See [this link](https://en.wikipedia.org/wiki/ECMAScript) for details.
+* NodeJS: Node.js is an open-source, cross-platform JavaScript run-time environment for executing JavaScript code on the server-side.
+    See [this link](https://en.wikipedia.org/wiki/Node.js) for details.
+* ExressJS: ExpressJS, is a web application framework for Node.js, It is designed for building web applications and APIs.
+    see [this link](https://en.wikipedia.org/wiki/Express.js).
+
+## Installation 
+
+* To begin, Install NodeJs on your computer. See this [this link](https://nodejs.org/en) for more information.
+* Clone the git repository: `git clone https://github.com/augustineezinwa/StackOverFlow-Lite`.
+* Navigate into cloned repository and enter `npm  install` on your command-line.
+* Start the application by entering `npm start`.
+* Get postman and verify all shortlisted endpoints.
+
+## Tests
+
+* To run tests, Consider typing `npm test` on your command-line.
+
+## Endpoints
+
+<table>
+<tr><th>*http verbs*</th><th>*Short-listed endpoints*</th><th> *Functionality* </th></tr>
+<tr><td>POST</td><td>/questions </td><td> Adds a question</td></tr>
+<tr><td>POST</td><td> /questions/:questionId/answers </td><td> Adds an answer to a particular question</td></tr>
+<tr><td>GET</td><td>/questions</td><td> Gets all questions</td></tr>
+<tr><td>GET</td><td>/questions/:questionId</td><td>Gets a question by id</td></tr>
+<tr><td>GET</td><td>/questions/:questionId/answers</td><td>Gets all answers for a particular question</td></tr>
+</table>
+
+*Application is currently under construction ....*
 
