@@ -50,4 +50,22 @@ describe('Testing get all questions', () => {
         done();
       });
   });
+  it('should add a question if user enters all input data correctly', (done) => {
+    chai.request(app)
+      .post('/api/v1/questions')
+      .send({
+        questionTitle: 'how do I fix my arduino?',
+        questionDescription: 'My arduino is having problem, please how do I get it fixed?'
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.eql(201);
+        res.body.status.should.be.eql('success');
+        res.body.data.newQuestion.questionTitle.should.be.eql('how do I fix my arduino?');
+        res.body.data.newQuestion.questionDescription.should.be
+          .eql('My arduino is having problem, please how do I get it fixed?');
+        questions.length.should.be.eql(1);
+        done();
+      });
+  });
 });
