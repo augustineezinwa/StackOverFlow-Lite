@@ -29,7 +29,8 @@ const answers = [
     downvotes: 0,
     mostPreferred: 1,
     questionId: 1,
-    time: new Date(2018, 7, 13, 7, 36),
+    time: (new Date(2018, 7, 13, 7, 36)).toTimeString(),
+    date: (new Date(2018, 7, 13, 7, 36)).toDateString()
   }
 ];
 
@@ -40,7 +41,8 @@ const comments = [
     upvotes: 0,
     downvotes: 0,
     answerId: 1,
-    time: new Date(2018, 7, 13, 7, 36),
+    time: (new Date(2018, 7, 13, 7, 36)).toTimeString(),
+    date: (new Date(2018, 7, 13, 7, 36)).toDateString()
   }
 ];
 
