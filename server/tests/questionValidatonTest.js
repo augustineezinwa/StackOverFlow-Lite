@@ -44,7 +44,7 @@ describe('Testing validations on question', () => {
         should.not.exist(err);
         res.status.should.be.eql(400);
         res.body.status.should.be.eql('fail');
-        res.body.data.questionTitle.should.be.eql('questionTitle contains invalid syntax');
+        res.body.data.questionTitle.should.be.eql('questionTitle contains invalid syntax or spaces');
         done();
       });
   });
@@ -86,7 +86,7 @@ describe('Testing validations on question', () => {
         should.not.exist(err);
         res.status.should.be.eql(400);
         res.body.status.should.be.eql('fail');
-        res.body.data.questionDescription.should.be.eql('questionDescription contains invalid syntax');
+        res.body.data.questionDescription.should.be.eql('questionDescription contains invalid syntax or spaces');
         done();
       });
   });

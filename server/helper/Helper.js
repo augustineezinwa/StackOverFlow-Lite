@@ -18,7 +18,7 @@ class Helper {
         * @memberOf Helper
         */
   static validateField(fieldName, fieldValue, res, next) {
-    if (!fieldValue) {
+    if (!fieldValue || !/.*\S.*./.test(fieldValue)) {
       return res.status(400).json({
         status: 'fail',
         data: {
@@ -37,11 +37,11 @@ class Helper {
     if (/^\d+$/.test(fieldValue) || fieldValue.includes('$$$')
         || fieldValue.includes('%%') || fieldValue.includes('///')
          || fieldValue.includes('&&&') || fieldValue.includes('%^&/@')
-        || fieldValue.includes('##')) {
+        || fieldValue.includes('##') || fieldValue.includes('   ')) {
       return res.status(400).json({
         status: 'fail',
         data: {
-          [`${fieldName}`]: `${fieldName} contains invalid syntax`
+          [`${fieldName}`]: `${fieldName} contains invalid syntax or spaces`
         }
       });
     }

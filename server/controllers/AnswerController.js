@@ -7,23 +7,23 @@ import { answers } from '../dummydata/dummydata';
   */
 class AnswerController {
   /**
-        * @static
-        *
-        * @param {object} req - The request payload sent to the controller
-        * @param {object} res - The response payload sent back from the controller
-        *
-        * @returns {object} - status Message and the added answer
-        *
-        * @description This method returns the answer object
-        * @memberOf AnswerController
-        */
+    * @static
+    *
+    * @param {object} req - The request payload sent to the controller
+    * @param {object} res - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and the added answer
+    *
+    * @description This method returns the answer object
+    * @memberOf AnswerController
+    */
   static addAnswer(req, res) {
     const { answer } = req.body;
     const answerLength = answers.length;
     const id = answerLength === 0 ? 1 : answers[answerLength - 1].id + 1;
     answers.push({
       id,
-      answer,
+      answer: answer.trim(),
       comments: [],
       upvotes: 0,
       downvotes: 0,

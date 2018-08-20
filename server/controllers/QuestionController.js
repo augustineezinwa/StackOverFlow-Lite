@@ -82,8 +82,8 @@ class QuestionController {
     const id = questionLength === 0 ? 1 : questions[questionLength - 1].id + 1;
     questions.push({
       id,
-      questionTitle,
-      questionDescription,
+      questionTitle: questionTitle.trim(),
+      questionDescription: questionDescription.trim(),
       answers: [],
       time: (new Date(Date.now())).toTimeString(),
       date: (new Date(Date.now())).toDateString()
