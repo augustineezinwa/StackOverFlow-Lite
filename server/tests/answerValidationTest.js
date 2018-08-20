@@ -41,7 +41,7 @@ describe('Testing validations on answer', () => {
         should.not.exist(err);
         res.status.should.be.eql(400);
         res.body.status.should.be.eql('fail');
-        res.body.data.answer.should.be.eql('answer contains invalid syntax');
+        res.body.data.answer.should.be.eql('answer contains invalid syntax or spaces');
         done();
       });
   });
