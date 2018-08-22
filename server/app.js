@@ -2,12 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
+import validator from 'express-validator';
 import baseRouter from './router/baseRouter';
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(validator());
 app.use(morgan('dev'));
 app.use(cors());
 app.use('/api/v1', baseRouter);
