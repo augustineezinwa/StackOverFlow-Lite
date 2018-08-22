@@ -8,13 +8,13 @@ import { createTableForUsers } from '../helper/sqlHelper';
   */
 class UsersMigration {
 /**
-    * @static
-    *
-    * @returns {object} - Message showing the result of the migration.
-    *
-    * @description This method migrates or creates a table in database
-    * @memberOf UsersMigration
-    */
+  * @static
+  *
+  * @returns {object} - Message showing the result of the migration.
+  *
+  * @description This method migrates or creates a table in database
+  * @memberOf UsersMigration
+  */
   static migrateUsers() {
     return new Promise((resolve, reject) => {
       dbConnect.query(createTableForUsers())

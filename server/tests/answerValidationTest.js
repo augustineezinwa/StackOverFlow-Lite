@@ -11,11 +11,11 @@ describe('Testing validations on answer', () => {
       .send({
         answer: '',
       })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(400);
-        res.body.status.should.be.eql('fail');
-        res.body.data.answer.should.be.eql('answer cant be empty or invalid');
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(400);
+        response.body.status.should.be.eql('fail');
+        response.body.data.answer.should.be.eql('answer cant be empty or invalid');
         done();
       });
   });
@@ -24,11 +24,11 @@ describe('Testing validations on answer', () => {
       .send({
         answer: 'ef',
       })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(422);
-        res.body.status.should.be.eql('fail');
-        res.body.data.answer.should.be.eql('answer cant be too short');
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(422);
+        response.body.status.should.be.eql('fail');
+        response.body.data.answer.should.be.eql('answer cant be too short');
         done();
       });
   });
@@ -37,11 +37,11 @@ describe('Testing validations on answer', () => {
       .send({
         answer: 'ef///3$#$#$$#$',
       })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(400);
-        res.body.status.should.be.eql('fail');
-        res.body.data.answer.should.be.eql('answer contains invalid syntax or spaces');
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(400);
+        response.body.status.should.be.eql('fail');
+        response.body.data.answer.should.be.eql('answer contains invalid syntax or spaces');
         done();
       });
   });

@@ -9,28 +9,28 @@ const should = chai.should();
 describe('Testing operations on answer', () => {
   it('should return error if trying to get answers for a question that has no answer', (done) => {
     chai.request(app).get('/api/v1/questions/2/answers')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(404);
-        res.body.data.message.should.be.eql('We cant find answers for the specified question');
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(404);
+        response.body.data.message.should.be.eql('We cant find answers for the specified question');
         done();
       });
   });
   it('should get all answers for a particular question', (done) => {
     chai.request(app).get('/api/v1/questions/1/answers')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(200);
-        res.body.data.foundAnswers.should.be.eql(answers);
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(200);
+        response.body.data.foundAnswers.should.be.eql(answers);
         done();
       });
   });
   it('should return error if trying to post answers to a non-existent question', (done) => {
     chai.request(app).post('/api/v1/questions/5/answers')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(404);
-        res.body.data.message.should.be.eql('This question does not exist');
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(404);
+        response.body.data.message.should.be.eql('This question does not exist');
         done();
       });
   });
@@ -40,11 +40,11 @@ describe('Testing operations on answer', () => {
       .send({
         answer: 'The answer to your question is that you have to fix n+9 =90',
       })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.eql(201);
-        res.body.status.should.be.eql('success');
-        res.body.data.newAnswer.answer.should.be.eql('The answer to your question is that you have to fix n+9 =90');
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(201);
+        response.body.status.should.be.eql('success');
+        response.body.data.newAnswer.answer.should.be.eql('The answer to your question is that you have to fix n+9 =90');
         answers.length.should.be.eql(2);
         done();
       });

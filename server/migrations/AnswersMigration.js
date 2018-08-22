@@ -7,13 +7,13 @@ import { createTableForAnswers } from '../helper/sqlHelper';
   */
 class AnswersMigration {
   /**
-          * @static
-          *
-          * @returns {object} - Message showing the result of the migration.
-          *
-          * @description This method migrates or creates answer table in database
-          * @memberOf AnswersMigration
-          */
+    * @static
+    *
+    * @returns {object} - Message showing the result of the migration.
+    *
+    * @description This method migrates or creates answer table in database
+    * @memberOf AnswersMigration
+    */
   static migrateAnswers() {
     return new Promise((resolve, reject) => {
       dbConnect.query(createTableForAnswers())

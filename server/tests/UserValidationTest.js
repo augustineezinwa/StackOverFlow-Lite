@@ -12,12 +12,12 @@ describe('Testing user validation', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('firstName').eql('enter a valid name');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('firstName').eql('enter a valid name');
         done();
       });
   });
@@ -30,12 +30,12 @@ describe('Testing user validation', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('lastName').eql('enter a valid name');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('lastName').eql('enter a valid name');
         done();
       });
   });
@@ -48,12 +48,12 @@ describe('Testing user validation', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('email').eql('enter a valid email-address');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('email').eql('enter a valid email-address');
         done();
       });
   });
@@ -66,12 +66,12 @@ describe('Testing user validation', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('password').eql('password must contain a number or special character');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('password').eql('password must contain a number or special character');
         done();
       });
   });
@@ -84,12 +84,12 @@ describe('Testing user validation', () => {
       confirmPassword: '5654545',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('confirmPassword').eql('password does not match');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('confirmPassword').eql('password does not match');
         done();
       });
   });
@@ -105,12 +105,12 @@ describe('Testing for empty fields on signup', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('firstName').eql('enter a valid name');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('firstName').eql('enter a valid name');
         done();
       });
   });
@@ -123,12 +123,12 @@ describe('Testing for empty fields on signup', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('lastName').eql('enter a valid name');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('lastName').eql('enter a valid name');
         done();
       });
   });
@@ -141,12 +141,12 @@ describe('Testing for empty fields on signup', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('email').eql('enter a valid email-address');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('email').eql('enter a valid email-address');
         done();
       });
   });
@@ -159,12 +159,12 @@ describe('Testing for empty fields on signup', () => {
       confirmPassword: '5654545q',
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('password').eql('password cant be empty');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('password').eql('password cant be empty');
         done();
       });
   });
@@ -177,12 +177,12 @@ describe('Testing for empty fields on signup', () => {
 
     };
     chai.request(app).post('/api/v1/auth/signup')
-      .send(newUser).end((err, res) => {
-        res.should.have.status(422);
-        res.body.should.be.a('object');
-        res.body.should.have.property('status').eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('confirmPassword').eql('password cant be empty');
+      .send(newUser).end((error, response) => {
+        response.should.have.status(422);
+        response.body.should.be.a('object');
+        response.body.should.have.property('status').eql('fail');
+        response.body.data.should.be.a('object');
+        response.body.data.should.have.property('confirmPassword').eql('password cant be empty');
         done();
       });
   });

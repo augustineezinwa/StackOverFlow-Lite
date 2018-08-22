@@ -7,13 +7,13 @@ import { createTableForComments } from '../helper/sqlHelper';
   */
 class CommentsMigration {
   /**
-          * @static
-          *
-          * @returns {object} - Message showing the result of the migration.
-          *
-          * @description This method migrates or creates a table in database
-          * @memberOf CommentsMigration
-          */
+    * @static
+    *
+    * @returns {object} - Message showing the result of the migration.
+    *
+    * @description This method migrates or creates a table in database
+    * @memberOf CommentsMigration
+    */
   static migrateComments() {
     return new Promise((resolve, reject) => {
       dbConnect.query(createTableForComments())
