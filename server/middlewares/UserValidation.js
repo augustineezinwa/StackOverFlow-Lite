@@ -33,7 +33,7 @@ class UserValidation {
       });
     }
     if (!password) {
-      response.status(400).json({
+      return response.status(400).json({
         status: 'fail',
         data: {
           password: 'please provide password to login'
