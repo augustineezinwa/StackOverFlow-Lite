@@ -9,56 +9,56 @@ const { validateField } = Helper;
   */
 class QuestionValidation {
   /**
-        * @static
-        *
-        * @param {object} req - The request payload sent to the middleware
-        * @param {object} res - The response payload sent back from the middleware
-        * @param {object} next - The call back function to resume the next middleware
-        *
-        * @returns {object} - status Message and the question
-        *
-        * @description This method validates the question Title of the question object
-        * @memberOf QuestionValidation
-        */
-  static validateQuestionTitle(req, res, next) {
-    const { questionTitle } = req.body;
-    validateField('questionTitle', questionTitle, res, next);
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method validates the question Title of the question object
+    * @memberOf QuestionValidation
+    */
+  static validateQuestionTitle(request, response, next) {
+    const { questionTitle } = request.body;
+    validateField('questionTitle', questionTitle, response, next);
   }
 
   /**
-        * @static
-        *
-        * @param {object} req - The request payload sent to the middleware
-        * @param {object} res - The response payload sent back from the middleware
-        * @param {object} next - The call back function to resume the next middleware
-        *
-        * @returns {object} - status Message and the question
-        *
-        * @description This method validates the question description  of the input
-        * @memberOf QuestionValidation
-        */
-  static validateQuestionDescription(req, res, next) {
-    const { questionDescription } = req.body;
-    validateField('questionDescription', questionDescription, res, next);
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method validates the question description  of the input
+    * @memberOf QuestionValidation
+    */
+  static validateQuestionDescription(request, response, next) {
+    const { questionDescription } = request.body;
+    validateField('questionDescription', questionDescription, response, next);
   }
 
   /**
-        * @static
-        *
-        * @param {object} req - The request payload sent to the middleware
-        * @param {object} res - The response payload sent back from the middleware
-        * @param {object} next - The call back function to resume the next middleware
-        *
-        * @returns {object} - status Message and the question
-        *
-        * @description This method validates the existence of a question
-        * @memberOf QuestionValidation
-        */
-  static validateQuestionExistence(req, res, next) {
-    const { questionId } = req.params;
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method validates the existence of a question
+    * @memberOf QuestionValidation
+    */
+  static validateQuestionExistence(request, response, next) {
+    const { questionId } = request.params;
     const foundQuestion = questions.find(x => +x.id === +questionId);
     if (!foundQuestion) {
-      return res.status(404).json({
+      return response.status(404).json({
         status: 'fail',
         data: {
           message: 'This question does not exist'
