@@ -40,6 +40,26 @@ const createTableForComments = () => `DROP TABLE IF EXISTS comments CASCADE;
                                      questionId SERIAL references questions(ID) ON DELETE CASCADE,
                                      userId SERIAL references users(ID) ON DELETE CASCADE);`;
 
+const createUser = (firstName, lastName, email, password, jobRole = 'Update your job role',
+  company = 'Update your company name', photo = 'image-url') => {
+  const query = {
+    text: `INSERT INTO users(firstName, lastName, email, password, jobRole, company, photo, time, date)
+                                            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+    values: [firstName, lastName, email, password, jobRole, company, photo,
+      (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString()]
+  };
+  return query;
+};
+
+const checkEmail = (email) => {
+  const query = {
+    text: 'SELECT * FROM users WHERE users.email = $1',
+    values: [email]
+  };
+  return query;
+};
+
 export {
-  createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments
+  createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
+  checkEmail, createUser
 };
