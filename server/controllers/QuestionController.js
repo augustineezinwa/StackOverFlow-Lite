@@ -1,6 +1,6 @@
 import { questions } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
-import { createQuestion } from '../helper/sqlHelper';
+import { createQuestion, getAllQuestions } from '../helper/sqlHelper';
 import { formatQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
@@ -15,8 +15,8 @@ class QuestionController {
   /**
     * @static
     *
-    * @param {object} request - The requestuest payload sent to the controller
-    * @param {object} response - The responseponse payload sent back from the controller
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
     *
     * @returns {object} - status Message and the question
     *
@@ -24,20 +24,26 @@ class QuestionController {
     * @memberOf QuestionController
     */
   static fetchQuestions(request, response) {
-    switch (questions.length) {
-      case 0: response.status(404).json({
-        status: 'fail',
-        data: {
-          questions: 'No questions were found!'
-        }
-      });
-        break;
+    dbConnect.query(getAllQuestions())
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            data: {
+              questions: 'No questions were found!'
+            }
+          });
+            break;
 
-      default: response.status(200).json({
-        status: 'success',
-        data: { questions }
-      });
-    }
+          default: {
+            response.status(200).json({
+              status: 'success',
+              data: { questions: formatQuestions(data.rows) }
+            });
+          }
+        }
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
   }
 
   /**

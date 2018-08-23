@@ -122,17 +122,9 @@ describe('Testing get all questions', () => {
         response.body.status.should.be.eql('success');
         response.body.data.questions.should.be.an('array');
         response.body.data.questions.length.should.be.eql(2);
-        response.body.data.questions.should.be.eql(questions);
-        done();
-      });
-  });
-  it('should return error if no questions was found', (done) => {
-    questions.length = 0;
-    chai.request(app).get('/api/v1/questions')
-      .end((error, response) => {
-        should.not.exist(error);
-        response.status.should.be.eql(404);
-        response.body.data.questions.should.be.eql('No questions were found!');
+        response.body.data.questions[0].should.be.have.property('questionTitle').eql('how do I fix my arduino?');
+        response.body.data.questions[0].should.be.have.property('questionDescription')
+          .eql('My arduino is having problem, please how do I get it fixed?');
         done();
       });
   });
