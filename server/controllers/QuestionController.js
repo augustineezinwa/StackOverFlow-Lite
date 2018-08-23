@@ -1,6 +1,6 @@
 import { questions } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
-import { createQuestion, getAllQuestions } from '../helper/sqlHelper';
+import { createQuestion, getAllQuestions, getAQuestion } from '../helper/sqlHelper';
 import { formatQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
@@ -49,8 +49,8 @@ class QuestionController {
   /**
     * @static
     *
-    * @param {object} request - The requestuest payload sent to the controller
-    * @param {object} response - The responseponse payload sent back from the controller
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
     *
     * @returns {object} - status Message and the question
     *
@@ -58,23 +58,28 @@ class QuestionController {
     * @memberOf QuestionController
     */
   static fetchAQuestion(request, response) {
-    const { id } = request.params;
-    const fetchedQuestion = questions.filter(x => +x.id === +id);
-    switch (fetchedQuestion.length) {
-      case 0: response.status(404).json({
-        status: 'fail',
-        data: {
-          question: `question with id ${id} cant be found!`
+    const { questionId } = request.params;
+    dbConnect.query(getAQuestion(questionId))
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            data: {
+              question: 'No question was found!'
+            }
+          });
+            break;
+
+          default: {
+            const reformedQuestion = formatQuestions(data.rows)[0];
+            reformedQuestion.answer = request.foundAnswers;
+            response.status(200).json({
+              status: 'success',
+              data: { question: reformedQuestion }
+            });
+          }
         }
       });
-        break;
-      default: response.status(200).json({
-        status: 'success',
-        data: {
-          question: fetchedQuestion[0]
-        }
-      });
-    }
   }
 
 

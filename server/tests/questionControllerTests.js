@@ -98,7 +98,7 @@ describe('Testing questions controller', () => {
       .end((error, response) => {
         should.not.exist(error);
         response.status.should.be.eql(404);
-        response.body.data.question.should.be.eql('question with id 5 cant be found!');
+        response.body.data.question.should.be.eql('No question was found!');
         done();
       });
   });
@@ -107,7 +107,9 @@ describe('Testing questions controller', () => {
       .end((error, response) => {
         should.not.exist(error);
         response.status.should.be.eql(200);
-        response.body.data.question.should.be.eql(questions[1]);
+        response.body.data.question.questionTitle.should.be.eql('how do I fix my arduino?');
+        response.body.data.question.questionDescription.should.be.eql('My arduino is having problem, please how do I get it fixed?');
+        response.body.data.question.answers.should.be.a('array');
         done();
       });
   });

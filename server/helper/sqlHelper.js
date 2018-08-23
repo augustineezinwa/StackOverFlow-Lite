@@ -103,6 +103,14 @@ const getAQuestion = (questionId) => {
   return query;
 };
 
+const getAllAnswersForAQuestion = (questionId) => {
+  const query = {
+    text: 'SELECT * FROM answers where answers.questionid = $1',
+    values: [questionId]
+  };
+  return query;
+};
+
 const getAllQuestions = () => {
   const query = {
     text: 'SELECT * FROM questions'
@@ -110,7 +118,9 @@ const getAllQuestions = () => {
   return query;
 };
 
+
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
-  checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion, getAllQuestions
+  checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
+  getAllQuestions, getAllAnswersForAQuestion
 };
