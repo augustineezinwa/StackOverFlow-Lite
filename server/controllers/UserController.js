@@ -53,6 +53,56 @@ class UserController {
       })
       .catch(err => catchDatabaseConnectionError('Error writing to user table', response));
   }
+
+  /**
+    * @description -This method logins users into StackOverFlow-Lite
+    *
+    * @param {object} request - The requestuest payload sent to the router
+    * @param {object} response - The responseponse payload sent back from the controller
+    *
+    * @returns {object} - responseponse object and message
+    *
+    * @description This controller authenticates a user during login using jwt token.
+    * @memberOf UserController
+    * @static
+    */
+  static loginUser(request, response) {
+    dbConnect.query(checkEmail(request.body.email))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return response.status(404).json({
+            status: 'fail',
+            data: {
+              email: 'your email is not on the system, please signup'
+            }
+          });
+        }
+        const {
+          id, email, password
+        } = data.rows[0];
+        const payload = {
+          id,
+          email
+        };
+
+        if (bcrypt.compareSync(request.body.password, password)) {
+          const token = jwt.sign({ payload }, process.env.PRIVATE_KEY, { expiresIn: 777 * 70 });
+          const { firstname } = data.rows[0];
+          return response.status(200).json({
+            status: 'success',
+            data: {
+              message: `${firstname}, you are logged in`, token
+            }
+          });
+        }
+        return response.status(401).json({
+          status: 'fail',
+          data: {
+            password: 'password is incorrect!'
+          }
+        });
+      }).catch(error => catchDatabaseConnectionError(`Error reading user table ${error} `, response));
+  }
 }
 
 export default UserController;

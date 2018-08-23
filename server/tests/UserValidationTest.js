@@ -150,7 +150,7 @@ describe('Testing for empty fields on signup', () => {
         done();
       });
   });
-  it('should return an eror if user enters no password ', (done) => {
+  it('should return an error if user enters no password ', (done) => {
     const newUser = {
       firstName: 'Augustine',
       lastName: 'ezinwa',

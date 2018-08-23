@@ -7,6 +7,6 @@ const { registerUser, loginUser } = UserController;
 const userRouter = express.Router();
 
 userRouter.post('/auth/signup', validateUser, checkEmailReuse, registerUser);
-
+userRouter.post('/auth/login', validateLogin, loginUser);
 
 export default userRouter;
