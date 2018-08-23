@@ -4,7 +4,7 @@
   "description": "StackOverFlow-Lite Application is a platform where users can ask questions and get answers to their questions",
   "main": "index.js",
   "scripts": {
-    "test": "npm run db:initialize --exit --exit && cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 1000000 server/tests/**/*.js --exit",
+    "test": "npm run db:initialize --exit --exit --exit && cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 1000000 server/tests/**/*.js --exit",
     "start": "babel-node server/app.js",
     "db:initialize": "cross-env NODE_ENV=test babel-node server/migrations/index.js --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",

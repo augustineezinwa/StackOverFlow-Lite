@@ -59,7 +59,25 @@ const checkEmail = (email) => {
   return query;
 };
 
+const createQuestion = (questionTitle, questionDescription, id) => {
+  const query = {
+    text: `INSERT INTO questions(questionTitle, questionDescription, time, date, userId)
+           VALUES($1, $2, $3, $4, $5) RETURNING * `,
+    values: [questionTitle, questionDescription,
+      (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(), id]
+  };
+  return query;
+};
+
+const getAUserQuestion = (userId, id) => {
+  const query = {
+    text: 'SELECT * FROM questions where questions.userid = $1 and questions.id = $2',
+    values: [userId, id]
+  };
+  return query;
+};
+
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
-  checkEmail, createUser
+  checkEmail, createUser, createQuestion, getAUserQuestion
 };
