@@ -102,7 +102,15 @@ const getAQuestion = (questionId) => {
   };
   return query;
 };
+
+const getAllQuestions = () => {
+  const query = {
+    text: 'SELECT * FROM questions'
+  };
+  return query;
+};
+
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
-  checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion
+  checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion, getAllQuestions
 };

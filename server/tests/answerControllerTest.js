@@ -9,15 +9,6 @@ chai.use(chaiHttp);
 const should = chai.should();
 
 describe('Testing operations on answer', () => {
-  it('should return error if trying to post answers to a non-existent question', (done) => {
-    chai.request(app).post('/api/v1/questions/5/answers')
-      .end((error, response) => {
-        should.not.exist(error);
-        response.status.should.be.eql(404);
-        response.body.data.message.should.be.eql('This question does not exist');
-        done();
-      });
-  });
   it('should successfully signup a user that before he or she can add an answer', (done) => {
     const newUser = {
       firstName: 'Augustine',
