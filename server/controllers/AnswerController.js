@@ -1,6 +1,6 @@
 import { answers } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
-import { createAnswer } from '../helper/sqlHelper';
+import { createAnswer, getAllAnswersForAQuestion } from '../helper/sqlHelper';
 import { formatAnswers } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
@@ -38,27 +38,22 @@ class AnswerController {
     *
     * @param {object} request - The request payload sent to the controller
     * @param {object} response - The response payload sent back from the controller
+    * @param {object} next - The callback function to resume the next middleware.
     *
     * @returns {object} - status Message and all answers
     *
     * @description This method returns all answers object
     * @memberOf AnswerController
     */
-  static fetchAnswers(request, response) {
+  static fetchAnswersForAQueston(request, response, next) {
     const { questionId } = request.params;
-    const foundAnswers = answers.filter(x => +x.questionId === +questionId);
-    if (foundAnswers.length === 0) {
-      return response.status(404).json({
-        status: 'fail',
-        data: {
-          message: 'We cant find answers for the specified question'
-        }
-      });
-    }
-    return response.status(200).json({
-      status: 'success',
-      data: { foundAnswers }
-    });
+    dbConnect.query(getAllAnswersForAQuestion(questionId))
+      .then((data) => {
+        const foundAnswers = formatAnswers(data.rows);
+        request.foundAnswers = foundAnswers;
+        return next();
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading answers table ${error}`, response));
   }
 }
 
