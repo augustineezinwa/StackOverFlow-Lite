@@ -9,38 +9,72 @@
 <link rel ="stylesheet" type = "text/css" href = "./styles/index.css">
 <link rel ="stylesheet" type = "text/css" href = "./styles/nav.css">
 </head>
-
 <body>
-  
-    <div class = "nav-bar">
-        <div class ="nav-bar-brand-logo">StackOverFlow-Lite &nbsp  </div>
-         <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+<div class="nav">
+  <div class="nav-header">
+    <div class="nav-title">
+      StackOverFlow-Lite
+    </div>
+  </div>
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+  <input type="checkbox" id="nav-check">
+  <div class="nav-links">
+    <a href="index.html" >Home</a>
+    <a href="ask.html">AskQuestion</a>
+    <a href="login.html" >login</a>
+    <a href="signup.html" >signup</a>
+    <a href="profile.html" >My Profile</a>
+    <div class = "search-bar"><input type ="search"/> <button >Search</button></div>
+   
+    </div>
+</div>
+
+    <div class = "container image-background ask-bg">
+    
+        <div class = "row">
             
-            <nav class="getNav nav-bar-right">
-
-                    <div class = "nav-bar-link"><input type="search" placeholder="  Search questions ..."></input></div>
-                   <div class ="nav-bar-link" onclick ="location.href='home.html'">Home</div>
-                    
-                    <div class ="nav-bar-link" onclick ="location.href='ask.html'">Ask <span><i class ="fa fa-question"></i></span></div>
-                    <div class ="nav-bar-link" onclick ="location.href='profile.html'">My Profile</div>
-            </nav>
+            <div class = "col adjust">
+              <h1 class ="header">Welcome to StackOverFlow-Lite</h1>
             </div>
+            <div class = "col">
+                <div class = "login-box">
+                <h2>Ask A Question</h2>
+                <form class = "">
+                    <label for="email"><b>Enter Question Title</b></label>
+                    <input type="text" name="email" required>
+        
+                    <label for="password"><b>Describe your Question</b></label>
+                    <textarea  class ="mt-2 txtarea"required ></textarea>
+        
+                    <button type="submit"> Ask</button>
+                </form>
+            </div>
+                    </div>
+        </div>
+          
+       </div>
 
-                   <div class = "centralize">
-                      <div class = "answer-question-card">
-                            <div class = "answer-no resize answer-number-title mt-5" >Ask Question</div>
-                            <div class = "answer-no resize mt-5" >Title: <input class = "ask-question-title"/></div>
-                            <div class = " answer-no "><textarea class = "ask-question-text" placeholder = "Describe your question here .."></textarea></div>
-                            <div class = "answer-no resize " ><input class= "ask-question-code-snippet" placeholder = "Paste code snippet"/></div>
-                            <div class = "answer-no mt-5 mb-5"> <button type ="update">Ask</button>  </div>
-                            
-                      </div>
-           </div>
-           
-           <div class = "footer">
+     
 
-                &copy 2018 StackOverFlow-Lite 
-               </div>
-           <script src ="./js/toggle.js"></script>
-        </body>
-        </html>
+
+
+
+
+
+<div class = "container footer " >
+   &copy 2018 StackOverFlow-Lite
+
+</div>
+
+ 
+
+</body>
+
+
+</html>

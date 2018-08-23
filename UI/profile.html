@@ -9,245 +9,295 @@
 <link rel ="stylesheet" type = "text/css" href = "./styles/index.css">
 <link rel ="stylesheet" type = "text/css" href = "./styles/nav.css">
 </head>
-
 <body>
-  
-    <div class = "nav-bar">
-        <div class ="nav-bar-brand-logo">StackOverFlow-Lite &nbsp  </div>
-         <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+<div class="nav">
+  <div class="nav-header">
+    <div class="nav-title">
+      StackOverFlow-Lite
+    </div>
+  </div>
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+  <input type="checkbox" id="nav-check">
+  <div class="nav-links">
+    <a href="index.html" >Home</a>
+    <a href="ask.html">AskQuestion</a>
+    <a href="login.html" >login</a>
+    <a href="signup.html" >signup</a>
+    <a href="profile.html" >My Profile</a>
+    <div class = "search-bar"><input type ="search"/> <button >Search</button></div>
+   
+    </div>
+</div>
+
+    <div class = "container image-background profile-height" style = "margin: 0 auto;">
+    
+        <div class = "row ">
             
-            <nav class="getNav nav-bar-right">
-
-                    <div class = "nav-bar-link"><input type="search" placeholder="  Search questions ..."></input></div>
-                    <div class ="nav-bar-link" onclick ="location.href='home.html'">Home</div>
-                    
-                    <div class ="nav-bar-link" onclick ="location.href='ask.html'">Ask <span><i class ="fa fa-question"></i></span></div>
-                    <div class ="nav-bar-link" onclick ="location.href='index.html'" >Signout</div>
-            </nav>
+            <div class = "col mt-17" >
+              <h1 style = "color: white; text-align: center">Welcome to StackOverFlow-Lite</h1>
             </div>
-
-            <div class = "main">
-                  <div class = "packet">
-                      <div class = "container">
-                          <div class = "question-section">
-                              <div class = "question-view-card">
-                                    <div class = "answer-no resize answer-number-title" >My Profile</div>
-                                <div class = "packet">
-                                    <div class = "container">
-                                        <div class = "profile-page-pic-section">
-                                            <div class = "user-icon-div">
-                                                <span><i class = "fa fa-user user-icon-profile"></i></span>
-                                            </div>
-
-                                        </div>
-                                        <div class ="profile-page-data-section">
-                                                <div class = "profile-details">
-                                                        <div class = "profile-name"> <p>Petit Jackson</p>  </div>
-                                                        <div class = "profile-portfolio"> <p>Senior Team Leader, KSV NY</p>  </div>
-                                                        <div class = "profile-portfolio"> <button type ="update"><a href="updateprofile.html">Update</a></button>  </div>
-                                                    </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                <div class = "packet">
-                                        <div class = "answer-no resize answer-number-title mb-1" >Stats</div> 
-                                     <div class = "container">
-                                         <div class = "profile-page-pic-section">
-                                             
-                                                
-                                                        <div class = "profile-stats" > <p>Questions Asked</p>  </div>
-                                             
-                                                
-                                         </div>
-                                         <div class = "profile-page-data-section">
-                                               
-                                                <div class = "profile-stats" >  
-                                                    <span class = "stats-display">80</span> </div>
-                                               
-                                         </div>
-                                     </div>  
-                                   
-                                     <div class = "container">
-                                            <div class = "profile-page-pic-section">
-                                                
-                                                   
-                                                           <div class = "profile-stats" > <p>Answers given</p>  </div>
-                                                
-                                                   
-                                            </div>
-                                            <div class = "profile-page-data-section">
-                                                  
-                                                   <div class = "profile-stats" >  
-                                                       <span class = "stats-display">80</span> </div>
-                                                  
-                                            </div>
-                                        </div> 
-
-                                        
-
-                                        <div class = "container">
-                                                <div class = "profile-page-pic-section">
-                                                    
-                                                       
-                                                               <div class = "profile-stats" > <p>Upvotes earned</p>  </div>
-                                                    
-                                                       
-                                                </div>
-                                                <div class = "profile-page-data-section">
-                                                      
-                                                       <div class = "profile-stats" >  
-                                                           <span class = "stats-display">80</span> </div>
-                                                      
-                                                </div>
-                                            </div>  
-                                </div>
-                              </div>
-                          </div>
-                          <div class = "similar-question-section">
-                                <div class = "packet">
-                                        <div class = "similar-question" >
-                                            
-                                            
-       
-                                            <div class = "code-snippet">
-                                                   <div class ="code-snippet"><h3>My Recent activity</h3></div>
-                                                <div class = "recent-questions"> 
-                                                    <a href ="#"><li ><p>My recent questions</p> </li></a>
-                                                    </div>
-                                                    <div class = "recent-questions"> 
-                                                           <a href ="#"><li ><p>My questions with most answers</p> </li></a>
-                                                           </div>
-                                                           <div class = "recent-questions"> 
-                                                                   <a href ="#"><li ><p>My questions with most upvotes</p> </li></a>
-                                                                   </div>
-                                                                   <div class = "recent-questions"> 
-                                                                           <a href ="#"><li ><p>All questions I ever asked</p> </li></a>
-                                                                           </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class = "packet">
-                        <div class = "container">
-                                <div class = "question-section">
-                                    <div class = "question-view-card">
-                                          <div class = "answer-no resize answer-number-title" >My Recent questions</div>
-                                      <div class = "packet">
-                                        
-                    <div class = "profile-details pl-3">
-                            <div class = "question">
-                                <h2>How fast is Js on Image processing?</h2>
-        
-                            </div>
-                            <div class = "answer-number ">
-                            <div class = "packet">
-                                    <div class ="container" >
-                                        <div class = "answer-no ">10 Answers</div> 
-                                        <div class ="tag-name"> 
-                                            <span><button type ="update"onclick ="location.href='question.html'">View</button></span>
-                                            <span><button type ="update" >Delete</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>    
-                            
-                            
+            <div class = "col">
+              <div class = "profile-box" >
+                <div class = "container">
+                  <div class = "col profile-header" >My Profile</div>
+                  <div class = "row">
+                    <div class = "col-2"> 
+                      <div class = "user-icon-div"> <i class = "fa fa-user user-icon-profile"></i></div></div>
+                    <div class = "col-5"> 
+                      <div class = "container mt-7 ml-3">
+                        <div class = "row mt-2">
+                            <div class = "col-3"><div class = "name">Name:</div></div>
+                            <div class = "col-5"><div class = "name">Augustine Ezinwa</div></div>
                         </div>
-                                      </div>
+                      
+                        <div class = "row mt-2">
+                            <div class = "col-3"><div class = "name">Job role:</div></div>
+                            <div class = "col-5"><div class = "name">Senior Teams Lead</div></div>
+                        </div>
 
-                                      <div class = "answer-no resize answer-number-title" ></div>
-                                      <div class = "packet">
-                                        
-                                            <div class = "profile-details pl-3">
-                                                    <div class = "question">
-                                                        <h2>How fast is Js on Image processing?</h2>
-                                
-                                                    </div>
-                                                    <div class = "answer-number ">
-                                                    <div class = "packet">
-                                                            <div class ="container" >
-                                                                <div class = "answer-no ">10 Answers</div> 
-                                                                <div class ="tag-name"> 
-                                                                    <span><button type ="update"onclick ="location.href='question.html'">View</button></span>
-                                                                    <span><button type ="update" >Delete</button></span>&nbsp &nbsp
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>    
-                                                    
-                                                    
-                                                </div>
-                                                              </div>
-                                      
-                                    </div>
+                        <div class = "row mt-2">
+                            <div class = "col-3"><div class = "name">Company:</div></div>
+                            <div class = "col-5"><div class = "name">KSA</div></div>
+                        </div>
 
-                                    <div class = "question-view-card">
-                                            <div class = "answer-no resize answer-number-title" >My Most Answered questions</div>
-                                        <div class = "packet">
-                                          
-                      <div class = "profile-details pl-3">
-                              <div class = "question">
-                                  <h2>How fast is Js on Image processing?</h2>
-          
-                              </div>
-                              <div class = "answer-number ">
-                              <div class = "packet">
-                                      <div class ="container" >
-                                          <div class = "answer-no ">10 Answers</div> 
-                                          <div class ="tag-name"> 
-                                              <span><button type ="update">View</button></span>
-                                              <span><button type ="update" >Delete</button></span>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>    
-                              
-                              
-                          </div>
-                                        </div>
   
-                                        <div class = "answer-no resize answer-number-title" ></div>
-                                        <div class = "packet">
-                                          
-                                              <div class = "profile-details pl-3">
-                                                      <div class = "question">
-                                                          <h2>Can I program an arduino with Java?</h2>
-                                  
-                                                      </div>
-                                                      <div class = "answer-number ">
-                                                      <div class = "packet">
-                                                              <div class ="container" >
-                                                                  <div class = "answer-no ">10 Answers</div> 
-                                                                  <div class ="tag-name"> 
-                                                                      <span><button type ="update">View</button></span>
-                                                                      <span><button type ="update" >Delete</button></span>&nbsp &nbsp
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      </div>    
-                                                      
-                                                      
-                                                  </div>
-                                                                </div>
-                                        
-                                      </div>
-                                </div>
-                                <div class = "similar-question-section">
-                                      <div class = "packet">
-                                              &nbsp
-                                          </div>
-                                </div>
-                            </div>
-                  </div>
-            </div>
-            <div class = "footer">
+                      
+                        <div class = "row mt-7">
+                            <div class = "col-3"><div class = "name"><button>Update</button></div></div>
+                            <div class = "col-5"><div class = "name"></div></div>
+                        </div>
 
-                    &copy 2018 StackOverFlow-Lite 
-                   </div>
-        <script src ="./js/toggle.js"></script>
-        </body>
-        </html>
+                     
+
+                      </div>
+
+                    </div>
+                  </div>
+                  
+                  <div class = "col mt-7" style = "font-weight:bold; font-size: 18pt;">Stats</div>
+                  <div class = "row mt-2" style = "margin-left: 1%">
+                      <div class = "col-2"><div class = "name">You asked:</div></div>
+                      <div class = "col-5"><div class = "name">54 Questions</div></div>
+                  </div>
+
+                  <div class = "row mt-2" style = "margin-left: 1%">
+                      <div class = "col-2"><div class = "name">You answered:</div></div>
+                      <div class = "col-5"><div class = "name">54 Questions</div></div>
+                  </div>
+                  
+
+                  <div class = "row mt-2" style = "margin-left: 1%">
+                      <div class = "col-2"><div class = "name">You earned:</div></div>
+                      <div class = "col-5"><div class = "name">54 Upvotes</div></div>
+                  </div>
+
+                </div>
+          </div>
+                    </div>
+        </div>
+
+       
+       </div>
+
+       
+        <div class = "container profiledashboardfooter" ><h3>Your Questions with Most Answers</h3></div>
+     
+          
+
+     
+
+
+
+
+    <div class = "container " style = "background-color: #f1f1f1">
+    
+        <div class = "row">
+
+            <div class = "col">
+    
+              <div class = "card">
+                <div class = "container">
+                  <div class = "row mt-4 pd-1" >
+                    <div class = "col-2">
+                      <div class = "symbol-display">
+                        <div class = "alignSymbol">A</div>
+                      </div>
+                      
+                    </div>
+                    <div class = "col-5">
+                      <div class = "question">How do I recusrsively return a div from my function?</div>
+    
+                    </div>
+                  </div>
+                  <div class = "row mt-2 pd-1">
+                    <div class = "col"> <span> 10 Answers</span></div>
+                    <div class = "col"><span> <i class="fas fa-arrow-alt-circle-up"></i></span>&nbsp 200<span></span></div>
+                    <div class = "col"><span> <i class="fas fa-arrow-alt-circle-down "></i></span>&nbsp 200<span><span></span></div>
+                    <div class = "col"><span></span><span></span><button type="answer">Answer</button></div>
+                  </div>
+                </div>
+              </div>
+    
+            </div>
+            <div class = "col">
+    
+                <div class = "card">
+                    <div class = "container">
+                      <div class = "row mt-4 pd-1" >
+                        <div class = "col-2">
+                          <div class = "symbol-display">
+                            <div class = "alignSymbol">A</div>
+                          </div>
+                          
+                        </div>
+                        <div class = "col-5">
+                          <div class = "question">How do I recusrsively return a div from my function?</div>
+        
+                        </div>
+                      </div>
+                      <div class = "row mt-2 pd-1">
+                        <div class = "col"> <span> 10 Answers</span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-up"></i></span>&nbsp 200<span></span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-down "></i></span>&nbsp 200<span><span></span></div>
+                        <div class = "col"><span></span><span></span><button type="answer">Answer</button></div>
+                      </div>
+                    </div>
+                  </div>
+    
+            </div>
+            <div class = "col">
+    
+                <div class = "card">
+                    <div class = "container">
+                      <div class = "row mt-4 pd-1" >
+                        <div class = "col-2">
+                          <div class = "symbol-display">
+                            <div class = "alignSymbol">A</div>
+                          </div>
+                          
+                        </div>
+                        <div class = "col-5">
+                          <div class = "question">How do I recusrsively return a div from my function?</div>
+        
+                        </div>
+                      </div>
+                      <div class = "row mt-2 pd-1">
+                        <div class = "col"> <span> 10 Answers</span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-up"></i></span>&nbsp 200<span></span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-down "></i></span>&nbsp 200<span><span></span></div>
+                        <div class = "col"><span></span><span></span><button type="answer">Answer</button></div>
+                      </div>
+                    </div>
+                  </div>
+    
+            </div>
+          </div>
+
+    </div>
+
+    <div class = "container profiledashboardfooter mt-1" ><h3>Your Recent Questions</h3></div>
+
+
+    <div class = "container " style = "background-color: #f1f1f1">
+    
+        <div class = "row">
+
+            <div class = "col">
+    
+              <div class = "card">
+                <div class = "container">
+                  <div class = "row mt-4 pd-1" >
+                    <div class = "col-2">
+                      <div class = "symbol-display">
+                        <div class = "alignSymbol">A</div>
+                      </div>
+                      
+                    </div>
+                    <div class = "col-5">
+                      <div class = "question">How do I recusrsively return a div from my function?</div>
+    
+                    </div>
+                  </div>
+                  <div class = "row mt-2 pd-1">
+                    <div class = "col"> <span> 10 Answers</span></div>
+                    <div class = "col"><span> <i class="fas fa-arrow-alt-circle-up"></i></span>&nbsp 200<span></span></div>
+                    <div class = "col"><span> <i class="fas fa-arrow-alt-circle-down "></i></span>&nbsp 200<span><span></span></div>
+                    <div class = "col"><span></span><span></span><button type="answer">Answer</button></div>
+                  </div>
+                </div>
+              </div>
+    
+            </div>
+            <div class = "col">
+    
+                <div class = "card">
+                    <div class = "container">
+                      <div class = "row mt-4 pd-1" >
+                        <div class = "col-2">
+                          <div class = "symbol-display">
+                            <div class = "alignSymbol">A</div>
+                          </div>
+                          
+                        </div>
+                        <div class = "col-5">
+                          <div class = "question">How do I recusrsively return a div from my function?</div>
+        
+                        </div>
+                      </div>
+                      <div class = "row mt-2 pd-1">
+                        <div class = "col"> <span> 10 Answers</span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-up"></i></span>&nbsp 200<span></span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-down "></i></span>&nbsp 200<span><span></span></div>
+                        <div class = "col"><span></span><span></span><button type="answer">Answer</button></div>
+                      </div>
+                    </div>
+                  </div>
+    
+            </div>
+            <div class = "col">
+    
+                <div class = "card">
+                    <div class = "container">
+                      <div class = "row mt-4 pd-1" >
+                        <div class = "col-2">
+                          <div class = "symbol-display">
+                            <div class = "alignSymbol">A</div>
+                          </div>
+                          
+                        </div>
+                        <div class = "col-5">
+                          <div class = "question">How do I recusrsively return a div from my function?</div>
+        
+                        </div>
+                      </div>
+                      <div class = "row mt-2 pd-1">
+                        <div class = "col"> <span> 10 Answers</span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-up"></i></span>&nbsp 200<span></span></div>
+                        <div class = "col"><span> <i class="fas fa-arrow-alt-circle-down "></i></span>&nbsp 200<span><span></span></div>
+                        <div class = "col"><span></span><span></span><button type="answer">Answer</button></div>
+                      </div>
+                    </div>
+                  </div>
+    
+            </div>
+          </div>
+
+    </div>
+
+<div class = "container " style = "text-align: center;color:white; background-color:#4d4d4d; padding: 1.5%;" >
+   &copy 2018 StackOverFlow-Lite
+
+</div>
+
+ 
+
+</body>
+
+
+</html>
