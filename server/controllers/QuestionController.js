@@ -1,4 +1,10 @@
 import { questions } from '../dummydata/dummydata';
+import dbConnect from '../connections/dbConnect';
+import { createQuestion } from '../helper/sqlHelper';
+import { formatQuestions } from '../helper/format';
+import CatchErrors from '../helper/CatchErrors';
+
+const { catchDatabaseConnectionError } = CatchErrors;
 
 /**
   * @class QuestionController
@@ -65,35 +71,28 @@ class QuestionController {
     }
   }
 
+
   /**
-        * @static
-        *
-        * @param {object} request - The requestuest payload sent to the controller
-        * @param {object} response - The responseponse payload sent back from the controller
-        *
-        * @returns {object} - status Message and the added question
-        *
-        * @description This method returns the question object
-        * @memberOf QuestionController
-        */
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and the added question
+    *
+    * @description This method returns the question object
+    * @memberOf QuestionController
+    */
   static addQuestion(request, response) {
     const { questionTitle, questionDescription } = request.body;
-    const questionLength = questions.length;
-    const id = questionLength === 0 ? 1 : questions[questionLength - 1].id + 1;
-    questions.push({
-      id,
-      questionTitle: questionTitle.trim(),
-      questionDescription: questionDescription.trim(),
-      answers: [],
-      time: (new Date(Date.now())).toTimeString(),
-      date: (new Date(Date.now())).toDateString()
-    });
-    return response.status(201).json({
-      status: 'success',
-      data: {
-        newQuestion: questions[questions.length - 1]
-      }
-    });
+    dbConnect.query(createQuestion(questionTitle, questionDescription, request.id))
+      .then(data => response.status(201).json({
+        status: 'success',
+        data: {
+          newQuestion: formatQuestions(data.rows)[0]
+        }
+      }))
+      .catch(error => catchDatabaseConnectionError(error, response));
   }
 }
 export default QuestionController;
