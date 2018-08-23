@@ -67,7 +67,7 @@ describe('Testing questions controller', () => {
       .send({
         questionTitle: 'how do I fix my arduino?',
         questionDescription: 'My arduino is having problem, please how do I get it fixed?',
-        token: process.env.USER_TOKEN,
+        token: process.env.SECOND_USER_TOKEN,
       })
       .end((error, response) => {
         should.not.exist(error);

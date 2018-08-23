@@ -15,4 +15,22 @@ const formatQuestions = (data) => {
   return newQuestions;
 };
 
-export { formatQuestions };
+const formatAnswers = (data) => {
+  const newAnswers = [];
+  data.forEach((x) => {
+    newAnswers.push({
+      id: x.id,
+      answer: x.answer,
+      upvotes: x.upvotes,
+      downvotes: x.downvotes,
+      approved: x.approved,
+      comments: [],
+      time: x.time,
+      data: x.date,
+      userId: x.userid,
+      questionId: x.questionid
+    });
+  });
+  return newAnswers;
+};
+export { formatQuestions, formatAnswers };

@@ -6,10 +6,24 @@ chai.use(chaiHttp);
 const should = chai.should();
 
 describe('Testing validations on answer', () => {
-  it('should throw an error if user submits an empty answer', (done) => {
-    chai.request(app).post('/api/v1/questions/1/answers')
+  it('should throw an error if user try to post an answer with an invalid url', (done) => {
+    chai.request(app).post('/api/v1/questions/a/answers')
       .send({
         answer: '',
+      })
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(400);
+        response.body.status.should.be.eql('fail');
+        response.body.message.should.be.eql('invalid url');
+        done();
+      });
+  });
+  it('should throw an error if user submits an empty answer', (done) => {
+    chai.request(app).post(`/api/v1/questions/${process.env.QUESTION_ID}/answers`)
+      .send({
+        answer: '',
+        token: process.env.SECOND_USER_TOKEN
       })
       .end((error, response) => {
         should.not.exist(error);
@@ -20,7 +34,7 @@ describe('Testing validations on answer', () => {
       });
   });
   it('should throw an error if user answer entry is too short', (done) => {
-    chai.request(app).post('/api/v1/questions/2/answers')
+    chai.request(app).post(`/api/v1/questions/${process.env.QUESTION_ID}/answers`)
       .send({
         answer: 'ef',
       })

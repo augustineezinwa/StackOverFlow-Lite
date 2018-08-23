@@ -21,8 +21,8 @@ const createTableForQuestions = () => `DROP TABLE IF EXISTS questions CASCADE;
 const createTableForAnswers = () => `DROP TABLE IF EXISTS answers CASCADE;
                                     CREATE TABLE answers(id SERIAL UNIQUE PRIMARY KEY,
                                     answer VARCHAR(300) NOT NULL,
-                                    upvotes SERIAL NOT NULL,
-                                    downvotes SERIAL NOT NULL,
+                                    upvotes INT NOT NULL,
+                                    downvotes INT NOT NULL,
                                     approved BOOLEAN NOT NULL,
                                     time VARCHAR(80) NOT NULL,
                                     date VARCHAR(80) NOT NULL,
@@ -77,7 +77,32 @@ const getAUserQuestion = (userId, id) => {
   return query;
 };
 
+const createAnswer = (answer, id, questionId) => {
+  const query = {
+    text: `INSERT INTO answers(answer, upvotes, downvotes, approved, time, date, questionid,  userid)
+           VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * `,
+    values: [answer, 0, 0, false,
+      (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(), questionId, id]
+  };
+  return query;
+};
+
+const getAUserAnswer = (userId, id) => {
+  const query = {
+    text: 'SELECT * FROM answers where answers.userid = $1 and answers.id = $2',
+    values: [userId, id]
+  };
+  return query;
+};
+
+const getAQuestion = (questionId) => {
+  const query = {
+    text: 'SELECT * FROM questions where questions.id = $1',
+    values: [questionId]
+  };
+  return query;
+};
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
-  checkEmail, createUser, createQuestion, getAUserQuestion
+  checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion
 };
