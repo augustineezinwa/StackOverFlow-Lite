@@ -1,5 +1,10 @@
 import { answers } from '../dummydata/dummydata';
+import dbConnect from '../connections/dbConnect';
+import { createAnswer } from '../helper/sqlHelper';
+import { formatAnswers } from '../helper/format';
+import CatchErrors from '../helper/CatchErrors';
 
+const { catchDatabaseConnectionError } = CatchErrors;
 /**
   * @class AnswerController
   *
@@ -9,8 +14,8 @@ class AnswerController {
   /**
     * @static
     *
-    * @param {object} request - The requestuest payload sent to the controller
-    * @param {object} response - The responseponse payload sent back from the controller
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
     *
     * @returns {object} - status Message and the added answer
     *
@@ -19,30 +24,20 @@ class AnswerController {
     */
   static addAnswer(request, response) {
     const { answer } = request.body;
-    const answerLength = answers.length;
-    const id = answerLength === 0 ? 1 : answers[answerLength - 1].id + 1;
-    answers.push({
-      id,
-      answer: answer.trim(),
-      comments: [],
-      upvotes: 0,
-      downvotes: 0,
-      mostPreferred: 0,
-      questionId: request.params.questionId,
-      time: (new Date(Date.now())).toTimeString(),
-      date: (new Date(Date.now())).toDateString()
-    });
-    return response.status(201).json({
-      status: 'success',
-      data: { newAnswer: answers[answers.length - 1] }
-    });
+    const questionId = request.data.id;
+    dbConnect.query(createAnswer(answer, request.id, questionId))
+      .then(data => response.status(201).json({
+        status: 'success',
+        data: { newAnswer: formatAnswers(data.rows)[0] }
+      }))
+      .catch(error => catchDatabaseConnectionError(`error writing to answers table ${error}`, response));
   }
 
   /**
     * @static
     *
-    * @param {object} request - The requestuest payload sent to the controller
-    * @param {object} response - The responseponse payload sent back from the controller
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
     *
     * @returns {object} - status Message and all answers
     *

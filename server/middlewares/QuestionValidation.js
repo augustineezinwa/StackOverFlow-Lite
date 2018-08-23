@@ -1,5 +1,7 @@
 import Helper from '../helper/Helper';
 import { questions } from '../dummydata/dummydata';
+import { getAQuestion } from '../helper/sqlHelper';
+import dbConnect from '../connections/dbConnect';
 
 const { validateField } = Helper;
 /**
@@ -56,16 +58,40 @@ class QuestionValidation {
     */
   static validateQuestionExistence(request, response, next) {
     const { questionId } = request.params;
-    const foundQuestion = questions.find(x => +x.id === +questionId);
-    if (!foundQuestion) {
-      return response.status(404).json({
-        status: 'fail',
-        data: {
-          message: 'This question does not exist'
+    dbConnect.query(getAQuestion(questionId))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return response.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'This question does not exist'
+            }
+          });
         }
+        const [neededData, ...remnant] = data.rows;
+        request.data = neededData;
+        return next();
       });
-    }
-    return next();
+  }
+
+  /**
+      * @static
+      *
+      * @param {object} request - The request payload sent to the middleware
+      * @param {object} response - The response payload sent back from the middleware
+      * @param {object} next - The call back function to resume the next middleware
+      *
+      * @returns {object} - status Message or next
+      *
+      * @description This method validates the req url
+      * @memberOf QuestionValidation
+      */
+  static validateUrl(request, response, next) {
+    if (Number.parseInt(request.params.questionId, 10) === +request.params.questionId) return next();
+    return response.status(400).json({
+      status: 'fail',
+      message: 'invalid url'
+    });
   }
 }
 
