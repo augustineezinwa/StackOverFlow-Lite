@@ -118,9 +118,16 @@ const getAllQuestions = () => {
   return query;
 };
 
+const deleteAQuestion = (questionId) => {
+  const query = {
+    text: 'DELETE * FROM questions where questions.id = $1',
+    values: [questionId]
+  };
+  return query;
+};
 
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
   checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
-  getAllQuestions, getAllAnswersForAQuestion
+  getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion
 };

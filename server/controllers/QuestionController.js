@@ -1,6 +1,8 @@
 import { questions } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
-import { createQuestion, getAllQuestions, getAQuestion } from '../helper/sqlHelper';
+import {
+  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion
+} from '../helper/sqlHelper';
 import { formatQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
@@ -104,6 +106,33 @@ class QuestionController {
         }
       }))
       .catch(error => catchDatabaseConnectionError(error, response));
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message
+    *
+    * @description This method deletes questions on the database
+    * @memberOf QuestionController
+    */
+  static deleteQuestion(request, response) {
+    const { questionId } = request.params;
+    dbConnect.query(deleteAQuestion(questionId))
+      .then((data) => {
+        console.log(data);
+        return response.status(200).json({
+          status: 'success',
+          data: {
+            message: 'you have successfully deleted this question'
+          }
+        });
+      })
+      .catch(error => catchDatabaseConnectionError(`error deleting question on questions table ${error}`, response));
   }
 }
 export default QuestionController;

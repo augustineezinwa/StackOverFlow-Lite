@@ -9,45 +9,80 @@
 <link rel ="stylesheet" type = "text/css" href = "./styles/index.css">
 <link rel ="stylesheet" type = "text/css" href = "./styles/nav.css">
 </head>
-
 <body>
-  
-    <div class = "nav-bar">
-        <div class ="nav-bar-brand-logo">StackOverFlow-Lite &nbsp  </div>
-         <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+<div class="nav">
+  <div class="nav-header">
+    <div class="nav-title">
+      StackOverFlow-Lite
+    </div>
+  </div>
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+  <input type="checkbox" id="nav-check">
+  <div class="nav-links">
+    <a href="index.html" >Home</a>
+    <a href="ask.html">AskQuestion</a>
+    <a href="login.html" >login</a>
+    <a href="signup.html" >signup</a>
+    <a href="profile.html" >My Profile</a>
+    <div class = "search-bar"><input type ="search"/> <button >Search</button></div>
+   
+    </div>
+</div>
+
+    <div class = "container image-background" style = "margin: 0 auto; height: 800px;">
+    
+        <div class = "row ">
             
-            <nav class="getNav nav-bar-right">
-
-                    <div class = "nav-bar-link"><input type="search" placeholder="  Search questions ..."></input></div>
-                   <div class ="nav-bar-link"onclick ="location.href='home.html'">Home</div>
-                    
-                    <div class ="nav-bar-link" onclick ="location.href='login.html'">Login</span></div>
-                    <div class ="nav-bar-link"onclick ="location.href='signup.html'">Signup</div>
-            </nav>
+            <div class = "col "style ="margin-top: 18%">
+              <h1 style = "color: white; text-align: center;z-index: 10">Welcome to StackOverFlow-Lite</h1>
             </div>
+            <div class = "col">
+                <div class = "login-box">
+                <h2>Signup</h2>
+                <form class = "">
+                    <label for="email"><b>Enter Full Name</b></label>
+                    <input type="text" name="email" required>
 
-            <div class = "centralize">
-                    <div class = "login-card" >
-                          <div class = "answer-no resize  mt-5" >Signup</div>
-                          <div class = "answer-no  mt-5 form-title">Email: </div>
-                          <div class ="answer-no mt-2"><input class = "form-text-field"/></div>
-                          <div class = "answer-no  mt-5 form-title">Password: </div>
-                          <div class = "answer-no mt-2">  <input type ="password" class = "form-text-field"/></div>
-                          <div class = "answer-no  mt-5 form-title">Confirm Password: </div>
-                          <div class = "answer-no mt-2">  <input type ="password" class = "form-text-field"/></div>
-                          <div class = "answer-no  mt-5 form-title">First Name: </div>
-                          <div class ="answer-no mt-2"><input class = "form-text-field"/></div>
-                          <div class = "answer-no  mt-5 form-title">Last Name: </div>
-                          <div class ="answer-no mt-2"><input class = "form-text-field"/></div>
-                          <div class = "answer-no mt-1 mb-5 pr-10"> <button type ="update" onclick ="location.href='home.html'">Signup</button>  </div>
-                          
+                    <label for="email"><b>Enter Email</b></label>
+                    <input type="text" name="email" required>
+        
+                    <label for="password"><b>Enter password</b></label>
+                    <input type="password" name="password" required>
+        
+                    <button type="submit"> Signup</button>
+                </form>
+            </div>
                     </div>
-         </div>
+        </div>
+          
+       </div>
 
-<div class = "footer">
+     
 
-                &copy 2018 StackOverFlow-Lite 
-               </div>
-<script src ="./js/toggle.js"></script>
-            </body>
-            </html>
+
+
+
+    <div class = "container " style = "background-color: #f1f1f1">
+    
+
+    </div>
+
+
+
+<div class = "container " style = "text-align: center;color:white; background-color:#4d4d4d; padding: 1.5%;" >
+   &copy 2018 StackOverFlow-Lite
+
+</div>
+
+ 
+
+</body>
+
+
+</html>

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npm run db:initialize --exit --exit --exit && cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 1000000 server/tests/**/*.js --exit",
     "start": "babel-node server/app.js",
+    "heroku-postbuild": "babel-node server/migrations/index.js --exit",
     "db:initialize": "cross-env NODE_ENV=test babel-node server/migrations/index.js --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit "
