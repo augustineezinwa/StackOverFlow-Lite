@@ -74,7 +74,7 @@ class QuestionController {
 
           default: {
             const reformedQuestion = formatQuestions(data.rows)[0];
-            reformedQuestion.answer = request.foundAnswers;
+            reformedQuestion.answers = request.foundAnswers;
             response.status(200).json({
               status: 'success',
               data: { question: reformedQuestion }
@@ -123,15 +123,12 @@ class QuestionController {
   static deleteQuestion(request, response) {
     const { questionId } = request.params;
     dbConnect.query(deleteAQuestion(questionId))
-      .then((data) => {
-        console.log(data);
-        return response.status(200).json({
-          status: 'success',
-          data: {
-            message: 'you have successfully deleted this question'
-          }
-        });
-      })
+      .then(data => response.status(200).json({
+        status: 'success',
+        data: {
+          message: 'you have successfully deleted this question'
+        }
+      }))
       .catch(error => catchDatabaseConnectionError(`error deleting question on questions table ${error}`, response));
   }
 }

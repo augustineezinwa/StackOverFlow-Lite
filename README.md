@@ -64,7 +64,7 @@ StackOverFlow-Lite Application consists of the following features:
 <tr><td>POST</td><td> /questions/:questionId/answers </td><td> Adds an answer to a particular question</td></tr>
 <tr><td>GET</td><td>/questions</td><td> Gets all questions</td></tr>
 <tr><td>GET</td><td>/questions/:questionId</td><td>Gets a question by id</td></tr>
-<tr><td>GET</td><td>/questions/:questionId/answers</td><td>Gets all answers for a particular question</td></tr>
+<tr><td>DELETE</td><td>/questions/:questionId</td><td>Delete a particular question</td></tr>
 </table>
 
 *Application is currently under construction ....*

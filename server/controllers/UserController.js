@@ -51,7 +51,7 @@ class UserController {
           }
         });
       })
-      .catch(err => catchDatabaseConnectionError('Error writing to user table', response));
+      .catch(error => catchDatabaseConnectionError(`Error writing to user table ${error}`, response));
   }
 
   /**

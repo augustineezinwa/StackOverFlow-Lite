@@ -75,6 +75,30 @@ class QuestionValidation {
   }
 
   /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method validates if a user can delete a question
+    * @memberOf QuestionValidation
+    */
+  static validatePermissionToDeleteQuestion(request, response, next) {
+    if (request.id === request.data.userid) return next();
+    return response.status(403).json(
+      {
+        status: 'fail',
+        data: {
+          message: 'You dont have permission to delete this question'
+        }
+      }
+    );
+  }
+
+  /**
       * @static
       *
       * @param {object} request - The request payload sent to the middleware
