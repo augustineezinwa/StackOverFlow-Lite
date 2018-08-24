@@ -3,7 +3,7 @@ import CatchErrors from '../helper/CatchErrors';
 import dbConnect from '../connections/dbConnect';
 import { checkEmail } from '../helper/sqlHelper';
 
-const { catchTableReadError } = CatchErrors;
+const { catchDatabaseConnectionError } = CatchErrors;
 /**
   * @class UserValidation
   *
@@ -103,7 +103,7 @@ class UserValidation {
           }
         });
       })
-      .catch(error => catchTableReadError(error, response));
+      .catch(error => catchDatabaseConnectionError(error, response));
   }
 }
 

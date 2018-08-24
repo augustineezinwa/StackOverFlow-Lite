@@ -1,7 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-import { questions } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
 import { getAUserQuestion } from '../helper/sqlHelper';
 
@@ -127,6 +126,19 @@ describe('Testing get all questions', () => {
         response.body.data.questions[0].should.be.have.property('questionTitle').eql('how do I fix my arduino?');
         response.body.data.questions[0].should.be.have.property('questionDescription')
           .eql('My arduino is having problem, please how do I get it fixed?');
+        done();
+      });
+  });
+});
+describe('Testing delete a questions', () => {
+  it('should delete a  question created by a user', (done) => {
+    chai.request(app).delete('/api/v1/questions/2')
+      .send({ token: process.env.SECOND_USER_TOKEN })
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(200);
+        response.body.status.should.be.eql('success');
+        response.body.data.message.should.be.eql('you have successfully deleted this question');
         done();
       });
   });

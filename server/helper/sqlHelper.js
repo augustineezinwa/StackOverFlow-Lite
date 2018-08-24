@@ -120,7 +120,7 @@ const getAllQuestions = () => {
 
 const deleteAQuestion = (questionId) => {
   const query = {
-    text: 'DELETE * FROM questions where questions.id = $1',
+    text: 'DELETE FROM questions where questions.id = $1',
     values: [questionId]
   };
   return query;
