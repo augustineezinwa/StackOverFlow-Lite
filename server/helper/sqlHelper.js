@@ -103,6 +103,35 @@ const getAQuestion = (questionId) => {
   return query;
 };
 
+const getAnAnswer = (answerId, questionId) => {
+  const query = {
+    text: 'SELECT * FROM answers where answers.id = $1 and answers.questionId = $2',
+    values: [answerId, questionId]
+  };
+  return query;
+};
+
+const updateAnAnswer = (answer, answerId) => {
+  const query = {
+    text: 'UPDATE answers SET answer = $1 where answers.id =$2',
+    values: [answer, answerId]
+  };
+  return query;
+};
+const deactivateUserPrefferedAnswer = (questionId) => {
+  const query = {
+    text: 'UPDATE answers SET approved = false where answers.approved =true and answers.questionid= $1',
+    values: [questionId]
+  };
+  return query;
+};
+const prefferAnswer = (answerId) => {
+  const query = {
+    text: 'UPDATE answers SET approved= true where answers.id =$1',
+    values: [answerId]
+  };
+  return query;
+};
 const getAllAnswersForAQuestion = (questionId) => {
   const query = {
     text: 'SELECT * FROM answers where answers.questionid = $1',
@@ -129,5 +158,6 @@ const deleteAQuestion = (questionId) => {
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
   checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
-  getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion
+  getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
+  prefferAnswer
 };

@@ -9,14 +9,19 @@ const {
   fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion
 } = QuestionController;
 const { fetchAnswersForAQueston } = AnswerController;
-const { validateQuestionTitle, validateQuestionDescription, validatePermissionToDeleteQuestion, validateQuestionExistence, validateUrl } = QuestionValidation;
+const {
+  validateQuestionTitle, validateQuestionDescription, validatePermissionToDeleteQuestion,
+  validateQuestionExistence, validateUrl
+} = QuestionValidation;
 const { guardRoute } = Security;
 
 const questionRouter = express.Router();
 
 questionRouter.get('/questions', fetchQuestions);
 questionRouter.get('/questions/:questionId', validateUrl, fetchAnswersForAQueston, fetchAQuestion);
-questionRouter.post('/questions', validateQuestionTitle, validateQuestionDescription, guardRoute, addQuestion);
-questionRouter.delete('/questions/:questionId', validateUrl, guardRoute, validateQuestionExistence, validatePermissionToDeleteQuestion, deleteQuestion);
+questionRouter.post('/questions', validateQuestionTitle, validateQuestionDescription,
+  guardRoute, addQuestion);
+questionRouter.delete('/questions/:questionId', validateUrl, guardRoute, validateQuestionExistence,
+  validatePermissionToDeleteQuestion, deleteQuestion);
 
 export default questionRouter;

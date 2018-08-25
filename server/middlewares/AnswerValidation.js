@@ -1,6 +1,10 @@
 import Helper from '../helper/Helper';
+import AnswerController from '../controllers/AnswerController';
+import { getAnAnswer } from '../helper/sqlHelper';
+import dbConnect from '../connections/dbConnect';
 
 const { validateField } = Helper;
+const { deactivatePrefferedAnswers } = AnswerController;
 /**
   * @class AnswerValidation
   *
@@ -24,6 +28,7 @@ class AnswerValidation {
     validateField('answer', answer, response, next);
   }
 
+
   /**
     * @static
     *
@@ -46,6 +51,61 @@ class AnswerValidation {
       });
     }
     return next();
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the answer
+    *
+    * @description This method checks if a user wants to update his answer
+    * @memberOf AnswerValidation
+    */
+  static validatePermissionToUpdateAnswer(request, response, next) {
+    if (request.id === request.answers.userid) return next();
+    if (request.id === request.data.userid) {
+      return deactivatePrefferedAnswers(request, response);
+    }
+    return response.status(403).json({
+      status: 'fail',
+      data: {
+        message: 'Access denied!, You cannot update someone\'s answer'
+      }
+    });
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method validates the existence of an answer
+    * @memberOf AnswerValidation
+    */
+  static validateAnswerExistence(request, response, next) {
+    const { answerId, questionId } = request.params;
+    dbConnect.query(getAnAnswer(answerId, questionId))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return response.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'This answer does not exist for this question'
+            }
+          });
+        }
+        const [neededData, ...remnant] = data.rows;
+        request.answers = neededData;
+        return next();
+      });
   }
 }
 
