@@ -1,4 +1,3 @@
-import { questions } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
 import {
   createQuestion, getAllQuestions, getAQuestion, deleteAQuestion

@@ -26,11 +26,30 @@ const formatAnswers = (data) => {
       approved: x.approved,
       comments: [],
       time: x.time,
-      data: x.date,
+      date: x.date,
       userId: x.userid,
       questionId: x.questionid
     });
   });
   return newAnswers;
 };
-export { formatQuestions, formatAnswers };
+
+const formatComments = (data) => {
+  const newComments = [];
+  data.forEach((x) => {
+    newComments.push({
+      id: x.id,
+      comment: x.comment,
+      upvotes: x.upvotes,
+      downvotes: x.downvotes,
+      time: x.time,
+      date: x.date,
+      userId: x.userid,
+      answerId: x.answerid,
+      questionId: x.questionid
+    });
+  });
+  return newComments;
+};
+
+export { formatQuestions, formatAnswers, formatComments };

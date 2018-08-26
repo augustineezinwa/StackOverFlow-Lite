@@ -1,6 +1,5 @@
 import chai from 'chai';
-import app from '../app';
-import { checkEmail } from '../helper/sqlHelper';
+import { checkEmail } from '../../helper/sqlHelper';
 
 describe('testing sql querys', () => {
   it('should return an sql query string to check an email', (done) => {
