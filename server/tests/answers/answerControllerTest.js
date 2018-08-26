@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../app';
-import { firstUser, newUser, secondUser } from '../models/users';
-import { getAUserAnswer } from '../helper/sqlHelper';
-import dbConnect from '../connections/dbConnect';
+import app from '../../app';
+import { firstUser, newUser, secondUser } from '../../models/users';
+import { getAUserAnswer } from '../../helper/sqlHelper';
+import dbConnect from '../../connections/dbConnect';
 
 chai.use(chaiHttp);
 const should = chai.should();

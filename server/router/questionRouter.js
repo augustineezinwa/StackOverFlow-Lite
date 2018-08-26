@@ -3,7 +3,7 @@ import QuestionController from '../controllers/QuestionController';
 import QuestionValidation from '../middlewares/QuestionValidation';
 import Security from '../middlewares/Security';
 import AnswerController from '../controllers/AnswerController';
-
+import CommentController from '../controllers/CommentController';
 
 const {
   fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion

@@ -31,7 +31,7 @@ const createTableForAnswers = () => `DROP TABLE IF EXISTS answers CASCADE;
 
 const createTableForComments = () => `DROP TABLE IF EXISTS comments CASCADE;
                                      CREATE TABLE comments(id SERIAL UNIQUE PRIMARY KEY,
-                                     comments VARCHAR(300) NOT NULL,
+                                     comment VARCHAR(300) NOT NULL,
                                      upvotes SERIAL NOT NULL,
                                      downvotes SERIAL NOT NULL,
                                      time VARCHAR(80) NOT NULL,
@@ -83,6 +83,16 @@ const createAnswer = (answer, id, questionId) => {
            VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * `,
     values: [answer, 0, 0, false,
       (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(), questionId, id]
+  };
+  return query;
+};
+
+const createComment = (comment, id, questionId, answerId) => {
+  const query = {
+    text: `INSERT INTO comments(comment, upvotes, downvotes, time, date, answerid, questionId, userid)
+           VALUES($1, $2, $3, $4, $5, $6, $7,$8 ) RETURNING * `,
+    values: [comment, 0, 0,
+      (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(), answerId, questionId, id]
   };
   return query;
 };
@@ -140,6 +150,21 @@ const getAllAnswersForAQuestion = (questionId) => {
   return query;
 };
 
+const getAllCommentsForAnAnswer = (answerId) => {
+  const query = {
+    text: 'SELECT * from comments where comments.answerid =$1',
+    values: [answerId]
+  };
+  return query;
+};
+
+const getAUserComment = (userId, id) => {
+  const query = {
+    text: 'SELECT * from comments where comments.id =$1 and comments.userid =$2',
+    values: [id, userId]
+  };
+  return query;
+};
 const getAllQuestions = () => {
   const query = {
     text: 'SELECT * FROM questions'
@@ -159,5 +184,5 @@ export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
   checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
   getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
-  prefferAnswer
+  prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment
 };

@@ -1,4 +1,3 @@
-import { answers } from '../dummydata/dummydata';
 import dbConnect from '../connections/dbConnect';
 import {
   createAnswer, getAllAnswersForAQuestion, updateAnAnswer, deactivateUserPrefferedAnswer,
@@ -125,6 +124,27 @@ class AnswerController {
         return next();
       })
       .catch(error => catchDatabaseConnectionError(`error reading answers table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and returned  answer object
+    *
+    * @description This method returns the answer object
+    * @memberOf AnswerController
+    */
+  static fetchAnswer(request, response) {
+    request.answers.comments = request.foundComments;
+    return response.status(200).json({
+      status: 'success',
+      data: {
+        answer: request.answers
+      }
+    });
   }
 }
 
