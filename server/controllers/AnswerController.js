@@ -139,6 +139,8 @@ class AnswerController {
     */
   static fetchAnswer(request, response) {
     request.answers.comments = request.foundComments;
+    request.answers.upvotes = request.upvotes;
+    request.answers.downvotes = request.downvotes;
     return response.status(200).json({
       status: 'success',
       data: {

@@ -40,6 +40,14 @@ const createTableForComments = () => `DROP TABLE IF EXISTS comments CASCADE;
                                      questionId SERIAL references questions(ID) ON DELETE CASCADE,
                                      userId SERIAL references users(ID) ON DELETE CASCADE);`;
 
+const createTableForVotes = () => `DROP TABLE IF EXISTS votes CASCADE;
+                                     CREATE TABLE votes(id SERIAL UNIQUE PRIMARY KEY,
+                                     vote INTEGER NOT NULL,
+                                     time VARCHAR(80) NOT NULL,
+                                     date VARCHAR(80) NOT NULL,
+                                     answerId SERIAL references answers(ID) ON DELETE CASCADE,
+                                     questionId SERIAL references questions(ID) ON DELETE CASCADE,
+                                     userId SERIAL references users(ID) ON DELETE CASCADE);`;
 const createUser = (firstName, lastName, email, password, jobRole = 'Update your job role',
   company = 'Update your company name', photo = 'image-url') => {
   const query = {
@@ -97,6 +105,22 @@ const createComment = (comment, id, questionId, answerId) => {
   return query;
 };
 
+const createUpvote = (questionId, answerId, id) => {
+  const query = {
+    text: `INSERT INTO votes(vote, time, date, answerid, questionId, userid)
+           VALUES($1, $2, $3, $4, $5, $6) RETURNING * `,
+    values: [1, (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(),
+      answerId, questionId, id]
+  };
+  return query;
+};
+const searchVotes = (answerId, id, vote) => {
+  const query = {
+    text: 'SELECT * from votes where votes.answerid = $1 and votes.userid= $2 and votes.vote=$3',
+    values: [answerId, id, vote]
+  };
+  return query;
+};
 const getAUserAnswer = (userId, id) => {
   const query = {
     text: 'SELECT * FROM answers where answers.userid = $1 and answers.id = $2',
@@ -179,10 +203,39 @@ const deleteAQuestion = (questionId) => {
   };
   return query;
 };
+const resetVotes = (answerId, id) => {
+  const query = {
+    text: 'DELETE FROM votes where votes.answerid = $1 and votes.userid =$2',
+    values: [answerId, id]
+  };
+  return query;
+};
+const getUpvotesForAnswer = (answerId) => {
+  const query = {
+    text: 'SELECT * FROM votes where votes.answerid =$1 and votes.vote=$2',
+    values: [answerId, 1]
+  };
+  return query;
+};
+const getDownvotesForAnswer = (answerId) => {
+  const query = {
+    text: 'SELECT * FROM votes where votes.answerid =$1 and votes.vote=$2',
+    values: [answerId, 0]
+  };
+  return query;
+};
+const persistVotes = (upvotes, downvotes, answerId) => {
+  const query = {
+    text: 'UPDATE answers SET upvotes=$1, downvotes =$2 where answers.id=$3 returning *',
+    values: [upvotes, downvotes, answerId]
+  };
+  return query;
+};
 
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
   checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
   getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
-  prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment
+  prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment, createTableForVotes,
+  createUpvote, searchVotes, resetVotes, getUpvotesForAnswer, getDownvotesForAnswer, persistVotes
 };
