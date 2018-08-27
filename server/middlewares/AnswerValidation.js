@@ -1,8 +1,10 @@
 import Helper from '../helper/Helper';
+import CatchErrors from '../helper/CatchErrors';
 import AnswerController from '../controllers/AnswerController';
 import { getAnAnswer } from '../helper/sqlHelper';
 import dbConnect from '../connections/dbConnect';
 
+const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 const { deactivatePrefferedAnswers } = AnswerController;
 /**
@@ -105,7 +107,8 @@ class AnswerValidation {
         const [neededData, ...remnant] = data.rows;
         request.answers = neededData;
         return next();
-      });
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading answer table ${error}`, response));
   }
 }
 

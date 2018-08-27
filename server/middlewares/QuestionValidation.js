@@ -1,8 +1,10 @@
 import Helper from '../helper/Helper';
+import CatchErrors from '../helper/CatchErrors';
 import { questions } from '../dummydata/dummydata';
 import { getAQuestion } from '../helper/sqlHelper';
 import dbConnect from '../connections/dbConnect';
 
+const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 /**
   * @class QuestionValidation
@@ -71,7 +73,8 @@ class QuestionValidation {
         const [neededData, ...remnant] = data.rows;
         request.data = neededData;
         return next();
-      });
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading question table ${error}`, response));
   }
 
   /**

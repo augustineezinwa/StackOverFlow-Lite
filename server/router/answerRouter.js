@@ -5,6 +5,7 @@ import CommentValidation from '../middlewares/CommentValidation';
 import QuestionValidation from '../middlewares/QuestionValidation';
 import AnswerValidation from '../middlewares/AnswerValidation';
 import Security from '../middlewares/Security';
+import VotesController from '../controllers/VotesController';
 
 const {
   validateAnswer, validatePermissionToEditAnswer, validatePermissionToUpdateAnswer,
@@ -15,6 +16,7 @@ const { addAnswer, fetchAnswer, updateAnswer } = AnswerController;
 const { guardRoute } = Security;
 const { addComment, fetchCommentsForAnAnswer } = CommentController;
 const { validateComment } = CommentValidation;
+const { countDownvotesForAnAnswer, countUpvotesForAnAnswer, persistVotesToAnswers } = VotesController;
 
 const answerRouter = express.Router();
 answerRouter.post('/questions/:questionId/answers', validateUrl, validateQuestionExistence,
@@ -25,6 +27,7 @@ answerRouter.put('/questions/:questionId/answers/:answerId', validateUrl, reVali
   validateQuestionExistence, validateAnswerExistence, guardRoute,
   validatePermissionToUpdateAnswer, validateAnswer, updateAnswer);
 answerRouter.get('/questions/:questionId/answers/:answerId', validateUrl, reValidateUrl,
-  validateQuestionExistence, validateAnswerExistence, fetchCommentsForAnAnswer, fetchAnswer);
+  validateQuestionExistence, validateAnswerExistence, fetchCommentsForAnAnswer, countUpvotesForAnAnswer,
+  countDownvotesForAnAnswer, persistVotesToAnswers, fetchAnswer);
 
 export default answerRouter;

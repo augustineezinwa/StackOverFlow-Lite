@@ -56,7 +56,7 @@ describe('Testing questions controller', () => {
         response.body.should.have.property('status').eql('success');
         response.body.data.should.have.property('message').eql('Augustine, you signed up successfully.');
         response.body.data.should.have.property('token');
-        process.env.USER_TOKEN = response.body.data.token;
+        process.env.THIRD_USER_TOKEN = response.body.data.token;
         done();
       });
   });
@@ -66,7 +66,7 @@ describe('Testing questions controller', () => {
       .send({
         questionTitle: 'how do I fix my arduino?',
         questionDescription: 'My arduino is having problem, please how do I get it fixed?',
-        token: process.env.SECOND_USER_TOKEN,
+        token: process.env.THIRD_USER_TOKEN,
       })
       .end((error, response) => {
         should.not.exist(error);
@@ -76,18 +76,18 @@ describe('Testing questions controller', () => {
         response.body.data.newQuestion.questionDescription.should.be
           .eql('My arduino is having problem, please how do I get it fixed?');
         response.body.data.newQuestion.should.have.property('userId');
-        process.env.USER_ID = response.body.data.newQuestion.userId;
+        process.env.THIRD_USER_ID = response.body.data.newQuestion.userId;
         process.env.questionId = response.body.data.newQuestion.id;
         done();
       });
   });
 
   it('should check to see question was actually added to database with the userId and questionId', (done) => {
-    dbConnect.query(getAUserQuestion(process.env.USER_ID, process.env.questionId))
+    dbConnect.query(getAUserQuestion(process.env.THIRD_USER_ID, process.env.questionId))
       .then((data) => {
         data.rows[0].questiontitle.should.be.eql('how do I fix my arduino?');
         data.rows[0].questiondescription.should.be.eql('My arduino is having problem, please how do I get it fixed?');
-        data.rows[0].userid.should.be.eql(+process.env.USER_ID);
+        data.rows[0].userid.should.be.eql(+process.env.THIRD_USER_ID);
         data.rows[0].id.should.be.eql(+process.env.questionId);
         done();
       });
@@ -133,7 +133,7 @@ describe('Testing get all questions', () => {
 describe('Testing delete a questions', () => {
   it('should delete a  question created by a user', (done) => {
     chai.request(app).delete('/api/v1/questions/2')
-      .send({ token: process.env.SECOND_USER_TOKEN })
+      .send({ token: process.env.THIRD_USER_TOKEN })
       .end((error, response) => {
         should.not.exist(error);
         response.status.should.be.eql(200);
