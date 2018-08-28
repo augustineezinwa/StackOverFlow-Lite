@@ -1,6 +1,6 @@
 import dbConnect from '../connections/dbConnect';
 import {
-  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion
+  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions
 } from '../helper/sqlHelper';
 import { formatQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
@@ -26,6 +26,41 @@ class QuestionController {
     */
   static fetchQuestions(request, response) {
     dbConnect.query(getAllQuestions())
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            data: {
+              questions: 'No questions were found!'
+            }
+          });
+            break;
+
+          default: {
+            response.status(200).json({
+              status: 'success',
+              data: { questions: formatQuestions(data.rows) }
+            });
+          }
+        }
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method returns all question object for a user
+    * @memberOf QuestionController
+    */
+  static fetchUserQuestions(request, response) {
+    const userId = request.id;
+    dbConnect.query(getAllUserQuestions(userId))
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({

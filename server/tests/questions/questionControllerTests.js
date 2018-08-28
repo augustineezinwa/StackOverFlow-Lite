@@ -130,6 +130,23 @@ describe('Testing get all questions', () => {
       });
   });
 });
+
+describe('TESTING GETTING ALL QUESTIONS FOR A USER', () => {
+  it('should get all questions for a user', (done) => {
+    chai.request(app).get('/api/v1/users/questions')
+      .send({ token: process.env.THIRD_USER_TOKEN })
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(200);
+        response.body.status.should.be.eql('success');
+        response.body.data.questions.should.be.an('array');
+        response.body.data.questions[0].should.be.have.property('questionTitle').eql('how do I fix my arduino?');
+        response.body.data.questions[0].should.be.have.property('questionDescription')
+          .eql('My arduino is having problem, please how do I get it fixed?');
+        done();
+      });
+  });
+});
 describe('Testing delete a questions', () => {
   it('should delete a  question created by a user', (done) => {
     chai.request(app).delete('/api/v1/questions/2')

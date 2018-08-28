@@ -205,6 +205,13 @@ const getAllQuestions = () => {
   return query;
 };
 
+const getAllUserQuestions = (userId) => {
+  const query = {
+    text: 'SELECT * FROM questions where questions.userid = $1',
+    values: [userId]
+  };
+  return query;
+};
 const deleteAQuestion = (questionId) => {
   const query = {
     text: 'DELETE FROM questions where questions.id = $1',
@@ -247,5 +254,5 @@ export {
   getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
   prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment, createTableForVotes,
   createUpvote, searchVotes, resetVotes, getUpvotesForAnswer, getDownvotesForAnswer, persistVotes,
-  createDownvote
+  createDownvote, getAllUserQuestions
 };
