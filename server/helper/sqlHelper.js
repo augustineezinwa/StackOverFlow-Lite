@@ -114,6 +114,15 @@ const createUpvote = (questionId, answerId, id) => {
   };
   return query;
 };
+const createDownvote = (questionId, answerId, id) => {
+  const query = {
+    text: `INSERT INTO votes(vote, time, date, answerid, questionId, userid)
+           VALUES($1, $2, $3, $4, $5, $6) RETURNING * `,
+    values: [0, (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(),
+      answerId, questionId, id]
+  };
+  return query;
+};
 const searchVotes = (answerId, id, vote) => {
   const query = {
     text: 'SELECT * from votes where votes.answerid = $1 and votes.userid= $2 and votes.vote=$3',
@@ -237,5 +246,6 @@ export {
   checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
   getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
   prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment, createTableForVotes,
-  createUpvote, searchVotes, resetVotes, getUpvotesForAnswer, getDownvotesForAnswer, persistVotes
+  createUpvote, searchVotes, resetVotes, getUpvotesForAnswer, getDownvotesForAnswer, persistVotes,
+  createDownvote
 };
