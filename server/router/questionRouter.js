@@ -5,7 +5,7 @@ import Security from '../middlewares/Security';
 import AnswerController from '../controllers/AnswerController';
 
 const {
-  fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion
+  fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion, fetchUserQuestions,
 } = QuestionController;
 const { fetchAnswersForAQueston } = AnswerController;
 const {
@@ -17,6 +17,7 @@ const { guardRoute } = Security;
 const questionRouter = express.Router();
 
 questionRouter.get('/questions', fetchQuestions);
+questionRouter.get('/users/questions', guardRoute, fetchUserQuestions);
 questionRouter.get('/questions/:questionId', validateUrl, fetchAnswersForAQueston, fetchAQuestion);
 questionRouter.post('/questions', validateQuestionTitle, validateQuestionDescription,
   guardRoute, addQuestion);
