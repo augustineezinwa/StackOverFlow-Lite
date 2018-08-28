@@ -6,6 +6,7 @@ import AnswerController from '../controllers/AnswerController';
 
 const {
   fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion, fetchUserQuestions,
+  fetchSearchedQuestions
 } = QuestionController;
 const { fetchAnswersForAQueston } = AnswerController;
 const {
@@ -16,7 +17,7 @@ const { guardRoute } = Security;
 
 const questionRouter = express.Router();
 
-questionRouter.get('/questions', fetchQuestions);
+questionRouter.get('/questions', fetchSearchedQuestions, fetchQuestions);
 questionRouter.get('/users/questions', guardRoute, fetchUserQuestions);
 questionRouter.get('/questions/:questionId', validateUrl, fetchAnswersForAQueston, fetchAQuestion);
 questionRouter.post('/questions', validateQuestionTitle, validateQuestionDescription,

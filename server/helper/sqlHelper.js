@@ -248,11 +248,19 @@ const persistVotes = (upvotes, downvotes, answerId) => {
   return query;
 };
 
+const searchQuestion = (searchQuery) => {
+  const query = {
+    text: `SELECT * FROM questions where questions.questiontitle ilike 
+    '%${searchQuery}%' or questions.questiondescription ilike '%${searchQuery}%'`
+  };
+  return query;
+};
+
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
   checkEmail, createUser, createQuestion, getAUserQuestion, createAnswer, getAUserAnswer, getAQuestion,
   getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
   prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment, createTableForVotes,
   createUpvote, searchVotes, resetVotes, getUpvotesForAnswer, getDownvotesForAnswer, persistVotes,
-  createDownvote, getAllUserQuestions
+  createDownvote, getAllUserQuestions, searchQuestion
 };

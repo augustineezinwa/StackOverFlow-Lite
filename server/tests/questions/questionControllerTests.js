@@ -147,6 +147,34 @@ describe('TESTING GETTING ALL QUESTIONS FOR A USER', () => {
       });
   });
 });
+
+describe('TESTING SEARCH A QUESTION', () => {
+  it('should return no search found if search parameter matches no question', (done) => {
+    chai.request(app).get('/api/v1/questions?search=donkey')
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(404);
+        response.body.status.should.be.eql('fail');
+        response.body.data.questions.should.be.eql('No questions were found!');
+        done();
+      });
+  });
+  it('should search for any question by its title or description', (done) => {
+    chai.request(app).get('/api/v1/questions?search=arduino')
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(200);
+        response.body.status.should.be.eql('success');
+        response.body.data.questions.should.be.an('array');
+        response.body.data.questions[0].questionTitle.should.be
+          .eql('how do I fix my arduino?');
+        response.body.data.questions[0].questionDescription.should.be
+          .eql('My arduino is having problem, please how do I get it fixed?');
+        done();
+      });
+  });
+});
+
 describe('Testing delete a questions', () => {
   it('should delete a  question created by a user', (done) => {
     chai.request(app).delete('/api/v1/questions/2')
