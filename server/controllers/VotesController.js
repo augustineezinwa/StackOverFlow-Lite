@@ -1,6 +1,6 @@
 import dbConnect from '../connections/dbConnect';
 import {
-  createUpvote, getDownvotesForAnswer, getUpvotesForAnswer,
+  createUpvote, createDownvote, getDownvotesForAnswer, getUpvotesForAnswer,
   persistVotes
 } from '../helper/sqlHelper';
 import CatchErrors from '../helper/CatchErrors';
@@ -32,6 +32,31 @@ class VotesController {
         status: 'success',
         data: {
           message: 'You have successfully upvoted this answer'
+        }
+      }))
+      .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and the added upvote
+    *
+    * @description This method increases the upvotes to an answer
+    * @memberOf VotesController
+    */
+  static downvote(request, response) {
+    const answerId = request.answers.id;
+    const questionId = request.data.id;
+    const userId = request.id;
+    dbConnect.query(createDownvote(questionId, answerId, userId))
+      .then(data => response.status(200).json({
+        status: 'success',
+        data: {
+          message: 'You have successfully downvoted this answer'
         }
       }))
       .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));

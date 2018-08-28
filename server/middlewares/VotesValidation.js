@@ -4,7 +4,7 @@ import { searchVotes, resetVotes } from '../helper/sqlHelper';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
-const { upvote } = VotesController;
+const { upvote, downvote } = VotesController;
 /**
   * @class VotesValidation
   *
@@ -44,10 +44,34 @@ class VotesValidation {
     *
     * @returns {object} - status Message
     *
+    * @description This method validates downvotes to an answer
+    * @memberOf VotesValidation
+    */
+  static validationPermissionToDownvote(request, response, next) {
+    if (request.id === request.answers.userid) {
+      return response.status(403).json({
+        status: 'fail',
+        data: {
+          message: 'Action forbidden!, you cannot downvote your answer!'
+        }
+      });
+    }
+    return next();
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from middleware
+    * @param {object} next - The callback function to resume the next middleware
+    *
+    * @returns {object} - status Message
+    *
     * @description This method validates upvotes entry to an answer
     * @memberOf VotesValidation
     */
-  static validateVoteEntry(request, response, next) {
+  static validateUpVoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
 
@@ -73,16 +97,22 @@ class VotesValidation {
     *
     * @returns {object} - status Message
     *
-    * @description This method deactivates previous downvote entries to an answer
+    * @description This method validates downvote entry to an answer
     * @memberOf VotesValidation
     */
-  static checkDownvoteEntry(request, response, next) {
+  static validateDownVoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
+
     dbConnect.query(searchVotes(answerId, userId, 0))
       .then((data) => {
         if (data.rows.length < 1) return next();
-        return VotesValidation.resetVoteEntry(request, response, next);
+        return response.status(403).json({
+          status: 'fail',
+          data: {
+            message: 'You have already downvoted this answer'
+          }
+        });
       })
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
@@ -92,17 +122,68 @@ class VotesValidation {
     *
     * @param {object} request - The request payload sent to the middleware
     * @param {object} response - The response payload sent back from middleware
+    * @param {object} next - The callback function to resume the next middleware
+    *
+    * @returns {object} - status Message
+    *
+    * @description This method deactivates previous upvote entries to an answer by the same user
+    * @memberOf VotesValidation
+    */
+  static checkUpvoteEntry(request, response, next) {
+    const userId = request.id;
+    const answerId = request.answers.id;
+    dbConnect.query(searchVotes(answerId, userId, 1))
+      .then((data) => {
+        if (data.rows.length < 1) return next();
+        return VotesValidation.resetVoteEntry(request, response, 'decide');
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from middleware
+    * @param {object} next - The callback function to resume the next middleware
+    *
+    * @returns {object} - status Message
+    *
+    * @description This method deactivates previous downvote entries to an answer
+    * @memberOf VotesValidation
+    */
+  static checkDownvoteEntry(request, response, next) {
+    const userId = request.id;
+    const answerId = request.answers.id;
+
+    dbConnect.query(searchVotes(answerId, userId, 0))
+      .then((data) => {
+        if (data.rows.length < 1) return next();
+        return VotesValidation.resetVoteEntry(request, response);
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from middleware
+    * @param {object} decide - The response payload sent back from middleware
     *
     * @returns {object} - status Message
     *
     * @description This method resets vote from a user to 0.
     * @memberOf VotesValidation
     */
-  static resetVoteEntry(request, response) {
+  static resetVoteEntry(request, response, decide = '') {
     const userId = request.id;
     const answerId = request.answers.id;
     dbConnect.query(resetVotes(answerId, userId))
-      .then(data => upvote(request, response))
+      .then((data) => {
+        if (!decide) return upvote(request, response);
+        return downvote(request, response);
+      })
       .catch(error => catchDatabaseConnectionError(`error updating votes table ${error}`, response));
   }
 }
