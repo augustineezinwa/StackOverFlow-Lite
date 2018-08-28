@@ -1,6 +1,7 @@
 import dbConnect from '../connections/dbConnect';
 import {
-  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions
+  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions,
+  searchQuestion
 } from '../helper/sqlHelper';
 import { formatQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
@@ -61,6 +62,43 @@ class QuestionController {
   static fetchUserQuestions(request, response) {
     const userId = request.id;
     dbConnect.query(getAllUserQuestions(userId))
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            data: {
+              questions: 'No questions were found!'
+            }
+          });
+            break;
+
+          default: {
+            response.status(200).json({
+              status: 'success',
+              data: { questions: formatQuestions(data.rows) }
+            });
+          }
+        }
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
+    * @param {object} next - The call back function to start the next controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method returns all searched question object to the user
+    * @memberOf QuestionController
+    */
+  static fetchSearchedQuestions(request, response, next) {
+    const { search } = request.query;
+    if (!search) return next();
+    dbConnect.query(searchQuestion(search))
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
