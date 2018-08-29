@@ -200,7 +200,8 @@ const getAUserComment = (userId, id) => {
 };
 const getAllQuestions = () => {
   const query = {
-    text: 'SELECT * FROM questions'
+    text: `SELECT questions.*, count(answers.questionid) as answersnumber from questions 
+    left join answers on (questions.id = answers.questionid) group by questions.id`
   };
   return query;
 };
@@ -255,6 +256,14 @@ const searchQuestion = (searchQuery) => {
   };
   return query;
 };
+const getQuestionsWithMostAnswers = () => {
+  const query = {
+    text: `SELECT questions.*, count(answers.questionid) as answersnumber from questions 
+    left join answers on (questions.id = answers.questionid) group by questions.id order 
+    by count(answers.questionid) desc `
+  };
+  return query;
+};
 
 export {
   createTableForUsers, createTableForAnswers, createTableForQuestions, createTableForComments,
@@ -262,5 +271,5 @@ export {
   getAllQuestions, getAllAnswersForAQuestion, deleteAQuestion, getAnAnswer, updateAnAnswer, deactivateUserPrefferedAnswer,
   prefferAnswer, createComment, getAllCommentsForAnAnswer, getAUserComment, createTableForVotes,
   createUpvote, searchVotes, resetVotes, getUpvotesForAnswer, getDownvotesForAnswer, persistVotes,
-  createDownvote, getAllUserQuestions, searchQuestion
+  createDownvote, getAllUserQuestions, searchQuestion, getQuestionsWithMostAnswers
 };

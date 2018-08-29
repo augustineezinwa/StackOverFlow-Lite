@@ -7,6 +7,24 @@ const formatQuestions = (data) => {
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
       answers: [],
+      numberOfAnswers: x.answersnumber,
+      time: x.time,
+      date: x.date,
+      userId: x.userid
+    });
+  });
+  return newQuestions;
+};
+
+const formatMostAnsweredQuestions = (data) => {
+  const newQuestions = [];
+  data.forEach((x) => {
+    newQuestions.push({
+      id: x.id,
+      questionTitle: x.questiontitle,
+      questionDescription: x.questiondescription,
+      answers: [],
+      numberOfAnswers: x.answersnumber,
       time: x.time,
       date: x.date,
       userId: x.userid
@@ -52,4 +70,6 @@ const formatComments = (data) => {
   return newComments;
 };
 
-export { formatQuestions, formatAnswers, formatComments };
+export {
+  formatQuestions, formatAnswers, formatComments, formatMostAnsweredQuestions
+};
