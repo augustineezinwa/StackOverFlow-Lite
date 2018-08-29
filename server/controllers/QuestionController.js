@@ -1,9 +1,9 @@
 import dbConnect from '../connections/dbConnect';
 import {
   createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions,
-  searchQuestion
+  searchQuestion, getQuestionsWithMostAnswers
 } from '../helper/sqlHelper';
-import { formatQuestions } from '../helper/format';
+import { formatQuestions, formatMostAnsweredQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -120,6 +120,7 @@ class QuestionController {
       .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
   }
 
+
   /**
     * @static
     *
@@ -153,7 +154,44 @@ class QuestionController {
             });
           }
         }
-      });
+      })
+      .catch(error => catchDatabaseConnectionError(`Error reading questions table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method returns the question object
+    * @memberOf QuestionController
+    */
+  static fetchQuestionsWithMostAnswers(request, response) {
+    dbConnect.query(getQuestionsWithMostAnswers())
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            data: {
+              question: 'No question was found!'
+            }
+          });
+            break;
+
+          default: {
+            const reformedQuestion = formatMostAnsweredQuestions(data.rows);
+            reformedQuestion.answers = request.foundAnswers;
+            response.status(200).json({
+              status: 'success',
+              data: { questions: reformedQuestion }
+            });
+          }
+        }
+      })
+      .catch(error => catchDatabaseConnectionError(`Error reading questions table ${error}`, response));
   }
 
 

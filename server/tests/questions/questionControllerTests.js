@@ -175,6 +175,24 @@ describe('TESTING SEARCH A QUESTION', () => {
   });
 });
 
+describe('TESTING - GET MOST ANSWERED QUESTION', () => {
+  it('should get most answered questions starting with a question with most answers', (done) => {
+    chai.request(app).get('/api/v1/questions/mostanswers')
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.be.eql(200);
+        response.body.status.should.be.eql('success');
+        response.body.data.questions.should.be.an('array');
+        response.body.data.questions[0].questionTitle.should.be
+          .eql('how do I fix my arduino?');
+        response.body.data.questions[0].questionDescription.should.be
+          .eql('My arduino is having problem, please how do I get it fixed?');
+        response.body.data.questions[0].numberOfAnswers.should.be.eql('1');
+        done();
+      });
+  });
+});
+
 describe('Testing delete a questions', () => {
   it('should delete a  question created by a user', (done) => {
     chai.request(app).delete('/api/v1/questions/2')
