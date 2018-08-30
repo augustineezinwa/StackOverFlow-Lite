@@ -187,7 +187,7 @@ describe('TESTING - GET MOST ANSWERED QUESTION', () => {
           .eql('how do I fix my arduino?');
         response.body.data.questions[0].questionDescription.should.be
           .eql('My arduino is having problem, please how do I get it fixed?');
-        response.body.data.questions[0].numberOfAnswers.should.be.eql('1');
+        response.body.data.questions[0].numberOfAnswers.should.be.eql(1);
         done();
       });
   });
