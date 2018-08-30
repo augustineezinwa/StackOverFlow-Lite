@@ -7,6 +7,7 @@ StackOverFlow-Lite Application is a platform where users can ask questions and g
 #
 * *Pivotal Tracker Project Management Board Link* : https://www.pivotaltracker.com/n/projects/2189325 
 * *StackOverFlow-Lite Application github page UI link* :  https://augustineezinwa.github.io/StackOverFlow-Lite/UI/
+* *Application API Documentation Link* : https://stack-o-lite.herokuapp.com/api-docs
 
 ## Table of content
 * [Problem Statement](#problem)
@@ -43,12 +44,15 @@ StackOverFlow-Lite Application consists of the following features:
     See [this link](https://en.wikipedia.org/wiki/Node.js) for details.
 * ExressJS: ExpressJS, is a web application framework for Node.js, It is designed for building web applications and APIs.
     see [this link](https://en.wikipedia.org/wiki/Express.js).
+* Postgresql : Postgresql is an advanced open source Object-Relational Model (ORM) database. see [this link](https://www.postgresql.org/) for details.
+* Jsonwebtoken: This application makes use of jwt for authentication. see [link](https://jwt.io/)
 
 ## Installation 
 
 * To begin, Install NodeJs on your computer. See this [this link](https://nodejs.org/en) for more information.
 * Clone the git repository: `git clone https://github.com/augustineezinwa/StackOverFlow-Lite`.
 * Navigate into cloned repository and enter `npm  install` on your command-line.
+* Create a `.env` file at the root folder, following the `.env.example` file guide. Enter your database details. Get an online Postgres database or install one locally. See [link](http://elephantsql.com) 
 * Start the application by entering `npm start`.
 * Get postman and verify all shortlisted endpoints.
 
@@ -60,12 +64,23 @@ StackOverFlow-Lite Application consists of the following features:
 
 <table>
 <tr><th>*http verbs*</th><th>*Short-listed endpoints*</th><th> *Functionality* </th></tr>
+<tr><td>POST</td><td>/auth/login </td><td> Logins a user</td></tr>
+<tr><td>POST</td><td>/auth/signup </td><td> Registers a new user</td></tr>
 <tr><td>POST</td><td>/questions </td><td> Adds a question</td></tr>
-<tr><td>POST</td><td> /questions/:questionId/answers </td><td> Adds an answer to a particular question</td></tr>
-<tr><td>GET</td><td>/questions</td><td> Gets all questions</td></tr>
+<tr><td>GET</td><td>/questions </td><td> Gets all questions</td></tr>
+<tr><td>GET</td><td>/questions/mostanswers </td><td> Gets questions with most answers</td></tr>
+<tr><td>GET</td><td>/questions/?search=<searchString> </td><td> Search questions by keywords</td></tr>
 <tr><td>GET</td><td>/questions/:questionId</td><td>Gets a question by id</td></tr>
+<tr><td>GET</td><td>/users/questions </td><td> Gets all questions belonging to a user</td></tr>
 <tr><td>DELETE</td><td>/questions/:questionId</td><td>Delete a particular question</td></tr>
+<tr><td>POST</td><td> /questions/:questionId/answers </td><td> Adds an answer to a particular question</td></tr>
+<tr><td>PUT</td><td> /questions/:questionId/answers/:answerId </td><td> Updates or prefers an answer</td></tr>
+<tr><td>GET</td><td> /questions/:questionId/answers/:answerId </td><td> Gets an answer with all its comments</td></tr>
+<tr><td>PUT</td><td> /questions/:questionId/answers/:answerId/upvote </td><td> Upvotes an answer</td></tr>
+<tr><td>PUT</td><td> /questions/:questionId/answers/:answerId/downvote </td><td> Downvotes an answer</td></tr>
+<tr><td>POST</td><td> /questions/:questionId/answer/:answerId/comments </td><td> Adds a comment to an answer</td></tr>
 </table>
+
 
 *Application is currently under construction ....*
 
