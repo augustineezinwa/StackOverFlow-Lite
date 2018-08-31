@@ -66,15 +66,15 @@ class UserValidation {
         [`${fieldName}`]: message
       }
     });
-    if (!firstName || !/^[a-zA-Z]+$/.test(firstName.trim())) { return sendErrorResponse('enter a valid name', 'firstName'); }
-    if (!lastName || !/^[a-zA-Z]+$/.test(lastName.trim())) { return sendErrorResponse('enter a valid name', 'lastName'); }
+    if (!firstName || !/^[a-zA-Z]+$/.test(firstName.toString().trim())) { return sendErrorResponse('enter a valid name', 'firstName'); }
+    if (!lastName || !/^[a-zA-Z]+$/.test(lastName.toString().trim())) { return sendErrorResponse('enter a valid name', 'lastName'); }
     if (!email
-      || !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.trim())) {
+      || !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.toString().trim())) {
       return sendErrorResponse('enter a valid email-address', 'email');
     }
     if (!password) return sendErrorResponse('password cant be empty', 'password');
-    if (!/^((?=.*\d)|(?=.*[!@#\$%\^&\*]))(?=.*[a-zA-Z])/.test(password)) { return sendErrorResponse('password must contain a number or special character', 'password'); }
-    if (password.trim().length < 6) return sendErrorResponse('password must contain at least six characters', 'password');
+    if (!/^((?=.*\d)|(?=.*[!@#\$%\^&\*]))(?=.*[a-zA-Z])/.test(password.toString())) { return sendErrorResponse('password must contain a number or special character', 'password'); }
+    if (password.toString().trim().length < 6) return sendErrorResponse('password must contain at least six characters', 'password');
     if (!confirmPassword) return sendErrorResponse('password cant be empty', 'confirmPassword');
     if (confirmPassword !== request.body.password) return sendErrorResponse('password does not match', 'confirmPassword');
     request.body.password = bcrypt.hashSync(request.body.password, 10);

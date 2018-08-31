@@ -18,7 +18,7 @@ class Helper {
         * @memberOf Helper
         */
   static validateField(fieldName, fieldValue, res, next) {
-    if (!fieldValue || !/.*\S.*./.test(fieldValue)) {
+    if (!fieldValue || !/.*\S.*./.test(fieldValue.toString())) {
       return res.status(400).json({
         status: 'fail',
         data: {
@@ -26,7 +26,7 @@ class Helper {
         }
       });
     }
-    if (fieldValue.length < 3) {
+    if (fieldValue.toString().length < 3) {
       return res.status(422).json({
         status: 'fail',
         data: {
@@ -34,10 +34,10 @@ class Helper {
         }
       });
     }
-    if (/^\d+$/.test(fieldValue) || fieldValue.includes('$$$')
-        || fieldValue.includes('%%') || fieldValue.includes('///')
-         || fieldValue.includes('&&&') || fieldValue.includes('%^&/@')
-        || fieldValue.includes('##') || fieldValue.includes('   ')) {
+    if (/^\d+$/.test(fieldValue.toString()) || fieldValue.toString().includes('$$$')
+        || fieldValue.toString().includes('%%') || fieldValue.toString().includes('///')
+         || fieldValue.toString().includes('&&&') || fieldValue.toString().includes('%^&/@')
+        || fieldValue.toString().includes('##') || fieldValue.toString().includes('   ')) {
       return res.status(400).json({
         status: 'fail',
         data: {
