@@ -17,6 +17,7 @@ StackOverFlow-Lite Application is a platform where users can ask questions and g
 * [Tests](#tests)
 * [Endpoints](#endpoints)
 
+
 ## Problem Statement
 * Life is a complex scene. Most at times, people are faced with problems and need urgent solutions or answers to their problem. This application sees to it that the technological gap in the lifes of people are filled up by building a community or a platform where people can answer questions or get answers to their question in a vital field of life which is technology.
 ## Features
@@ -81,6 +82,18 @@ StackOverFlow-Lite Application consists of the following features:
 <tr><td>POST</td><td> /questions/:questionId/answer/:answerId/comments </td><td> Adds a comment to an answer</td></tr>
 </table>
 
+## To Contribute
 
-*Application is currently under construction ....*
+* To contribute, clone the repository. Create a branch, add in your contributions, raise a pull request and send in the link to the pull request.
+
+## Special Thanks / Credits
+
+* [Fred]() - Week 2 Learning Facilitator Assistant. Thanks for your feedback and great inputs towards the success and durability of this project
+* [Nenerae]() - Week 1 Learning Facilitator Assistant. Thanks for your feedback on the UI and guidance towards a quality codebase
+
+## Author
+
+* [Augustine Ezinwa]()
+
+*Application client-side is currently under construction ....*
 

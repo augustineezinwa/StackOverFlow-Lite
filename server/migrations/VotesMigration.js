@@ -1,5 +1,7 @@
 import dbConnect from '../connections/dbConnect';
-import { createTableForVotes } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
+
+const { createTableForVotes } = SqlHelper;
 /**
   * @class
   *

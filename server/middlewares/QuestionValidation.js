@@ -1,9 +1,9 @@
 import Helper from '../helper/Helper';
 import CatchErrors from '../helper/CatchErrors';
-import { questions } from '../dummydata/dummydata';
-import { getAQuestion } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 import dbConnect from '../connections/dbConnect';
 
+const { getAQuestion } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 /**

@@ -7,7 +7,7 @@ const formatQuestions = (data) => {
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
       answers: [],
-      numberOfAnswers: +x.answersnumber,
+      numberOfAnswers: Number.parseInt(x.answersnumber, 10),
       time: x.time,
       date: x.date,
       userId: x.userid
@@ -24,7 +24,7 @@ const formatMostAnsweredQuestions = (data) => {
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
       answers: [],
-      numberOfAnswers: +x.answersnumber,
+      numberOfAnswers: Number.parseInt(x.answersnumber, 10),
       time: x.time,
       date: x.date,
       userId: x.userid

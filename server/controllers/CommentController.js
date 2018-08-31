@@ -1,9 +1,10 @@
 import dbConnect from '../connections/dbConnect';
-import { createComment, getAllCommentsForAnAnswer } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 import { formatComments } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
+const { createComment, getAllCommentsForAnAnswer } = SqlHelper;
 /**
   * @class CommentController
   *

@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import dbConnect from '../connections/dbConnect';
+import SqlHelper from '../helper/SqlHelper';
+import CatchErrors from '../helper/CatchErrors';
 
+const { findUser } = SqlHelper;
+const { catchDatabaseConnectionError } = CatchErrors;
 dotenv.config();
 
 /**
@@ -38,10 +43,23 @@ class Security {
           }
         });
       }
+
       const { id, email } = decoded.payload;
-      request.id = id;
-      request.email = email;
-      return next();
+      dbConnect.query(findUser(id))
+        .then((data) => {
+          if (data.rows.length === 0) {
+            return response.status(401).json({
+              status: 'fail',
+              data: {
+                message: 'Please signup!'
+              }
+            });
+          }
+          request.id = id;
+          request.email = email;
+          return next();
+        })
+        .catch(newError => catchDatabaseConnectionError(`error reading user table ${newError}`, response));
     });
   }
 }

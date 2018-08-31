@@ -1,13 +1,13 @@
 import dbConnect from '../connections/dbConnect';
-import {
-  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions,
-  searchQuestion, getQuestionsWithMostAnswers
-} from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 import { formatQuestions, formatMostAnsweredQuestions } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
-
+const {
+  createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions,
+  searchQuestion, getQuestionsWithMostAnswers
+} = SqlHelper;
 /**
   * @class QuestionController
   *

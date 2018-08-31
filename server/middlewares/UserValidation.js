@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import CatchErrors from '../helper/CatchErrors';
 import dbConnect from '../connections/dbConnect';
-import { checkEmail } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 
+const { checkEmail } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 /**
   * @class UserValidation

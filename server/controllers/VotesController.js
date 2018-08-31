@@ -1,9 +1,11 @@
 import dbConnect from '../connections/dbConnect';
-import {
+import SqlHelper from '../helper/SqlHelper';
+import CatchErrors from '../helper/CatchErrors';
+
+const {
   createUpvote, createDownvote, getDownvotesForAnswer, getUpvotesForAnswer,
   persistVotes
-} from '../helper/sqlHelper';
-import CatchErrors from '../helper/CatchErrors';
+} = SqlHelper;
 
 const { catchDatabaseConnectionError } = CatchErrors;
 /**
