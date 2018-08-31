@@ -1,8 +1,10 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
-import { getAUserAnswer } from '../../helper/sqlHelper';
 import dbConnect from '../../connections/dbConnect';
+import SqlHelper from '../../helper/SqlHelper';
+
+const { getAUserAnswer } = SqlHelper;
 
 const should = chai.should();
 

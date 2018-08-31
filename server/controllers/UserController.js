@@ -2,10 +2,11 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dbConnect from '../connections/dbConnect';
-import { createUser, checkEmail } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
+const { createUser, checkEmail } = SqlHelper;
 dotenv.config();
 /**
   * @class UserController
@@ -73,7 +74,7 @@ class UserController {
           return response.status(404).json({
             status: 'fail',
             data: {
-              email: 'your email is not on the system, please signup'
+              message: 'Invalid email or password'
             }
           });
         }
@@ -98,7 +99,7 @@ class UserController {
         return response.status(401).json({
           status: 'fail',
           data: {
-            password: 'password is incorrect!'
+            message: 'Invalid email or password'
           }
         });
       }).catch(error => catchDatabaseConnectionError(`Error reading user table ${error} `, response));

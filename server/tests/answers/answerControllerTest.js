@@ -2,8 +2,11 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
 import { firstUser, newUser, secondUser } from '../../models/users';
-import { getAUserAnswer } from '../../helper/sqlHelper';
+import SqlHelper from '../../helper/SqlHelper';
 import dbConnect from '../../connections/dbConnect';
+
+const { getAUserAnswer } = SqlHelper;
+
 
 chai.use(chaiHttp);
 const should = chai.should();

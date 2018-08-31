@@ -1,9 +1,10 @@
 import Helper from '../helper/Helper';
 import CatchErrors from '../helper/CatchErrors';
 import AnswerController from '../controllers/AnswerController';
-import { getAnAnswer } from '../helper/sqlHelper';
 import dbConnect from '../connections/dbConnect';
+import SqlHelper from '../helper/SqlHelper';
 
+const { getAnAnswer } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 const { deactivatePrefferedAnswers } = AnswerController;

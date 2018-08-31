@@ -1,5 +1,7 @@
 import chai from 'chai';
-import { checkEmail } from '../../helper/sqlHelper';
+import SqlHelper from '../../helper/SqlHelper';
+
+const { checkEmail } = SqlHelper;
 
 describe('testing sql querys', () => {
   it('should return an sql query string to check an email', (done) => {

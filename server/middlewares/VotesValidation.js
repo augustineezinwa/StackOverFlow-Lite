@@ -1,8 +1,9 @@
 import dbConnect from '../connections/dbConnect';
 import VotesController from '../controllers/VotesController';
-import { searchVotes, resetVotes } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 import CatchErrors from '../helper/CatchErrors';
 
+const { searchVotes, resetVotes } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { upvote, downvote } = VotesController;
 /**

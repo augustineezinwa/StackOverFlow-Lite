@@ -1,5 +1,7 @@
 import dbConnect from '../connections/dbConnect';
-import { createTableForComments } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
+
+const { createTableForComments } = SqlHelper;
 /**
   * @class
   *

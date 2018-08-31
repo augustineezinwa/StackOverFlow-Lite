@@ -1,8 +1,10 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
-import { getAUserComment } from '../../helper/sqlHelper';
+import SqlHelper from '../../helper/SqlHelper';
 import dbConnect from '../../connections/dbConnect';
+
+const { getAUserComment } = SqlHelper;
 
 chai.use(chaiHttp);
 const should = chai.should();

@@ -1,5 +1,7 @@
 import dbConnect from '../connections/dbConnect';
-import { createTableForUsers } from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
+
+const { createTableForUsers } = SqlHelper;
 
 /**
   * @class

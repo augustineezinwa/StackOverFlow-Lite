@@ -1,12 +1,13 @@
 import dbConnect from '../connections/dbConnect';
-import {
-  createAnswer, getAllAnswersForAQuestion, updateAnAnswer, deactivateUserPrefferedAnswer,
-  prefferAnswer
-} from '../helper/sqlHelper';
+import SqlHelper from '../helper/SqlHelper';
 import { formatAnswers } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
+const {
+  createAnswer, getAllAnswersForAQuestion, updateAnAnswer, deactivateUserPrefferedAnswer,
+  prefferAnswer
+} = SqlHelper;
 /**
   * @class AnswerController
   *

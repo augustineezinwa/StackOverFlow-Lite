@@ -2,7 +2,9 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
 import dbConnect from '../../connections/dbConnect';
-import { checkEmail } from '../../helper/sqlHelper';
+import SqlHelper from '../../helper/SqlHelper';
+
+const { checkEmail } = SqlHelper;
 
 chai.use(chaiHttp);
 const should = chai.should();
@@ -94,7 +96,7 @@ describe('testing login feature', () => {
         response.should.have.status(404);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('email').eql('your email is not on the system, please signup');
+        response.body.data.should.have.property('message').eql('Invalid email or password');
 
         done();
       });
@@ -109,7 +111,7 @@ describe('testing login feature', () => {
         response.should.have.status(401);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('password').eql('password is incorrect!');
+        response.body.data.should.have.property('message').eql('Invalid email or password');
 
         done();
       });
