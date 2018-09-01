@@ -1,6 +1,6 @@
 import dbConnect from '../connections/dbConnect';
 import SqlHelper from '../helper/SqlHelper';
-import { formatQuestions, formatMostAnsweredQuestions } from '../helper/format';
+import { formatQuestions, formatMostAnsweredQuestions, formatQuestionsWithAnswers } from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -146,7 +146,7 @@ class QuestionController {
             break;
 
           default: {
-            const reformedQuestion = formatQuestions(data.rows)[0];
+            const reformedQuestion = formatQuestionsWithAnswers(data.rows)[0];
             reformedQuestion.answers = request.foundAnswers;
             response.status(200).json({
               status: 'success',
