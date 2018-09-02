@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import path from 'path';
 import morgan from 'morgan';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -15,10 +16,10 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', baseRouter);
-app.get('/', (request, response) => response.status(200).json({
-  status: 'success',
-  message: 'Welcome to StackOverFlow-Lite'
-}));
+app.use(express.static(path.join(__dirname, '..', '/client/public')));
+app.get('/', (request, response) => {
+  response.sendFile(path.join(__dirname, '..', '/client/public/index.html'));
+});
 app.use('*', (request, response) => response.status(404).json({
   status: 'fail',
   message: 'This route is yet to be specified.'
