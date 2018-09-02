@@ -18,19 +18,19 @@ describe('Testing operations on answer', () => {
         response.should.have.status(201);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');
-        response.body.data.should.have.property('message').eql('Augustine, you signed up successfully.');
+        response.body.should.have.property('message').eql('Augustine, you signed up successfully.');
         response.body.data.should.have.property('token');
         process.env.USER_TOKEN = response.body.data.token;
         done();
       });
   });
-  it('should successfully signup another user befoer he or she can add an answer', (done) => {
+  it('should successfully signup another user before he or she can add an answer', (done) => {
     chai.request(app).post('/api/v1/auth/signup')
       .send(newUser).end((error, response) => {
         response.should.have.status(201);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');
-        response.body.data.should.have.property('message').eql('rachel, you signed up successfully.');
+        response.body.should.have.property('message').eql('rachel, you signed up successfully.');
         response.body.data.should.have.property('token');
         process.env.SECOND_USER_TOKEN = response.body.data.token;
         done();
@@ -47,7 +47,7 @@ describe('Testing operations on answer', () => {
         should.not.exist(error);
         response.status.should.be.eql(404);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('This question does not exist');
+        response.body.message.should.be.eql('This question does not exist');
 
         done();
       });
@@ -110,8 +110,7 @@ describe('Testing operations on answer', () => {
         should.not.exist(error);
         response.status.should.be.eql(403);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('you cannot answer your question');
-
+        response.body.message.should.be.eql('you cannot answer your question');
         done();
       });
   });
@@ -138,7 +137,7 @@ describe('TESTING UPDATE ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(200);
         response.body.status.should.be.eql('success');
-        response.body.data.message.should.be.eql('You have successfully updated your answer');
+        response.body.message.should.be.eql('You have successfully updated your answer');
         done();
       });
   });
@@ -162,7 +161,7 @@ describe('TESTING UPDATE ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(404);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('This answer does not exist for this question');
+        response.body.message.should.be.eql('This answer does not exist for this question');
         done();
       });
   });
@@ -176,7 +175,7 @@ describe('TESTING UPDATE ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(200);
         response.body.status.should.be.eql('success');
-        response.body.data.message.should.be
+        response.body.message.should.be
           .eql('You have successfully preffered this answer');
         done();
       });
@@ -196,7 +195,7 @@ describe('TESTING UPDATE ANSWERS', () => {
         response.should.have.status(201);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');
-        response.body.data.should.have.property('message').eql('Black, you signed up successfully.');
+        response.body.should.have.property('message').eql('Black, you signed up successfully.');
         response.body.data.should.have.property('token');
         process.env.THIRD_USER_TOKEN = response.body.data.token;
         done();
@@ -212,7 +211,7 @@ describe('TESTING UPDATE ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(403);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be
+        response.body.message.should.be
           .eql('Access denied!, You cannot update someone\'s answer');
         done();
       });

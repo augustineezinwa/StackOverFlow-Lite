@@ -19,7 +19,7 @@ describe('TESTING UPVOTING ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(403);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('Action forbidden!, you cannot upvote your answer!');
+        response.body.message.should.be.eql('Action forbidden!, you cannot upvote your answer!');
         done();
       });
   });
@@ -33,7 +33,7 @@ describe('TESTING UPVOTING ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(200);
         response.body.status.should.be.eql('success');
-        response.body.data.message.should.be.eql('You have successfully upvoted this answer');
+        response.body.message.should.be.eql('You have successfully upvoted this answer');
         done();
       });
   });
@@ -47,7 +47,7 @@ describe('TESTING UPVOTING ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(403);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('You have already upvoted this answer');
+        response.body.message.should.be.eql('You have already upvoted this answer');
         done();
       });
   });
@@ -86,7 +86,7 @@ describe('TESTING DOWNVOTING ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(403);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('Action forbidden!, you cannot downvote your answer!');
+        response.body.message.should.be.eql('Action forbidden!, you cannot downvote your answer!');
         done();
       });
   });
@@ -100,7 +100,7 @@ describe('TESTING DOWNVOTING ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(200);
         response.body.status.should.be.eql('success');
-        response.body.data.message.should.be.eql('You have successfully downvoted this answer');
+        response.body.message.should.be.eql('You have successfully downvoted this answer');
         done();
       });
   });
@@ -114,7 +114,7 @@ describe('TESTING DOWNVOTING ANSWERS', () => {
         should.not.exist(error);
         response.status.should.be.eql(403);
         response.body.status.should.be.eql('fail');
-        response.body.data.message.should.be.eql('You have already downvoted this answer');
+        response.body.message.should.be.eql('You have already downvoted this answer');
         done();
       });
   });

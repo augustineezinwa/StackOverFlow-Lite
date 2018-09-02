@@ -23,7 +23,7 @@ describe('testing signup feature', () => {
         response.should.have.status(201);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');
-        response.body.data.should.have.property('message').eql('Augustine, you signed up successfully.');
+        response.body.should.have.property('message').eql('Augustine, you signed up successfully.');
         response.body.data.should.have.property('token');
         done();
       });
@@ -43,7 +43,7 @@ describe('testing signup feature', () => {
         response.should.have.status(409);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('email').eql('email is already in use');
+        response.body.message.should.have.property('email').eql('email is already in use');
 
         done();
       });
@@ -71,7 +71,7 @@ describe('testing login feature', () => {
         response.should.have.status(200);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');
-        response.body.data.should.have.property('message').eql('Augustine, you are logged in');
+        response.body.should.have.property('message').eql('Augustine, you are logged in');
         response.body.data.should.have.property('token');
         done();
       });
@@ -96,7 +96,7 @@ describe('testing login feature', () => {
         response.should.have.status(404);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('message').eql('Invalid email or password');
+        response.body.should.have.property('message').eql('Invalid email or password');
 
         done();
       });
@@ -111,7 +111,7 @@ describe('testing login feature', () => {
         response.should.have.status(401);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('message').eql('Invalid email or password');
+        response.body.should.have.property('message').eql('Invalid email or password');
 
         done();
       });

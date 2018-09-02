@@ -21,17 +21,13 @@ class Helper {
     if (!fieldValue || !/.*\S.*./.test(fieldValue.toString())) {
       return res.status(400).json({
         status: 'fail',
-        data: {
-          [`${fieldName}`]: `${fieldName} cant be empty or invalid`
-        }
+        message: `${fieldName} cant be empty or invalid`
       });
     }
     if (fieldValue.toString().length < 3) {
       return res.status(422).json({
         status: 'fail',
-        data: {
-          [`${fieldName}`]: `${fieldName} cant be too short`
-        }
+        message: `${fieldName} cant be too short`
       });
     }
     if (/^\d+$/.test(fieldValue.toString()) || fieldValue.toString().includes('$$$')
@@ -40,9 +36,7 @@ class Helper {
         || fieldValue.toString().includes('##') || fieldValue.toString().includes('   ')) {
       return res.status(400).json({
         status: 'fail',
-        data: {
-          [`${fieldName}`]: `${fieldName} contains invalid syntax or spaces`
-        }
+        message: `${fieldName} contains invalid syntax or spaces`
       });
     }
     return next();

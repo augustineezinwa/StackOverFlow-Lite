@@ -28,9 +28,7 @@ class VotesValidation {
     if (request.id === request.answers.userid) {
       return response.status(403).json({
         status: 'fail',
-        data: {
-          message: 'Action forbidden!, you cannot upvote your answer!'
-        }
+        message: 'Action forbidden!, you cannot upvote your answer!'
       });
     }
     return next();
@@ -52,9 +50,7 @@ class VotesValidation {
     if (request.id === request.answers.userid) {
       return response.status(403).json({
         status: 'fail',
-        data: {
-          message: 'Action forbidden!, you cannot downvote your answer!'
-        }
+        message: 'Action forbidden!, you cannot downvote your answer!'
       });
     }
     return next();
@@ -81,9 +77,7 @@ class VotesValidation {
         if (data.rows.length < 1) return next();
         return response.status(403).json({
           status: 'fail',
-          data: {
-            message: 'You have already upvoted this answer'
-          }
+          message: 'You have already upvoted this answer'
         });
       })
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
@@ -110,9 +104,7 @@ class VotesValidation {
         if (data.rows.length < 1) return next();
         return response.status(403).json({
           status: 'fail',
-          data: {
-            message: 'You have already downvoted this answer'
-          }
+          message: 'You have already downvoted this answer'
         });
       })
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));

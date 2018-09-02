@@ -48,9 +48,7 @@ class AnswerValidation {
     if (request.id === request.data.userid) {
       return response.status(403).json({
         status: 'fail',
-        data: {
-          message: 'you cannot answer your question'
-        }
+        message: 'you cannot answer your question'
       });
     }
     return next();
@@ -75,9 +73,7 @@ class AnswerValidation {
     }
     return response.status(403).json({
       status: 'fail',
-      data: {
-        message: 'Access denied!, You cannot update someone\'s answer'
-      }
+      message: 'Access denied!, You cannot update someone\'s answer'
     });
   }
 
@@ -100,9 +96,7 @@ class AnswerValidation {
         if (data.rows.length < 1) {
           return response.status(404).json({
             status: 'fail',
-            data: {
-              message: 'This answer does not exist for this question'
-            }
+            message: 'This answer does not exist for this question'
           });
         }
         const [neededData, ...remnant] = data.rows;

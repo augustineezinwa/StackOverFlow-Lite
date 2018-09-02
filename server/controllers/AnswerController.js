@@ -53,9 +53,7 @@ class AnswerController {
     dbConnect.query(updateAnAnswer(answer, answerId))
       .then(data => response.status(200).json({
         status: 'success',
-        data: {
-          message: 'You have successfully updated your answer'
-        }
+        message: 'You have successfully updated your answer'
       }))
       .catch(error => catchDatabaseConnectionError(`Error updating database table ${error}`, response));
   }
@@ -95,9 +93,7 @@ class AnswerController {
       .then((data) => {
         response.status(200).json({
           status: 'success',
-          data: {
-            message: 'You have successfully preffered this answer'
-          }
+          message: 'You have successfully preffered this answer'
         });
       })
       .catch(error => catchDatabaseConnectionError(`Error preffering an answer on answers table,

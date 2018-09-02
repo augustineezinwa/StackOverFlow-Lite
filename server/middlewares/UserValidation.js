@@ -28,7 +28,7 @@ class UserValidation {
     if (!email) {
       return response.status(400).json({
         status: 'fail',
-        data: {
+        message: {
           email: 'please provide an email to login'
         }
       });
@@ -36,7 +36,7 @@ class UserValidation {
     if (!password) {
       return response.status(400).json({
         status: 'fail',
-        data: {
+        message: {
           password: 'please provide password to login'
         }
       });
@@ -62,7 +62,7 @@ class UserValidation {
     } = request.body;
     const sendErrorResponse = (message, fieldName) => response.status(422).json({
       status: 'fail',
-      data: {
+      message: {
         [`${fieldName}`]: message
       }
     });
@@ -102,7 +102,7 @@ class UserValidation {
         }
         return response.status(409).json({
           status: 'fail',
-          data: {
+          message: {
             email: 'email is already in use'
           }
         });

@@ -29,7 +29,7 @@ describe('Testing validations on answer', () => {
         should.not.exist(error);
         response.status.should.be.eql(400);
         response.body.status.should.be.eql('fail');
-        response.body.data.answer.should.be.eql('answer cant be empty or invalid');
+        response.body.message.should.be.eql('answer cant be empty or invalid');
         done();
       });
   });
@@ -42,7 +42,7 @@ describe('Testing validations on answer', () => {
         should.not.exist(error);
         response.status.should.be.eql(422);
         response.body.status.should.be.eql('fail');
-        response.body.data.answer.should.be.eql('answer cant be too short');
+        response.body.message.should.be.eql('answer cant be too short');
         done();
       });
   });
@@ -55,7 +55,7 @@ describe('Testing validations on answer', () => {
         should.not.exist(error);
         response.status.should.be.eql(400);
         response.body.status.should.be.eql('fail');
-        response.body.data.answer.should.be.eql('answer contains invalid syntax or spaces');
+        response.body.message.should.be.eql('answer contains invalid syntax or spaces');
         done();
       });
   });

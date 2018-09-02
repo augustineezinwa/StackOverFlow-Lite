@@ -32,9 +32,7 @@ class VotesController {
     dbConnect.query(createUpvote(questionId, answerId, userId))
       .then(data => response.status(200).json({
         status: 'success',
-        data: {
-          message: 'You have successfully upvoted this answer'
-        }
+        message: 'You have successfully upvoted this answer'
       }))
       .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
   }
@@ -57,9 +55,7 @@ class VotesController {
     dbConnect.query(createDownvote(questionId, answerId, userId))
       .then(data => response.status(200).json({
         status: 'success',
-        data: {
-          message: 'You have successfully downvoted this answer'
-        }
+        message: 'You have successfully downvoted this answer'
       }))
       .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
   }

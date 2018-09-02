@@ -17,8 +17,8 @@ class UserController {
   /**
   * @description -This method signs up users into StackOverFlow-Lite
   *
-  * @param {object} request - The requestuest payload sent to the router
-  * @param {object} response - The responseponse payload sent back from the controller
+  * @param {object} request - The request payload sent to the router
+  * @param {object} response - The response payload sent back from the controller
   *
   * @returns {object} - status Message and signs up user
   *
@@ -47,8 +47,9 @@ class UserController {
         const token = jwt.sign({ payload }, process.env.PRIVATE_KEY, { expiresIn: 777 * 70 });
         return response.status(201).json({
           status: 'success',
+          message: `${firstname}, you signed up successfully.`,
           data: {
-            message: `${firstname}, you signed up successfully.`, token
+            token
           }
         });
       })
@@ -73,9 +74,7 @@ class UserController {
         if (data.rows.length < 1) {
           return response.status(404).json({
             status: 'fail',
-            data: {
-              message: 'Invalid email or password'
-            }
+            message: 'Invalid email or password'
           });
         }
         const {
@@ -91,16 +90,13 @@ class UserController {
           const { firstname } = data.rows[0];
           return response.status(200).json({
             status: 'success',
-            data: {
-              message: `${firstname}, you are logged in`, token
-            }
+            message: `${firstname}, you are logged in`,
+            data: { token }
           });
         }
         return response.status(401).json({
           status: 'fail',
-          data: {
-            message: 'Invalid email or password'
-          }
+          message: 'Invalid email or password'
         });
       }).catch(error => catchDatabaseConnectionError(`Error reading user table ${error} `, response));
   }
