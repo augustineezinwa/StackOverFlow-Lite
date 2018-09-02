@@ -29,18 +29,14 @@ class Security {
     if (!token) {
       return response.status(401).json({
         status: 'fail',
-        data: {
-          message: 'Unauthorized!, please sign up or login!'
-        }
+        message: 'Unauthorized!, please sign up or login!'
       });
     }
     jwt.verify(token, process.env.PRIVATE_KEY, (error, decoded) => {
       if (error) {
         return response.status(401).json({
           status: 'fail',
-          data: {
-            message: 'Unauthorized!, please provide a valid token!'
-          }
+          message: 'Unauthorized!, please provide a valid token!'
         });
       }
 
@@ -50,9 +46,7 @@ class Security {
           if (data.rows.length === 0) {
             return response.status(401).json({
               status: 'fail',
-              data: {
-                message: 'Please signup!'
-              }
+              message: 'Please signup!'
             });
           }
           request.id = id;

@@ -21,7 +21,7 @@ describe('Testing questions controller', () => {
         should.not.exist(error);
         response.status.should.be.eql(401);
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('message').eql('Unauthorized!, please sign up or login!');
+        response.body.should.have.property('message').eql('Unauthorized!, please sign up or login!');
         done();
       });
   });
@@ -38,7 +38,7 @@ describe('Testing questions controller', () => {
         should.not.exist(error);
         response.status.should.be.eql(401);
         response.body.should.have.property('status').eql('fail');
-        response.body.data.should.have.property('message').eql('Unauthorized!, please provide a valid token!');
+        response.body.should.have.property('message').eql('Unauthorized!, please provide a valid token!');
         done();
       });
   });
@@ -56,7 +56,7 @@ describe('Testing questions controller', () => {
         response.should.have.status(201);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');
-        response.body.data.should.have.property('message').eql('Augustine, you signed up successfully.');
+        response.body.should.have.property('message').eql('Augustine, you signed up successfully.');
         response.body.data.should.have.property('token');
         process.env.THIRD_USER_TOKEN = response.body.data.token;
         done();
@@ -99,7 +99,7 @@ describe('Testing questions controller', () => {
       .end((error, response) => {
         should.not.exist(error);
         response.status.should.be.eql(404);
-        response.body.data.question.should.be.eql('No question was found!');
+        response.body.message.should.be.eql('No question was found!');
         done();
       });
   });
@@ -157,7 +157,7 @@ describe('TESTING SEARCH A QUESTION', () => {
         should.not.exist(error);
         response.status.should.be.eql(404);
         response.body.status.should.be.eql('fail');
-        response.body.data.questions.should.be.eql('No questions were found!');
+        response.body.message.should.be.eql('No questions were found!');
         done();
       });
   });
@@ -203,7 +203,7 @@ describe('Testing delete a questions', () => {
         should.not.exist(error);
         response.status.should.be.eql(200);
         response.body.status.should.be.eql('success');
-        response.body.data.message.should.be.eql('you have successfully deleted this question');
+        response.body.message.should.be.eql('you have successfully deleted this question');
         done();
       });
   });

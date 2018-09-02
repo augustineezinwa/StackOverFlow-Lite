@@ -13,10 +13,11 @@ describe('Testing validations on question', () => {
         questionDescription: 'how do I fix my arduino?'
       })
       .end((error, response) => {
+        console.log(response.body);
         should.not.exist(error);
         response.status.should.be.eql(400);
         response.body.status.should.be.eql('fail');
-        response.body.data.questionTitle.should.be.eql('questionTitle cant be empty or invalid');
+        response.body.message.should.be.eql('questionTitle cant be empty or invalid');
         done();
       });
   });
@@ -30,7 +31,7 @@ describe('Testing validations on question', () => {
         should.not.exist(error);
         response.status.should.be.eql(422);
         response.body.status.should.be.eql('fail');
-        response.body.data.questionTitle.should.be.eql('questionTitle cant be too short');
+        response.body.message.should.be.eql('questionTitle cant be too short');
         done();
       });
   });
@@ -44,7 +45,7 @@ describe('Testing validations on question', () => {
         should.not.exist(error);
         response.status.should.be.eql(400);
         response.body.status.should.be.eql('fail');
-        response.body.data.questionTitle.should.be.eql('questionTitle contains invalid syntax or spaces');
+        response.body.message.should.be.eql('questionTitle contains invalid syntax or spaces');
         done();
       });
   });
@@ -58,7 +59,7 @@ describe('Testing validations on question', () => {
         should.not.exist(error);
         response.status.should.be.eql(400);
         response.body.status.should.be.eql('fail');
-        response.body.data.questionDescription.should.be.eql('questionDescription cant be empty or invalid');
+        response.body.message.should.be.eql('questionDescription cant be empty or invalid');
         done();
       });
   });
@@ -72,7 +73,7 @@ describe('Testing validations on question', () => {
         should.not.exist(error);
         response.status.should.be.eql(422);
         response.body.status.should.be.eql('fail');
-        response.body.data.questionDescription.should.be.eql('questionDescription cant be too short');
+        response.body.message.should.be.eql('questionDescription cant be too short');
         done();
       });
   });
@@ -86,7 +87,7 @@ describe('Testing validations on question', () => {
         should.not.exist(error);
         response.status.should.be.eql(400);
         response.body.status.should.be.eql('fail');
-        response.body.data.questionDescription.should.be.eql('questionDescription contains invalid syntax or spaces');
+        response.body.message.should.be.eql('questionDescription contains invalid syntax or spaces');
         done();
       });
   });

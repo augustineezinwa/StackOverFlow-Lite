@@ -31,9 +31,7 @@ class QuestionController {
         switch (data.rows.length) {
           case 0: response.status(404).json({
             status: 'fail',
-            data: {
-              questions: 'No questions were found!'
-            }
+            message: 'No questions were found!'
           });
             break;
 
@@ -66,9 +64,7 @@ class QuestionController {
         switch (data.rows.length) {
           case 0: response.status(404).json({
             status: 'fail',
-            data: {
-              questions: 'No questions were found!'
-            }
+            message: 'No questions were found!'
           });
             break;
 
@@ -103,9 +99,7 @@ class QuestionController {
         switch (data.rows.length) {
           case 0: response.status(404).json({
             status: 'fail',
-            data: {
-              questions: 'No questions were found!'
-            }
+            message: 'No questions were found!'
           });
             break;
 
@@ -139,9 +133,7 @@ class QuestionController {
         switch (data.rows.length) {
           case 0: response.status(404).json({
             status: 'fail',
-            data: {
-              question: 'No question was found!'
-            }
+            message: 'No question was found!'
           });
             break;
 
@@ -175,9 +167,7 @@ class QuestionController {
         switch (data.rows.length) {
           case 0: response.status(404).json({
             status: 'fail',
-            data: {
-              question: 'No question was found!'
-            }
+            message: 'No question was found!'
           });
             break;
 
@@ -235,9 +225,7 @@ class QuestionController {
     dbConnect.query(deleteAQuestion(questionId))
       .then(data => response.status(200).json({
         status: 'success',
-        data: {
-          message: 'you have successfully deleted this question'
-        }
+        message: 'you have successfully deleted this question'
       }))
       .catch(error => catchDatabaseConnectionError(`error deleting question on questions table ${error}`, response));
   }

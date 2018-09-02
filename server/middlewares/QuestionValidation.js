@@ -65,9 +65,7 @@ class QuestionValidation {
         if (data.rows.length < 1) {
           return response.status(404).json({
             status: 'fail',
-            data: {
-              message: 'This question does not exist'
-            }
+            message: 'This question does not exist'
           });
         }
         const [neededData, ...remnant] = data.rows;
@@ -94,9 +92,7 @@ class QuestionValidation {
     return response.status(403).json(
       {
         status: 'fail',
-        data: {
-          message: 'You dont have permission to delete this question'
-        }
+        message: 'You dont have permission to delete this question'
       }
     );
   }
