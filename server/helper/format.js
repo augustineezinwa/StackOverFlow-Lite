@@ -31,6 +31,25 @@ const formatQuestions = (data) => {
   return newQuestions;
 };
 
+const formatAllQuestions = (data) => {
+  const newQuestions = [];
+  data.forEach((x) => {
+    newQuestions.push({
+      id: x.id,
+      questionTitle: x.questiontitle,
+      questionDescription: x.questiondescription,
+      answers: [],
+      numberOfAnswers: Number.parseInt(x.answersnumber, 10),
+      upvotes: Number.parseInt(Number(x.upvotes), 10),
+      downvotes: Number.parseInt(Number(x.downvotes), 10),
+      time: x.time,
+      date: x.date,
+      userId: x.userid
+    });
+  });
+  return newQuestions;
+};
+
 const formatMostAnsweredQuestions = (data) => {
   const newQuestions = [];
   data.forEach((x) => {
@@ -86,5 +105,6 @@ const formatComments = (data) => {
 };
 
 export {
-  formatQuestions, formatAnswers, formatComments, formatMostAnsweredQuestions, formatQuestionsWithAnswers
+  formatQuestions, formatAnswers, formatComments, formatMostAnsweredQuestions, formatQuestionsWithAnswers,
+  formatAllQuestions
 };
