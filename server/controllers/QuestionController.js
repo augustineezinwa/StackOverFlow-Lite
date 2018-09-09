@@ -1,6 +1,9 @@
 import dbConnect from '../connections/dbConnect';
 import SqlHelper from '../helper/SqlHelper';
-import { formatQuestions, formatMostAnsweredQuestions, formatQuestionsWithAnswers } from '../helper/format';
+import {
+  formatQuestions, formatMostAnsweredQuestions, formatQuestionsWithAnswers,
+  formatAllQuestions
+} from '../helper/format';
 import CatchErrors from '../helper/CatchErrors';
 
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -38,7 +41,7 @@ class QuestionController {
           default: {
             response.status(200).json({
               status: 'success',
-              data: { questions: formatQuestions(data.rows) }
+              data: { questions: formatAllQuestions(data.rows) }
             });
           }
         }
@@ -202,7 +205,7 @@ class QuestionController {
       .then(data => response.status(201).json({
         status: 'success',
         data: {
-          newQuestion: formatQuestions(data.rows)[0]
+          newQuestion: formatQuestionsWithAnswers(data.rows)[0]
         }
       }))
       .catch(error => catchDatabaseConnectionError(error, response));
