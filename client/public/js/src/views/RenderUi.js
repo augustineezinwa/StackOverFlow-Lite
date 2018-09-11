@@ -41,6 +41,23 @@ class RenderUi {
   /**
     * @static
     *
+    * @param {string} elementId - This is the id of the dashboardTitle
+    * @param {string} newTitle - This is the new title of the dashboard
+    * @param {string} data - This is the data to be attached to the title
+    * @returns {object} - renders a button;
+    *
+    * @description This method renders a button
+    * @memberOf RenderUi
+    */
+  static modifyTitle(elementId, newTitle, data = '') {
+    const targetDiv = document.getElementById(elementId);
+    const newData = data ? `: ${data}` : '';
+    targetDiv.innerHTML = `<h3>${newTitle} ${newData}</h3>`;
+  }
+
+  /**
+    * @static
+    *
     * @param {string} elementId - This is the id of the div element
     * @param {string} setDisplay - This sets the display of the div element;
     * @returns {object} - renders a div ;

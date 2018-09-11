@@ -591,8 +591,12 @@ class SqlHelper {
     */
   static searchQuestion(searchQuery) {
     const query = {
-      text: `SELECT * FROM questions where questions.questiontitle ilike 
-    '%${searchQuery}%' or questions.questiondescription ilike '%${searchQuery}%'`
+      text: `SELECT * FROM (SELECT questions.*, count(answers.questionid) as answersnumber,
+      sum(answers.upvotes) as upvotes,
+      sum(answers.downvotes) as downvotes from questions
+      left  join answers on (questions.id =answers.questionid)
+      group by questions.id) as b where b.questiontitle ilike 
+    '%${searchQuery}%' or b.questiondescription ilike '%${searchQuery}%'`
     };
     return query;
   }

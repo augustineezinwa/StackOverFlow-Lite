@@ -10,6 +10,7 @@ const questionData = {
   errors: [
 
   ],
+  search: '',
   loadMore: 0,
   initialCount: 6,
   ready: 0,
