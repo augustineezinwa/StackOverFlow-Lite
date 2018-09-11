@@ -2,7 +2,7 @@ import questionData from '../../models/dataCenter.js';
 import RenderUi from '../../views/RenderUi.js';
 import QuestionViewController from '../viewControllers/QuestionViewController.js';
 
-const { connectQuestionsDisplayToDataCenter } = QuestionViewController;
+const { connectQuestionsDisplayToDataCenter, connectSearchQuestionsDisplayToDataCenter } = QuestionViewController;
 const { renderAllQuestions } = RenderUi;
 
 /**
@@ -46,6 +46,45 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectQuestionsDisplayToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - searches questions and pushes it to datacenter
+    *
+    * @description This method searches questions from the database and binds it to views
+    * @memberOf QuestionApiController
+    */
+  static fetchSearchQuestions() {
+    questionData.errors.length = 0;
+    questionData.data.questions.length = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectSearchQuestionsDisplayToDataCenter();
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions?search=${questionData.search}`, {
+      headers: {
+        'Content-type': 'application/json',
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.questions = data.data.questions;
+        }
+        console.log(questionData);
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectSearchQuestionsDisplayToDataCenter();
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectSearchQuestionsDisplayToDataCenter();
       });
   }
 }

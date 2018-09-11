@@ -10,7 +10,7 @@ const home = ` <div class = "container image-background" style = "margin: 0 auto
   
 </div>
 
-<div class = "container dashboardfooter" ><h3>Trending Questions</h3></div>
+<div class = "container dashboardfooter " id="dashBoardTitle" ><h3>Trending Questions</h3></div>
 
 <div id= "questionsDisplay">
 <div class = "container" >
