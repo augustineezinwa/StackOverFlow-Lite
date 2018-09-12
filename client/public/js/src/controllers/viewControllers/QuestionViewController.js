@@ -1,9 +1,10 @@
 import questionData from '../../models/dataCenter.js';
 import RenderUi from '../../views/RenderUi.js';
+import routeTable from '../../router/routeTable.js';
 
 const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
-  modifyTitle
+  modifyTitle, renderQuestionWithAnswers,
 } = RenderUi;
 
 /**
@@ -37,11 +38,13 @@ class QuestionViewController {
       }
       renderAllQuestions('questionsDisplay', 'block',
         questionData.initialCount, questionData.data.questions);
+      QuestionViewController.attachViewEvents('viewButton');
       QuestionViewController.attachLoadMoreEvent('loadMore');
     } else {
       notifyEmptyResult('questionsDisplay', 'block', 'No Questions Yet!');
     }
   }
+
 
   /**
     * @static
@@ -70,11 +73,43 @@ class QuestionViewController {
       }
       renderAllQuestions('questionsDisplay', 'block',
         questionData.initialCount, questionData.data.questions);
+      QuestionViewController.attachViewEvents('viewButton');
       QuestionViewController.attachLoadMoreEvent('loadMore');
       modifyTitle('dashBoardTitle', 'Search Results', questionData.data.questions.length);
     } else if (questionData.ready) {
       notifyEmptyResult('questionsDisplay', 'block', 'Sorry! We cant find the question you are looking for!');
       modifyTitle('dashBoardTitle', 'Search Results');
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method binds a particular question views to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectQuestionDetailsDisplayToDataCenter() {
+    if (!questionData.ready && questionData.fetch) {
+      QuestionViewController.bindDataFromSearchBox('searchBox');
+      renderModalLoader('modalDisplay', 'block', 'Loading Question');
+    }
+    if (questionData.ready) renderModalLoader('modalDisplay', 'none', '');
+    if (questionData.fail) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+    if (questionData.data.questionWithAnswers.id && questionData.ready) {
+      renderModalLoader('modalDisplay', 'none', '');
+      if (questionData.fail) {
+        renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+        QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+      }
+      renderQuestionWithAnswers('pageDisplay', 'block');
+    } else if (questionData.ready) {
+      notifyEmptyResult('questionsDisplay', 'block', 'Sorry! Page not found!');
+      modifyTitle('dashBoardTitle', 'Oops! An Error Occured');
     }
   }
 
@@ -106,6 +141,30 @@ class QuestionViewController {
   static attachLoadMoreEvent(elementId) {
     const targetDiv = document.getElementById(elementId);
     if (targetDiv) targetDiv.addEventListener('click', () => QuestionViewController.loadMoreQuestions());
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} className - the className of the buttons
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method loads more questions on the home page;
+    * @memberOf QuestionViewController
+    */
+  static attachViewEvents(className) {
+    const targetButtons = document.querySelectorAll(`.${className}`);
+    console.log(targetButtons);
+    if (targetButtons.length) {
+      targetButtons.forEach(x => x.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(+e.target.attributes);
+        console.log(+e.target.attributes[1].value);
+        questionData.retrieveId = +e.target.attributes[1].value;
+        window.location.hash = `#questions-${questionData.retrieveId}`;
+      }));
+    }
   }
 
   /**
@@ -143,11 +202,13 @@ class QuestionViewController {
         questionData.initialCount = i;
         renderAllQuestions('questionsDisplay', 'block',
           questionData.data.questions.length, questionData.data.questions);
+        QuestionViewController.attachViewEvents('viewButton');
       }
       questionData.loadMore = i;
       questionData.initialCount = i;
       renderAllQuestions('questionsDisplay', 'block',
         i, questionData.data.questions);
+      QuestionViewController.attachViewEvents('viewButton');
       QuestionViewController.attachLoadMoreEvent('loadMore');
     }
     if (questionData.loadMore > questionData.data.questions.length
@@ -157,8 +218,42 @@ class QuestionViewController {
         questionData.data.questions.length, questionData.data.questions);
       questionData.initialCount = questionData.data.questions.length;
       toggleButton('loadMore');
+      QuestionViewController.attachViewEvents('viewButton');
       QuestionViewController.attachLoadMoreEvent('loadMore');
     }
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} questionId - the id of the question
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method checks for a question in history;
+    * @memberOf QuestionViewController
+    */
+  static searchQuestionInHistory(questionId) {
+    const question = questionData.history.find(x => +x.id === +questionId);
+    console.log(questionData.history);
+    console.log(question);
+    if (question) { return 1; } return 0;
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} questionId - the id of the question
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method checks for a question in history;
+    * @memberOf QuestionViewController
+    */
+  static renderQuestionInHistory(questionId) {
+    const question = questionData.history.find(x => +x.id === +questionId);
+    questionData.data.questionWithAnswers = question;
+    renderQuestionWithAnswers('pageDisplay', 'block');
   }
 }
 

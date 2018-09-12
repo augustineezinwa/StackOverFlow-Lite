@@ -1,4 +1,7 @@
 import questionData from '../models/dataCenter.js';
+import ResourceHelper from '../helper/ResourceHelper.js';
+
+const { getInformationFromDataCenter } = ResourceHelper;
 
 /**
   * @class RenderUi
@@ -202,6 +205,69 @@ class RenderUi {
   /**
     * @static
     *
+    * @param {string} answerId - This is the id of the answer to be displayed
+    * @param {string} answer - The answer to be displayed
+    * @param {string} upVotes - This is the total upvotes to this answer
+    * @param {string} downVotes - This is the total downvotes to this answer
+    * @param {string} approved - This is indicates if an answer is preffered or not
+    * @returns {object} - renders the particular answer
+    *
+    * @description This method renders a particular answer in a div
+    * @memberOf RenderUi
+    */
+  static renderAnswer(answerId, answer, upVotes, downVotes, approved = false) {
+    return `<div class = "row">
+   <div class = "col-5">${answer} 
+     <div class = "row mt-4">
+       <div class = "col"><div class = "ft">Answered by 
+       ${getInformationFromDataCenter(questionData.data.users, 'id',
+    getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId'), 'fullName')}  
+    &nbsp <span class = "darkgray" >
+    ${getInformationFromDataCenter(questionData.data.users, 'id',
+    getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId'), 'date')}
+    &nbsp at &nbsp
+    ${getInformationFromDataCenter(questionData.data.users, 'id',
+    getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId'), 'time')}
+    </span></div></div>
+       <div class = "col ">
+         <div class = "row">
+           <div class = "col"> <a href=""><button key="${answerId}"type =comment>Comment</button></a></div>
+           
+           <div class = "col " > <div class = "darkgray" key ="${answerId}">View Comments </div></div>
+           
+         </div>
+         
+         </div>
+        
+
+     </div>
+   </div>
+   <div class = "col-2">
+     <div class = "row">
+         <div class = "col"> ${upVotes} upvotes</div>
+         <div class = "col">${downVotes} downvotes</div>
+     </div>
+
+     <div class = "row">
+         <div class = "col"><span id ="thumbsUp" key= ${answerId}> <i class="fas fa-thumbs-up blue resize"></i></span></div>
+         <div class = "col"><span id ="prefer" key=${answerId}> <i class="fas fa-star blue resize"></i></span></div>
+         <div class = "col"><span id= "thumbsDown" key= ${answerId}> <i class="fas fa-thumbs-down blue resize"></i></span></div>
+     </div>
+   </div>
+
+ </div>
+
+ 
+
+
+ <div>&nbsp</div>
+
+ <div class = "underline">&nbsp</div>`;
+  }
+
+  /**
+    * @static
+    *
     * @param {string} questionId - This is the id of the question to be displayed
     * @param {string} questionTitle - The question Title of the question to be displayed
     * @param {string} answerNumber - This is the number of  answers  to this question
@@ -216,8 +282,7 @@ class RenderUi {
     totalUpVotes, totalDownVotes) {
     let newQuestionTitle;
     if (questionTitle.length > 55) {
-      newQuestionTitle = `${questionTitle.substr(0, 50)} ...`;
-      console.log(newQuestionTitle);
+      newQuestionTitle = `${questionTitle.substr(0, 70)} ...`;
     }
     return `<div class = "card">
       <div class = "container">
@@ -237,10 +302,84 @@ class RenderUi {
           <div class = "col"> <span> ${answerNumber} Answers</span></div>
     <div class = "col"><span> <i class="fas fa-thumbs-up"></i></span>&nbsp ${totalUpVotes}<span></span></div>
           <div class = "col"><span> <i class="fas fa-thumbs-down "></i></span>&nbsp ${totalDownVotes}<span><span></span></div>
-          <div class = "col"><span></span><span></span><a href ="questions.html" key=${questionId}><button type= "answer">View</button></a></div>
+          <div class = "col"><span></span><span></span><a href =#question-${questionId} >
+          <button class="viewButton" key=${questionId} type= "answer">View</button></a></div>
         </div>
       </div>
     </div>`;
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the element that will display the question
+    * @param {string} setDisplay - The sets the visibility of the div element
+    * @returns {object} - renders a particular question to the client side
+    *
+    * @description This method renders a particular question in a div.
+    * @memberOf RenderUi
+    */
+  static renderQuestionWithAnswers(elementId, setDisplay = 'none') {
+    const targetDiv = document.getElementById(elementId);
+    targetDiv.style.display = setDisplay;
+    const formatAnswers = questionData.data
+      .questionWithAnswers.answers.map(x => RenderUi.renderAnswer(x.id, x.answer, x.upvotes, x.downvotes, x.approved));
+    const refineAnswers = formatAnswers.join(' ');
+    const calcVotes = (votes) => {
+      let i = 0;
+      questionData.data.questionWithAnswers.answers.forEach((x) => { i += x[votes]; });
+      return i;
+    };
+
+    const totalUpVotes = calcVotes('upvotes');
+    const totalDownVotes = calcVotes('downvotes');
+    const answerHeader = `<div class =""> <h3>${questionData.data.questionWithAnswers.answers.length} 
+    Answers</h3></div><div class = "underline">&nbsp</div>`;
+    const question = `<h2>${questionData.data.questionWithAnswers.questionTitle}</h2>
+    <div class = "underline">&nbsp</div>
+    <div class = "row">
+      <div class = "col-5">${questionData.data.questionWithAnswers.questionDescription}
+        <div class = "mt-4 ft">Asked by 
+        ${getInformationFromDataCenter(questionData.data.users, 'id', questionData.data.questionWithAnswers.userId, 'fullName')}  
+        &nbsp <span class = "darkgray" >
+        ${questionData.data.questionWithAnswers.date}
+        &nbsp at &nbsp
+        ${questionData.data.questionWithAnswers.time.substr(0, 15)}
+        </span></div>
+      </div>
+      <div class = "col-2">
+        <div class = "row">
+            <div class = "col">${totalUpVotes} upvotes</div>
+            <div class = "col">${totalDownVotes} downvotes</div>
+        </div>
+      </div>
+    </div>
+
+    <div>&nbsp</div>
+    <div class = "underline;">&nbsp</div>`;
+
+    const addAnswer = `<form class = "">
+        
+    <label for="password"><b>Add an answer</b></label>
+    <textarea  class ="mt-2 txtarea"required ></textarea>
+
+    <button type="submit" key=${questionData.data.questionWithAnswers.id}> Add</button>
+</form>`;
+
+    const formattedQuestionDisplay = `<div class = "container question-background " >
+    <div class = "row ">
+        <div class = "col">
+            <div class = "question-card">
+                ${question}
+                ${answerHeader}
+                ${refineAnswers}
+                ${addAnswer}
+            </div>
+            </div>
+            </div>
+            </div>`;
+    targetDiv.innerHTML = formattedQuestionDisplay;
   }
 
   /**

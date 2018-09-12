@@ -4,7 +4,8 @@
   "env": {
     "node": true,
     "es6": true,
-    "mocha": true
+    "mocha": true,
+    "browser":true
   },
   "rules": {
     "one-var": 0,
@@ -12,6 +13,7 @@
     "linebreak-style":0,
     "new-cap": 0,
     "consistent-return": 0,
+    "import/extensions":["error", "always", {"ignorePackages": true} ],
     "no-param-reassign": 0,
     "comma-dangle": 0,
     "curly": ["error", "multi-line"],

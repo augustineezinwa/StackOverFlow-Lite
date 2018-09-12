@@ -635,6 +635,22 @@ class SqlHelper {
     };
     return query;
   }
+
+    /**
+    * @static
+    *
+    *
+    * @returns {object} - query string
+    *
+    * @description This method finds a user by id
+    * @memberOf SqlHelper
+    */
+   static getUsers() {
+    const query = {
+      text: 'SELECT * from users',
+    };
+    return query;
+  }
 }
 
 export default SqlHelper;

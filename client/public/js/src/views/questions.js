@@ -31,7 +31,7 @@ const questions = `
                   <div class = "col"><div class = "ft">Answered by Augustine Ezinwa  &nbsp <span class = "darkgray" >15 mins ago</span></div></div>
                   <div class = "col ">
                     <div class = "row">
-                      <div class = "col"> <button type =comment>Comment</button></div>
+                      <div class = "col"> <a href =""  id ="fish"><button type =comment>Comment</button></a></div>
                       
                       <div class = "col " > <div class = "darkgray">View Comments </div></div>
                       

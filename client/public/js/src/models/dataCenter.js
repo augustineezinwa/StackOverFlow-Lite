@@ -2,7 +2,9 @@ const questionData = {
   data: {
     questions: [
 
-    ]
+    ],
+    questionWithAnswers: [],
+    users: []
   },
   history: [
 
@@ -11,6 +13,7 @@ const questionData = {
 
   ],
   search: '',
+  retrieveId: '',
   loadMore: 0,
   initialCount: 6,
   ready: 0,
