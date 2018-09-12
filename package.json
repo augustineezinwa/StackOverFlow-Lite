@@ -1,6 +1,9 @@
 {
   "name": "StackOverFlow-Lite",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.10.0"
+  },
   "description": "StackOverFlow-Lite Application is a platform where users can ask questions and get answers to their questions",
   "main": "index.js",
   "scripts": {

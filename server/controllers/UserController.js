@@ -4,9 +4,10 @@ import bcrypt from 'bcrypt';
 import dbConnect from '../connections/dbConnect';
 import SqlHelper from '../helper/SqlHelper';
 import CatchErrors from '../helper/CatchErrors';
+import { formatUsers } from '../helper/format';
 
 const { catchDatabaseConnectionError } = CatchErrors;
-const { createUser, checkEmail } = SqlHelper;
+const { createUser, checkEmail, getUsers } = SqlHelper;
 dotenv.config();
 /**
   * @class UserController
@@ -99,6 +100,38 @@ class UserController {
           message: 'Invalid email or password'
         });
       }).catch(error => catchDatabaseConnectionError(`Error reading user table ${error} `, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method returns all users in the database
+    * @memberOf UserController
+    */
+  static fetchUsers(request, response) {
+    dbConnect.query(getUsers())
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            message: 'No user has registered!'
+          });
+            break;
+
+          default: {
+            response.status(200).json({
+              status: 'success',
+              data: { users: formatUsers(data.rows) }
+            });
+          }
+        }
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading users table ${error}`, response));
   }
 }
 
