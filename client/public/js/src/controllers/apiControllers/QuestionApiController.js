@@ -1,12 +1,16 @@
 import questionData from '../../models/dataCenter.js';
+import userAuthData from '../../models/userData.js';
+import ResourceHelper from '../../helper/ResourceHelper.js';
 import QuestionViewController from '../viewControllers/QuestionViewController.js';
 
 const {
   connectQuestionsDisplayToDataCenter,
   connectSearchQuestionsDisplayToDataCenter,
-  connectQuestionDetailsDisplayToDataCenter
+  connectQuestionDetailsDisplayToDataCenter,
+  connectPostQuestionOperationToDataCenter
 } = QuestionViewController;
 
+const { decrypt } = ResourceHelper;
 /**
   * @class QuestionViewController
   *
@@ -167,6 +171,61 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectQuestionDetailsDisplayToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} questionTitle - The title of the question to be posted
+    * @param {string} questionDescription - The description of the question to be posted.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method posts a question  in the application
+    * @memberOf QuestionApiController
+    */
+  static postQuestion(questionTitle, questionDescription) {
+    questionData.errors.length = 0;
+    questionData.data.postStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectPostQuestionOperationToDataCenter();
+    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/questions', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      },
+      body: JSON.stringify({
+        questionTitle,
+        questionDescription
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.postStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          connectPostQuestionOperationToDataCenter();
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectPostQuestionOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectPostQuestionOperationToDataCenter();
       });
   }
 }

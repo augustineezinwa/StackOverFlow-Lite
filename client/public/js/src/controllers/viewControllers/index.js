@@ -7,11 +7,13 @@ import userAuthData from '../../models/userData.js';
 import ResourceHelper from '../../helper/ResourceHelper.js';
 import RenderUi from '../../views/RenderUi.js';
 
-const { validateSignup } = UserViewController;
+const { validateSignup, loginOnDemand } = UserViewController;
 const { signUpUser, loginUser } = UserApiController;
-const { fetchQuestions, fetchSearchQuestions, fetchQuestion } = QuestionApiController;
+const {
+  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion
+} = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
-const { retrieveData } = ResourceHelper;
+const { retrieveData, destroyData } = ResourceHelper;
 const { toggleDiv } = RenderUi;
 
 window.addEventListener('load', () => {
@@ -50,6 +52,25 @@ window.addEventListener('load', () => {
       loginUser(email, password);
     });
   }
+  if (window.location.hash === '#ask') {
+    console.log('I am here');
+    const askButton = document.getElementById('askButton');
+    askButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      const questionTitle = document.getElementById('questionTitle').value;
+      const questionDescription = document.getElementById('questionDescription').value;
+
+      if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
+      if (!userAuthData.data.loginStatus) {
+        destroyData('loginStatus');
+        return UserViewController.loginOnDemand();
+      }
+      if (!userAuthData.data.token) {
+        userAuthData.data.token = retrieveData('token');
+      }
+      postQuestion(questionTitle, questionDescription);
+    });
+  }
 });
 window.addEventListener('hashchange', () => {
   if (window.location.hash === '') {
@@ -86,6 +107,27 @@ window.addEventListener('hashchange', () => {
       loginUser(email, password);
     });
   }
+
+  if (window.location.hash === '#ask') {
+    const askButton = document.getElementById('askButton');
+    askButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      const questionTitle = document.getElementById('questionTitle').value;
+      const questionDescription = document.getElementById('questionDescription').value;
+
+      if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
+
+      if (!userAuthData.data.loginStatus) {
+        destroyData('loginStatus');
+        return UserViewController.loginOnDemand();
+      }
+      if (!userAuthData.data.token) {
+        userAuthData.data.token = retrieveData('token');
+      }
+      postQuestion(questionTitle, questionDescription);
+    });
+  }
+
   if (window.location.hash === '#profile' || window.location.hash === '#logout') {
     toggleDiv('logoutLink', 'block');
   } else {

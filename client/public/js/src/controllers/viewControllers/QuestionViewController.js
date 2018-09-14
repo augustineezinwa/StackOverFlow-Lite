@@ -1,11 +1,15 @@
 import questionData from '../../models/dataCenter.js';
+import userAuthData from '../../models/userData.js';
 import RenderUi from '../../views/RenderUi.js';
+import ResourceHelper from '../../helper/ResourceHelper.js';
 import routeTable from '../../router/routeTable.js';
 
 const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
-  modifyTitle, renderQuestionWithAnswers,
+  modifyTitle, renderQuestionWithAnswers, renderNotificationInButton, renderNotification,
+  showErrorsOnPostQuestionForm
 } = RenderUi;
+const { destroyData } = ResourceHelper;
 
 /**
   * @class QuestionViewController
@@ -110,6 +114,46 @@ class QuestionViewController {
     } else if (questionData.ready) {
       notifyEmptyResult('questionsDisplay', 'block', 'Sorry! Page not found!');
       modifyTitle('dashBoardTitle', 'Oops! An Error Occured');
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds post question views to datacenter
+    *
+    * @description This method binds post question actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectPostQuestionOperationToDataCenter() {
+    if (!questionData.ready && questionData.fetch) {
+      renderNotificationInButton('askNotification', 'block', 'Posting Question...');
+    }
+    if (questionData.ready) renderNotificationInButton('askNotification', 'block', '', 'Ask');
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnPostQuestionForm();
+    }
+    if (questionData.data.postStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'You succesfully posted this question');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+      window.location.hash = '';
+      window.location.reload();
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
     }
   }
 

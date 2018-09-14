@@ -30,18 +30,19 @@ class RenderUi {
   /**
     * @static
     *
-    * @param {string} elementId - This is the id of the element to display the notification box
+    * @param {string} elementId - This is the id of the element to display the notification
     * @param {string} setDisplay - This sets the display of the notifciation box
     * @param {string} message - This is the message to be displayed on the notification box
+    * @param {string} defaultLabel - This is the fallback label on the button
     * @returns {object} - renders the notification box
     *
     * @description This method renders a modal on the client
     * @memberOf RenderUi
     */
   static renderNotificationInButton(elementId, setDisplay = 'none', message = '', defaultLabel = 'Signup') {
-    let content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
+    const content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
       : `${defaultLabel}`;
-   
+
     const targetDiv = document.getElementById(elementId);
     targetDiv.innerHTML = content;
     targetDiv.style.display = setDisplay;
@@ -361,7 +362,7 @@ class RenderUi {
     const question = `<h2>${questionData.data.questionWithAnswers.questionTitle}</h2>
     <div class = "underline">&nbsp</div>
     <div class = "row">
-      <div class = "col-5">${questionData.data.questionWithAnswers.questionDescription}
+      <div class = "col-5 pr-1" >${questionData.data.questionWithAnswers.questionDescription} 
         <div class = "mt-4 ft">Asked by 
         ${getInformationFromDataCenter(questionData.data.users, 'id', questionData.data.questionWithAnswers.userId, 'fullName')}  
         &nbsp <span class = "darkgray" >
@@ -370,8 +371,8 @@ class RenderUi {
         ${questionData.data.questionWithAnswers.time.substr(0, 15)}
         </span></div>
       </div>
-      <div class = "col-2">
-        <div class = "row">
+      <div class = "col-2 ">
+        <div class = "row ">
             <div class = "col">${totalUpVotes} upvotes</div>
             <div class = "col">${totalDownVotes} downvotes</div>
         </div>
@@ -533,6 +534,29 @@ class RenderUi {
     }
     if (userAuthData.errors[0].message.includes('confirm')) {
       confirmPassword.style.borderColor = 'red';
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on signup form
+    *
+    * @description This method renders a modal on the client
+    * @memberOf RenderUi
+    */
+  static showErrorsOnPostQuestionForm() {
+    const questionTitle = document.getElementById('questionTitle');
+    const questionDescription = document.getElementById('questionDescription');
+    questionTitle.style.borderColor = '';
+    questionDescription.style.borderColor = '';
+    RenderUi.renderNotification('notificationDisplay', 'block', questionData.errors[0].message);
+    setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    if (questionData.errors[0].message.includes('Title')) {
+      questionTitle.style.borderColor = 'red';
+    }
+    if (questionData.errors[0].message.includes('Description')) {
+      questionDescription.style.borderColor = 'red';
     }
   }
 }
