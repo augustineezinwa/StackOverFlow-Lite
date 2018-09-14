@@ -5,7 +5,10 @@ import ResourceHelper from '../../helper/ResourceHelper.js';
 const {
   storeData, encrypt, decrypt, destroyData
 } = ResourceHelper;
-const { connectSignUpUserOperationToDataCenter } = UserViewController;
+const {
+  connectSignUpUserOperationToDataCenter,
+  connectloginUserOperationToDataCenter
+} = UserViewController;
 /**
   * @class UserViewController
   *
@@ -69,6 +72,63 @@ class UserApiController {
         userAuthData.ready = 1;
         userAuthData.fetch = 0;
         connectSignUpUserOperationToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} email - the email of the user
+    * @param {string} password - the password of the user
+    *
+    * @returns {object} - logins user
+    *
+    * @description This method signs up in the application
+    * @memberOf UserApiController
+    */
+  static loginUser(email, password) {
+    userAuthData.errors.length = 0;
+    userAuthData.data.loginStatus = 0;
+    userAuthData.ready = 0;
+    userAuthData.fail = 0;
+    userAuthData.fetch = 1;
+    connectloginUserOperationToDataCenter();
+    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status === 'success') {
+          userAuthData.data.loginStatus = 1;
+          userAuthData.errors.length = 0;
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          userAuthData.data.message = data.message;
+          userAuthData.data.token = encrypt('blowfish.io', data.data.token);
+          connectloginUserOperationToDataCenter();
+        } else {
+          userAuthData.errors.push(data);
+          console.log(userAuthData);
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          connectloginUserOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        userAuthData.errors.push(error);
+        userAuthData.fail = 1;
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectloginUserOperationToDataCenter();
       });
   }
 }

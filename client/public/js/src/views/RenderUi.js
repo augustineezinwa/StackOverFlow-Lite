@@ -38,9 +38,10 @@ class RenderUi {
     * @description This method renders a modal on the client
     * @memberOf RenderUi
     */
-  static renderNotificationInButton(elementId, setDisplay = 'none', message = '') {
-    const content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
-      : 'Signup';
+  static renderNotificationInButton(elementId, setDisplay = 'none', message = '', defaultLabel = 'Signup') {
+    let content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
+      : `${defaultLabel}`;
+   
     const targetDiv = document.getElementById(elementId);
     targetDiv.innerHTML = content;
     targetDiv.style.display = setDisplay;

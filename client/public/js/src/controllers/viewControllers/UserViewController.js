@@ -50,6 +50,40 @@ class UserViewController {
     }
   }
 
+  /**
+    * @static
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method binds users actions to datacenter;
+    * @memberOf UserViewController
+    */
+  static connectloginUserOperationToDataCenter() {
+    if (!userAuthData.ready && userAuthData.fetch) {
+      renderNotificationInButton('loginNotification', 'block', 'Logging in ...');
+    }
+    if (userAuthData.ready) renderNotificationInButton('loginNotification', 'block','', 'Login');
+    if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
+      console.log(userAuthData.errors);
+      renderNotification('notificationDisplay', 'block', userAuthData.errors[0].message);
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+    }
+    if (userAuthData.data.loginStatus === 1) {
+      storeData('token', userAuthData.data.token);
+      storeData('loginStatus', 1);
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', userAuthData.data.message);
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+      window.location.hash = '';
+      toggleDiv('loginLink');
+      toggleDiv('signupLink');
+      toggleDiv('profileLink', '');
+    }
+    if (userAuthData.fail && userAuthData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
 
   /**
   * @static
