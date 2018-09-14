@@ -8,14 +8,14 @@ const login = `<div class = "container image-background ask-bg" style = "margin:
     <div class = "col">
         <div class = "login-box">
         <h2>Login</h2>
-        <form class = "">
+        <form class = ""method = "POST">
             <label for="email"><b>Enter Email</b></label>
-            <input type="text" name="email" required>
-
+            <input type="text" name="email"  id ="email">
+            
             <label for="password"><b>Enter password</b></label>
-            <input type="password" name="password" required>
-
-            <button type="submit"> Login</button>
+            <input type="password" name="password" id="password">
+            
+            <button type="submit"id="loginButton"> <span id ="loginNotification">Login</span></button>
         </form>
     </div>
             </div>

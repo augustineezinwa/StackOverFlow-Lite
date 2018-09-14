@@ -28,17 +28,15 @@ class UserValidation {
     if (!email) {
       return response.status(400).json({
         status: 'fail',
-        message: {
-          email: 'please provide an email to login'
-        }
+        message: 'please provide an email to login'
+        
       });
     }
     if (!password) {
       return response.status(400).json({
         status: 'fail',
-        message: {
-          password: 'please provide password to login'
-        }
+        message:  'please provide password to login'
+        
       });
     }
     return next();

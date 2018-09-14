@@ -8,7 +8,7 @@ import ResourceHelper from '../../helper/ResourceHelper.js';
 import RenderUi from '../../views/RenderUi.js';
 
 const { validateSignup } = UserViewController;
-const { signUpUser } = UserApiController;
+const { signUpUser, loginUser } = UserApiController;
 const { fetchQuestions, fetchSearchQuestions, fetchQuestion } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData } = ResourceHelper;
@@ -41,6 +41,15 @@ window.addEventListener('load', () => {
       signUpUser(firstName, lastName.join(''), email, password, confirmPassword);
     });
   }
+  if (window.location.hash === '#login') {
+    const loginButton = document.getElementById('loginButton');
+    loginButton.addEventListener('click', (e) => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      e.preventDefault();
+      loginUser(email, password);
+    });
+  }
 });
 window.addEventListener('hashchange', () => {
   if (window.location.hash === '') {
@@ -65,6 +74,16 @@ window.addEventListener('hashchange', () => {
       const [firstName, ...lastName] = fullName.split(' ');
       e.preventDefault();
       signUpUser(firstName, lastName.join(''), email, password, confirmPassword);
+    });
+  }
+
+  if (window.location.hash === '#login') {
+    const loginButton = document.getElementById('loginButton');
+    loginButton.addEventListener('click', (e) => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      e.preventDefault();
+      loginUser(email, password);
     });
   }
   if (window.location.hash === '#profile' || window.location.hash === '#logout') {
