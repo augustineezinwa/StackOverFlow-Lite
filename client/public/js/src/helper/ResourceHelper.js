@@ -33,7 +33,7 @@ class ResourceHelper {
     * @memberOf ResourceHelper
     */
   static encrypt(key, data) {
-    const newData = data.split(' ').reverse().join('') + key;
+    const newData = data.split('').reverse().join('') + key;
     return newData;
   }
 
@@ -86,7 +86,7 @@ class ResourceHelper {
       data = JSON.parse(token);
       return data;
     }
-    return 0;
+    return '';
   }
 
   /**

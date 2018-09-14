@@ -8,14 +8,14 @@ const ask = `    <div class = "container image-background ask-bg">
     <div class = "col">
         <div class = "login-box">
         <h2>Ask A Question</h2>
-        <form class = "">
-            <label for="email"><b>Enter Question Title</b></label>
-            <input type="text" name="email" required>
+        <form class = "" method = "POST">
+            <label for="title"><b>Enter Question Title</b></label>
+            <input type="text" id = "questionTitle" >
 
             <label for="password"><b>Describe your Question</b></label>
-            <textarea  class ="mt-2 txtarea"required ></textarea>
+            <textarea  class ="mt-2 txtarea" id = "questionDescription" ></textarea>
 
-            <button type="submit"> Ask</button>
+            <button type="submit" id = "askButton"> <span id ="askNotification">Ask</span></button>
         </form>
     </div>
             </div>

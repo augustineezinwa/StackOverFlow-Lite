@@ -142,6 +142,9 @@ button[type=answer]:hover {
   height: 650px;
 }
 
+.pr-1 {
+  padding-right:1%;
+}
 .pd-1 {
   padding: 1%;
 }
@@ -294,7 +297,7 @@ button[type=comment] {
 
 .modal {
   position:fixed;
-  z-index:1;
+  z-index:5;
   padding-top:15%;
   left:0;
   top:0;

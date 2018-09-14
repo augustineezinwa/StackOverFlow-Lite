@@ -62,7 +62,7 @@ class UserViewController {
     if (!userAuthData.ready && userAuthData.fetch) {
       renderNotificationInButton('loginNotification', 'block', 'Logging in ...');
     }
-    if (userAuthData.ready) renderNotificationInButton('loginNotification', 'block','', 'Login');
+    if (userAuthData.ready) renderNotificationInButton('loginNotification', 'block', '', 'Login');
     if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
       console.log(userAuthData.errors);
       renderNotification('notificationDisplay', 'block', userAuthData.errors[0].message);
@@ -138,6 +138,40 @@ class UserViewController {
     }
     if (!isValid(fieldValue, fieldName)) renderNotifications(fieldName, elementId, message, indicator, 'none');
     else renderNotifications(fieldName, elementId, '', indicator, 'inline', '90%');
+  }
+
+  /**
+  * @static
+  *
+  * @returns {object} - binds view to datacenter
+  *
+  * @description This method demands login action from the user;
+  * @memberOf UserViewController
+  */
+  static loginOnDemand() {
+    renderModal('modalDisplay', 'block', 'Please Login to post a question');
+    UserViewController.attachRedirectToLoginModalEvent('shutDownButton', 'modalDisplay');
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - the id of the element
+    * @param {string} targetId - the id of the target element
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method redirects the user to login page;
+    * @memberOf UserViewController
+    */
+  static attachRedirectToLoginModalEvent(elementId, targetId) {
+    const targetDiv = document.getElementById(elementId);
+    if (targetDiv) {
+      targetDiv.addEventListener('click', () => {
+        renderModal(targetId, 'none');
+        window.location.hash = '#login';
+      });
+    }
   }
 }
 export default UserViewController;
