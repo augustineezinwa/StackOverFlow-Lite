@@ -60,23 +60,21 @@ class UserValidation {
     const {
       firstName, lastName, email, password, confirmPassword
     } = request.body;
-    const sendErrorResponse = (message, fieldName) => response.status(422).json({
+    const sendErrorResponse = message => response.status(422).json({
       status: 'fail',
-      message: {
-        [`${fieldName}`]: message
-      }
+      message
     });
-    if (!firstName || !/^[a-zA-Z]+$/.test(firstName.toString().trim())) { return sendErrorResponse('enter a valid name', 'firstName'); }
-    if (!lastName || !/^[a-zA-Z]+$/.test(lastName.toString().trim())) { return sendErrorResponse('enter a valid name', 'lastName'); }
+    if (!firstName || !/^[a-zA-Z]+$/.test(firstName.toString().trim())) { return sendErrorResponse('enter a valid first name'); }
+    if (!lastName || !/^[a-zA-Z]+$/.test(lastName.toString().trim())) { return sendErrorResponse('enter a valid last name'); }
     if (!email
       || !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.toString().trim())) {
-      return sendErrorResponse('enter a valid email-address', 'email');
+      return sendErrorResponse('enter a valid email-address');
     }
-    if (!password) return sendErrorResponse('password cant be empty', 'password');
+    if (!password) return sendErrorResponse('password cant be empty');
     if (!/^((?=.*\d)|(?=.*[!@#\$%\^&\*]))(?=.*[a-zA-Z])/.test(password.toString())) { return sendErrorResponse('password must contain a number or special character', 'password'); }
-    if (password.toString().trim().length < 6) return sendErrorResponse('password must contain at least six characters', 'password');
-    if (!confirmPassword) return sendErrorResponse('password cant be empty', 'confirmPassword');
-    if (confirmPassword !== request.body.password) return sendErrorResponse('password does not match', 'confirmPassword');
+    if (password.toString().trim().length < 6) return sendErrorResponse('password must contain at least six characters');
+    if (!confirmPassword) return sendErrorResponse('confirm password cant be empty');
+    if (confirmPassword !== request.body.password) return sendErrorResponse('confirm password does not match');
     request.body.password = bcrypt.hashSync(request.body.password, 10);
     return next();
   }
@@ -102,9 +100,7 @@ class UserValidation {
         }
         return response.status(409).json({
           status: 'fail',
-          message: {
-            email: 'email is already in use'
-          }
+          message: 'email is already in use'
         });
       })
       .catch(error => catchDatabaseConnectionError(error, response));

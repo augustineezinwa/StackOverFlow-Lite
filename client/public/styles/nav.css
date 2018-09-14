@@ -66,7 +66,7 @@
   }
 
   .search-bar {
-      float: right;
+      float:right;
       margin-top: 10px;
       margin-right: 10px;
   }
@@ -78,7 +78,13 @@
     display: none;
   }
   
+  #logoutLink, #loginLink, #signupLink {
+    float:right; margin-right:10px
+  }
   
+  #logoutLink {
+    display:none;
+  }
 
   @media(max-width:999px) {
     .nav > .nav-btn {
@@ -112,6 +118,10 @@
       overflow-y: hidden;
       top: 50px;
       left: 0px;
+    }
+    #logoutLink, #loginLink, #signupLink {
+     float: none;
+     margin: auto 0;
     }
     .nav > .nav-links > a {
       display: block;

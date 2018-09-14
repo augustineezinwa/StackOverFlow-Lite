@@ -16,8 +16,7 @@ describe('Testing user validation', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('firstName').eql('enter a valid name');
+        response.body.message.should.be.eql('enter a valid first name');
         done();
       });
   });
@@ -34,8 +33,7 @@ describe('Testing user validation', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('lastName').eql('enter a valid name');
+        response.body.message.should.be.eql('enter a valid last name');
         done();
       });
   });
@@ -52,8 +50,7 @@ describe('Testing user validation', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('email').eql('enter a valid email-address');
+        response.body.message.should.be.eql('enter a valid email-address');
         done();
       });
   });
@@ -70,8 +67,7 @@ describe('Testing user validation', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('password').eql('password must contain a number or special character');
+        response.body.message.should.be.eql('password must contain a number or special character');
         done();
       });
   });
@@ -88,8 +84,7 @@ describe('Testing user validation', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('confirmPassword').eql('password does not match');
+        response.body.message.should.be.eql('confirm password does not match');
         done();
       });
   });
@@ -109,8 +104,7 @@ describe('Testing for empty fields on signup', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('firstName').eql('enter a valid name');
+        response.body.message.should.be.eql('enter a valid first name');
         done();
       });
   });
@@ -127,8 +121,7 @@ describe('Testing for empty fields on signup', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('lastName').eql('enter a valid name');
+        response.body.message.should.be.eql('enter a valid last name');
         done();
       });
   });
@@ -145,8 +138,7 @@ describe('Testing for empty fields on signup', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('email').eql('enter a valid email-address');
+        response.body.message.should.be.eql('enter a valid email-address');
         done();
       });
   });
@@ -163,8 +155,7 @@ describe('Testing for empty fields on signup', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('password').eql('password cant be empty');
+        response.body.message.should.be.eql('password cant be empty');
         done();
       });
   });
@@ -181,8 +172,7 @@ describe('Testing for empty fields on signup', () => {
         response.should.have.status(422);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.be.a('object');
-        response.body.message.should.have.property('confirmPassword').eql('password cant be empty');
+        response.body.message.should.be.eql('confirm password cant be empty');
         done();
       });
   });

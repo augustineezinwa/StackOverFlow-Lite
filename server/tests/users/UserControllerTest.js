@@ -43,7 +43,7 @@ describe('testing signup feature', () => {
         response.should.have.status(409);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('fail');
-        response.body.message.should.have.property('email').eql('email is already in use');
+        response.body.message.should.be.eql('email is already in use');
 
         done();
       });

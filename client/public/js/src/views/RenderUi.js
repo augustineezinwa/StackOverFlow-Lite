@@ -1,4 +1,5 @@
 import questionData from '../models/dataCenter.js';
+import userAuthData from '../models/userData.js';
 import ResourceHelper from '../helper/ResourceHelper.js';
 
 const { getInformationFromDataCenter } = ResourceHelper;
@@ -29,6 +30,25 @@ class RenderUi {
   /**
     * @static
     *
+    * @param {string} elementId - This is the id of the element to display the notification box
+    * @param {string} setDisplay - This sets the display of the notifciation box
+    * @param {string} message - This is the message to be displayed on the notification box
+    * @returns {object} - renders the notification box
+    *
+    * @description This method renders a modal on the client
+    * @memberOf RenderUi
+    */
+  static renderNotificationInButton(elementId, setDisplay = 'none', message = '') {
+    const content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
+      : 'Signup';
+    const targetDiv = document.getElementById(elementId);
+    targetDiv.innerHTML = content;
+    targetDiv.style.display = setDisplay;
+  }
+
+  /**
+    * @static
+    *
     * @param {string} elementId - This is the id of the button element
     * @param {string} setDisplay - This sets the display of the button;
     * @returns {object} - renders a button;
@@ -40,6 +60,7 @@ class RenderUi {
     const targetButton = document.getElementById(elementId);
     targetButton.style.display = setDisplay;
   }
+
 
   /**
     * @static
@@ -87,7 +108,7 @@ class RenderUi {
   static renderModal(elementId, setDisplay, message = '') {
     const targetDiv = document.getElementById(elementId);
     targetDiv.style.display = setDisplay;
-    targetDiv.innerHTML += `<div class = "container modal" >
+    targetDiv.innerHTML = `<div class = "container modal" >
     <div class = "row" >
       <div class = "col"></div>
       <div class = "col">
@@ -446,6 +467,72 @@ class RenderUi {
               </div>
               ${loadMoreButton}
               `;
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} fieldName - This is the name of the fieldname in question
+    * @param {string} elementId - This is the id of the div element in question
+    * @param {integer} message - This is the message that will be displayed to the user
+    * @param {string} indicator - This is id of the element that will display a good sign
+    * @param {string} display - This sets the display of the  indicator
+    * @param {string} width - This is id of the element that will display a good sign
+    *
+    * @returns {object} - renders all questions to the home page
+    *
+    * @description This method renders a particular question in a div.
+    * @memberOf RenderUi
+    */
+  static renderNotifications(fieldName, elementId, message = '', indicator, display = 'none', width = '') {
+    const fieldDiv = document.getElementById(fieldName);
+    const targetDiv = document.getElementById(elementId);
+    const askbg = document.getElementById('ask-bg');
+    const good = document.getElementById(indicator);
+    targetDiv.style.display = 'block';
+    good.style.display = display;
+    good.style.marginLeft = '2%';
+    good.style.color = 'hotpink';
+    fieldDiv.style.width = width;
+    targetDiv.innerHTML = message;
+    targetDiv.style.color = 'red';
+    targetDiv.style.fontSize = '15px';
+    targetDiv.style.paddingBottom = '3%';
+    askbg.style.height = '1000px';
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on signup form
+    *
+    * @description This method renders a modal on the client
+    * @memberOf RenderUi
+    */
+  static showErrors() {
+    const firstName = document.getElementById('fullName');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    firstName.style.borderColor = '';
+    email.style.borderColor = '';
+    password.style.borderColor = '';
+    confirmPassword.style.borderColor = '';
+    RenderUi.renderNotification('notificationDisplay', 'block', userAuthData.errors[0].message);
+    setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    if (userAuthData.errors[0].message.includes('name')) {
+      firstName.style.borderColor = 'red';
+    }
+    if (userAuthData.errors[0].message.includes('email')) {
+      email.style.borderColor = 'red';
+    }
+    if (!userAuthData.errors[0].message.includes('confirm')
+      && userAuthData.errors[0].message.includes('password')) {
+      password.style.borderColor = 'red';
+    }
+    if (userAuthData.errors[0].message.includes('confirm')) {
+      confirmPassword.style.borderColor = 'red';
+    }
   }
 }
 
