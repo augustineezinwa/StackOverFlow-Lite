@@ -125,7 +125,11 @@ class QuestionViewController {
     */
   static attachSwitchOffModalEvent(elementId, targetId) {
     const targetDiv = document.getElementById(elementId);
-    if (targetDiv) targetDiv.addEventListener('click', () => renderModal(targetId, 'none'));
+    if (targetDiv) {
+      targetDiv.addEventListener('click', () => {
+        renderModal(targetId, 'none');
+      });
+    }
   }
 
   /**
