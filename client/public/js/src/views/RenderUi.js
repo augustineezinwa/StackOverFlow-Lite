@@ -214,7 +214,7 @@ class RenderUi {
                   </div>
                 </div>
                
-                  <div class = "col" style="text-align:right"><span></span><span></span><a href ="/"><button id="refresh" type= "answer">Refresh</button></a></div>
+                  <div class = "col" style="text-align:right"><span></span><span></span><a id ="refresh"><button  type= "answer">Refresh</button></a></div>
                
               </div>
             </div>

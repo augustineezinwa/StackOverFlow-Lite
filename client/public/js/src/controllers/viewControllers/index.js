@@ -15,7 +15,7 @@ const {
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
-const { toggleDiv } = RenderUi;
+const { toggleDiv, renderNotification } = RenderUi;
 
 
 const signupAction = () => {
@@ -61,6 +61,27 @@ const askAction = () => {
   });
 };
 
+const logoutAction = () => {
+  const logoutButton = document.getElementById('logoutLink');
+  logoutButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    destroyData('loginStatus');
+    destroyData('token');
+    renderNotification('notificationDisplay', 'block', 'You have logged out');
+    setTimeout(() => renderNotification('notificationDisplay', 'none'), 4500);
+    window.location.reload();
+    window.location.hash = '';
+  });
+};
+
+const forceLogout = () => {
+  if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
+  if (!userAuthData.data.loginStatus) {
+    destroyData('loginStatus');
+    window.location.reload();
+    window.location.hash = '';
+  }
+};
 
 const pageDisplay = document.getElementById('pageDisplay');
 pageDisplay.addEventListener('click', (e) => {
@@ -96,14 +117,22 @@ window.addEventListener('load', () => {
     fetchQuestion(url);
   }
   if (window.location.hash === '#signup') {
-    signupAction();
+    if (userAuthData.data.loginStatus) window.location.hash = ''; else { signupAction(); }
   }
 
   if (window.location.hash === '#login') {
-    loginAction();
+    if (userAuthData.data.loginStatus) window.location.hash = ''; else { loginAction(); }
   }
   if (window.location.hash === '#ask') {
     askAction();
+  }
+
+  if (window.location.hash === '#profile') {
+    toggleDiv('logoutLink', 'block');
+    forceLogout();
+    logoutAction();
+  } else {
+    toggleDiv('logoutLink');
   }
 });
 
@@ -111,7 +140,8 @@ window.addEventListener('hashchange', () => {
   if (window.location.hash === '') {
     if (questionData.data.questions.length === 0 && !questionData.search) {
       fetchQuestions();
-    } else if (!questionData.search) connectQuestionsDisplayToDataCenter();
+    }
+    if (!questionData.search && questionData.data.questions.length > 0) connectQuestionsDisplayToDataCenter();
   }
   if (window.location.hash.startsWith('#questions')) {
     const url = window.location.hash.substring(window.location.hash.lastIndexOf('-') + 1);
@@ -122,11 +152,11 @@ window.addEventListener('hashchange', () => {
   }
 
   if (window.location.hash === '#signup') {
-    signupAction();
+    if (userAuthData.data.loginStatus) window.location.hash = ''; else { signupAction(); }
   }
 
   if (window.location.hash === '#login') {
-    loginAction();
+    if (userAuthData.data.loginStatus) window.location.hash = ''; else { loginAction(); }
   }
 
   if (window.location.hash === '#ask') {
@@ -135,6 +165,8 @@ window.addEventListener('hashchange', () => {
 
   if (window.location.hash === '#profile' || window.location.hash === '#logout') {
     toggleDiv('logoutLink', 'block');
+    forceLogout();
+    logoutAction();
   } else {
     toggleDiv('logoutLink');
   }
