@@ -10,8 +10,7 @@ const routeTable = {
   '#login': login,
   '#signup': signup,
   '#ask': ask,
-  '#profile': profile,
-  '#questions': questions
+  '#profile': profile
 };
 
 export default routeTable;

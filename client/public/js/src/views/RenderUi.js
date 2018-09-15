@@ -214,7 +214,7 @@ class RenderUi {
                   </div>
                 </div>
                
-                  <div class = "col" style="text-align:right"><span></span><span></span><a href ="/"><button type= "answer">Refresh</button></a></div>
+                  <div class = "col" style="text-align:right"><span></span><span></span><a href ="/"><button id="refresh" type= "answer">Refresh</button></a></div>
                
               </div>
             </div>
@@ -246,11 +246,11 @@ class RenderUi {
        ${getInformationFromDataCenter(questionData.data.users, 'id',
     getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId'), 'fullName')}  
     &nbsp <span class = "darkgray" >
-    ${getInformationFromDataCenter(questionData.data.users, 'id',
-    getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId'), 'date')}
+    ${
+  getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'date')}
     &nbsp at &nbsp
-    ${getInformationFromDataCenter(questionData.data.users, 'id',
-    getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId'), 'time')}
+    ${
+  getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'time')}
     </span></div></div>
        <div class = "col ">
          <div class = "row">
@@ -382,12 +382,14 @@ class RenderUi {
     <div>&nbsp</div>
     <div class = "underline;">&nbsp</div>`;
 
-    const addAnswer = `<form class = "">
+    const addAnswer = `<form class = "" method = "POST">
         
     <label for="password"><b>Add an answer</b></label>
-    <textarea  class ="mt-2 txtarea"required ></textarea>
+    <textarea  class ="mt-2 txtarea" id = "answer"></textarea>
 
-    <button type="submit" key=${questionData.data.questionWithAnswers.id}> Add</button>
+    <button type="submit" key=${questionData.data.questionWithAnswers.id} id = "answerButton" > 
+    Add
+    </button>
 </form>`;
 
     const formattedQuestionDisplay = `<div class = "container question-background " >
@@ -540,9 +542,9 @@ class RenderUi {
   /**
     * @static
     *
-    * @returns {object} - shows errors on signup form
+    * @returns {object} - shows errors on post question  form
     *
-    * @description This method renders a modal on the client
+    * @description This method renders a validation messages and signs
     * @memberOf RenderUi
     */
   static showErrorsOnPostQuestionForm() {
@@ -557,6 +559,25 @@ class RenderUi {
     }
     if (questionData.errors[0].message.includes('Description')) {
       questionDescription.style.borderColor = 'red';
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on post answer form
+    *
+    * @description This method renders a validation messages and signs
+    * @memberOf RenderUi
+    */
+  static showErrorsOnPostAnswerForm() {
+    const answer = document.getElementById('answer');
+    console.log(answer);
+    answer.style.borderColor = '';
+    RenderUi.renderNotification('notificationDisplay', 'block', questionData.errors[0].message);
+    setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    if (questionData.errors[0].message.includes('answer')) {
+      answer.style.borderColor = 'red';
     }
   }
 }

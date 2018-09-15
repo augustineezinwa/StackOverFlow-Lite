@@ -143,13 +143,14 @@ class UserViewController {
   /**
   * @static
   *
+  * @param {string} message
   * @returns {object} - binds view to datacenter
   *
   * @description This method demands login action from the user;
   * @memberOf UserViewController
   */
-  static loginOnDemand() {
-    renderModal('modalDisplay', 'block', 'Please Login to post a question');
+  static loginOnDemand(message) {
+    renderModal('modalDisplay', 'block', `Please Login to post ${message}`);
     UserViewController.attachRedirectToLoginModalEvent('shutDownButton', 'modalDisplay');
   }
 
@@ -170,6 +171,7 @@ class UserViewController {
       targetDiv.addEventListener('click', () => {
         renderModal(targetId, 'none');
         window.location.hash = '#login';
+        return null;
       });
     }
   }
