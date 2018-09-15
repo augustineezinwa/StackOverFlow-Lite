@@ -68,20 +68,17 @@ class QuestionViewController {
       renderModal('modalDisplay', 'block', 'Internet Connection Error!');
       QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
     }
-    window.location.hash = '';
-    if (questionData.data.questions.length > 0 && questionData.ready) {
+    if (questionData.data.searchedQuestions.length > 0 && questionData.ready && !questionData.fail) {
       renderModalLoader('modalDisplay', 'none', '');
-      if (questionData.fail) {
-        renderModal('modalDisplay', 'block', 'Internet Connection Error!');
-        QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
-      }
       renderAllQuestions('questionsDisplay', 'block',
-        questionData.initialCount, questionData.data.questions);
+        questionData.initialCount, questionData.data.searchedQuestions);
       QuestionViewController.attachViewEvents('viewButton');
       QuestionViewController.attachLoadMoreEvent('loadMore');
-      modifyTitle('dashBoardTitle', 'Search Results', questionData.data.questions.length);
-    } else if (questionData.ready) {
+      modifyTitle('dashBoardTitle', 'Search Results', questionData.data.searchedQuestions.length);
+    }
+    if (questionData.ready && questionData.data.searchedQuestions.length === 0) {
       notifyEmptyResult('questionsDisplay', 'block', 'Sorry! We cant find the question you are looking for!');
+      QuestionViewController.attachrefreshEvent('refresh');
       modifyTitle('dashBoardTitle', 'Search Results');
     }
   }
@@ -213,6 +210,25 @@ class QuestionViewController {
     if (targetDiv) {
       targetDiv.addEventListener('click', () => {
         renderModal(targetId, 'none');
+      });
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - the id of the element
+    * @param {string} targetId - the id of the target element
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method binds question views to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static attachrefreshEvent(elementId) {
+    const targetDiv = document.getElementById(elementId);
+    if (targetDiv) {
+      targetDiv.addEventListener('click', () => {
+        window.location.reload();
       });
     }
   }

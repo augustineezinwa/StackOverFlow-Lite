@@ -3,6 +3,7 @@ const questionData = {
     questions: [
 
     ],
+    searchedQuestions: [],
     questionWithAnswers: [],
     users: []
   },

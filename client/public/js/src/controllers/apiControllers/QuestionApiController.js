@@ -104,11 +104,12 @@ class QuestionApiController {
     */
   static fetchSearchQuestions() {
     questionData.errors.length = 0;
-    questionData.data.questions.length = 0;
+    questionData.data.searchedQuestions.length = 0;
     questionData.ready = 0;
     questionData.fail = 0;
     questionData.fetch = 1;
     connectSearchQuestionsDisplayToDataCenter();
+    window.location.hash = '';
     window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions?search=${questionData.search}`, {
       headers: {
         'Content-type': 'application/json',
@@ -116,11 +117,12 @@ class QuestionApiController {
     }).then(response => response.json())
       .then((data) => {
         if (data.status === 'success') {
-          questionData.data.questions = data.data.questions;
+          questionData.data.searchedQuestions = data.data.questions;
         }
         console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
+        questionData.search = '';
         connectSearchQuestionsDisplayToDataCenter();
       })
       .catch((error) => {
@@ -129,6 +131,7 @@ class QuestionApiController {
         questionData.fail = 1;
         questionData.ready = 1;
         questionData.fetch = 0;
+        questionData.search = '';
         connectSearchQuestionsDisplayToDataCenter();
       });
   }

@@ -43,6 +43,7 @@ class UserViewController {
       toggleDiv('loginLink');
       toggleDiv('signupLink');
       toggleDiv('profileLink', '');
+      return window.location.reload();
     }
     if (userAuthData.fail && userAuthData.ready) {
       renderModal('modalDisplay', 'block', 'Internet Connection Error!');
