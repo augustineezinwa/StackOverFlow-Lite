@@ -7,14 +7,79 @@ import userAuthData from '../../models/userData.js';
 import ResourceHelper from '../../helper/ResourceHelper.js';
 import RenderUi from '../../views/RenderUi.js';
 
+
 const { validateSignup, loginOnDemand } = UserViewController;
 const { signUpUser, loginUser } = UserApiController;
 const {
-  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion
+  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const { toggleDiv } = RenderUi;
+
+
+const signupAction = () => {
+  const signupButton = document.getElementById('signupButton');
+  validateSignup();
+  signupButton.addEventListener('click', (e) => {
+    const email = document.getElementById('email').value;
+    const fullName = document.getElementById('fullName').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const [firstName, ...lastName] = fullName.split(' ');
+    e.preventDefault();
+    signUpUser(firstName, lastName.join(''), email, password, confirmPassword);
+  });
+};
+
+const loginAction = () => {
+  const loginButton = document.getElementById('loginButton');
+  loginButton.addEventListener('click', (e) => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    e.preventDefault();
+    loginUser(email, password);
+  });
+};
+
+const askAction = () => {
+  const askButton = document.getElementById('askButton');
+  askButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const questionTitle = document.getElementById('questionTitle').value;
+    const questionDescription = document.getElementById('questionDescription').value;
+
+    if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
+    if (!userAuthData.data.loginStatus) {
+      destroyData('loginStatus');
+      return loginOnDemand('a question');
+    }
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    postQuestion(questionTitle, questionDescription);
+  });
+};
+
+
+const pageDisplay = document.getElementById('pageDisplay');
+pageDisplay.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (e.target.id === 'refresh') window.location.reload();
+  if (e.target.id === 'answerButton') {
+    const answer = document.getElementById('answer').value;
+    e.preventDefault();
+    if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
+    if (!userAuthData.data.loginStatus) {
+      destroyData('loginStatus');
+      return UserViewController.loginOnDemand('an answer');
+    }
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    postAnswer(answer, +e.target.attributes[1].value);
+  }
+});
 
 window.addEventListener('load', () => {
   userAuthData.data.loginStatus = retrieveData('loginStatus');
@@ -31,47 +96,17 @@ window.addEventListener('load', () => {
     fetchQuestion(url);
   }
   if (window.location.hash === '#signup') {
-    const signupButton = document.getElementById('signupButton');
-    validateSignup();
-    signupButton.addEventListener('click', (e) => {
-      const email = document.getElementById('email').value;
-      const fullName = document.getElementById('fullName').value;
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      const [firstName, ...lastName] = fullName.split(' ');
-      e.preventDefault();
-      signUpUser(firstName, lastName.join(''), email, password, confirmPassword);
-    });
+    signupAction();
   }
+
   if (window.location.hash === '#login') {
-    const loginButton = document.getElementById('loginButton');
-    loginButton.addEventListener('click', (e) => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      e.preventDefault();
-      loginUser(email, password);
-    });
+    loginAction();
   }
   if (window.location.hash === '#ask') {
-    console.log('I am here');
-    const askButton = document.getElementById('askButton');
-    askButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      const questionTitle = document.getElementById('questionTitle').value;
-      const questionDescription = document.getElementById('questionDescription').value;
-
-      if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
-      if (!userAuthData.data.loginStatus) {
-        destroyData('loginStatus');
-        return UserViewController.loginOnDemand();
-      }
-      if (!userAuthData.data.token) {
-        userAuthData.data.token = retrieveData('token');
-      }
-      postQuestion(questionTitle, questionDescription);
-    });
+    askAction();
   }
 });
+
 window.addEventListener('hashchange', () => {
   if (window.location.hash === '') {
     if (questionData.data.questions.length === 0 && !questionData.search) {
@@ -81,51 +116,21 @@ window.addEventListener('hashchange', () => {
   if (window.location.hash.startsWith('#questions')) {
     const url = window.location.hash.substring(window.location.hash.lastIndexOf('-') + 1);
     if (searchQuestionInHistory(url)) return renderQuestionInHistory(url);
+
     questionData.url = url;
     fetchQuestion(url);
   }
+
   if (window.location.hash === '#signup') {
-    const signupButton = document.getElementById('signupButton');
-    validateSignup();
-    signupButton.addEventListener('click', (e) => {
-      const email = document.getElementById('email').value;
-      const fullName = document.getElementById('fullName').value;
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      const [firstName, ...lastName] = fullName.split(' ');
-      e.preventDefault();
-      signUpUser(firstName, lastName.join(''), email, password, confirmPassword);
-    });
+    signupAction();
   }
 
   if (window.location.hash === '#login') {
-    const loginButton = document.getElementById('loginButton');
-    loginButton.addEventListener('click', (e) => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      e.preventDefault();
-      loginUser(email, password);
-    });
+    loginAction();
   }
 
   if (window.location.hash === '#ask') {
-    const askButton = document.getElementById('askButton');
-    askButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      const questionTitle = document.getElementById('questionTitle').value;
-      const questionDescription = document.getElementById('questionDescription').value;
-
-      if (!userAuthData.data.loginStatus) userAuthData.data.loginStatus = retrieveData('loginStatus');
-
-      if (!userAuthData.data.loginStatus) {
-        destroyData('loginStatus');
-        return UserViewController.loginOnDemand();
-      }
-      if (!userAuthData.data.token) {
-        userAuthData.data.token = retrieveData('token');
-      }
-      postQuestion(questionTitle, questionDescription);
-    });
+    askAction();
   }
 
   if (window.location.hash === '#profile' || window.location.hash === '#logout') {
