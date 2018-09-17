@@ -46,6 +46,7 @@ class QuestionViewController {
       QuestionViewController.attachLoadMoreEvent('loadMore');
     } else {
       notifyEmptyResult('questionsDisplay', 'block', 'No Questions Yet!');
+      QuestionViewController.attachrefreshEvent('refresh');
     }
   }
 
@@ -110,6 +111,7 @@ class QuestionViewController {
       renderQuestionWithAnswers('pageDisplay', 'block');
     } else if (questionData.ready) {
       notifyEmptyResult('questionsDisplay', 'block', 'Sorry! Page not found!');
+      QuestionViewController.attachrefreshEvent('refresh');
       modifyTitle('dashBoardTitle', 'Oops! An Error Occured');
     }
   }
@@ -271,6 +273,24 @@ class QuestionViewController {
         window.location.hash = `#questions-${questionData.retrieveId}`;
       }));
     }
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} className - the className of the buttons
+    *
+    * @param {string} setDisplay
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method hides buttons of the same class name;
+    * @memberOf QuestionViewController
+    */
+  static toggleAllByClassName(className, setDisplay = 'none') {
+    const targetButtons = document.querySelectorAll(`.${className}`);
+    targetButtons.forEach((x) => {
+      x.style.display = setDisplay;
+    });
   }
 
   /**

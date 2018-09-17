@@ -7,7 +7,9 @@ import CatchErrors from '../helper/CatchErrors';
 import { formatUsers } from '../helper/format';
 
 const { catchDatabaseConnectionError } = CatchErrors;
-const { createUser, checkEmail, getUsers } = SqlHelper;
+const {
+  createUser, checkEmail, getUsers, findUser
+} = SqlHelper;
 dotenv.config();
 /**
   * @class UserController
@@ -127,6 +129,39 @@ class UserController {
             response.status(200).json({
               status: 'success',
               data: { users: formatUsers(data.rows) }
+            });
+          }
+        }
+      })
+      .catch(error => catchDatabaseConnectionError(`error reading users table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method returns all users in the database
+    * @memberOf UserController
+    */
+  static fetchUserProfile(request, response) {
+    const userId = request.id || request.params.userId;
+    dbConnect.query(findUser(userId))
+      .then((data) => {
+        switch (data.rows.length) {
+          case 0: response.status(404).json({
+            status: 'fail',
+            message: 'This user has not registered!'
+          });
+            break;
+
+          default: {
+            response.status(200).json({
+              status: 'success',
+              data: { users: formatUsers(data.rows)[0] }
             });
           }
         }

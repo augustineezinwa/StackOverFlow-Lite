@@ -4,11 +4,12 @@ import userAuthData from '../../models/userData.js';
 import QuestionViewController from './QuestionViewController.js';
 import ResourceHelper from '../../helper/ResourceHelper.js';
 
-const { attachSwitchOffModalEvent } = QuestionViewController;
+const { attachSwitchOffModalEvent, toggleAllByClassName, attachViewEvents } = QuestionViewController;
 const { isValid, validateConfirmPassword } = Validation;
 const {
   renderNotifications, renderNotification, renderNotificationInButton, renderModal, showErrors,
-  toggleDiv
+  toggleDiv, renderModalLoader, renderUserProfile, renderRecentQuestions,
+  renderAllQuestions, renderMostAnsweredQuestions
 } = RenderUi;
 const { storeData, destroyData } = ResourceHelper;
 /**
@@ -83,6 +84,70 @@ class UserViewController {
     if (userAuthData.fail && userAuthData.ready) {
       renderModal('modalDisplay', 'block', 'Internet Connection Error!');
       attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method manipulates the views during profile fetch;
+    * @memberOf UserViewController
+    */
+  static connectfetchUserProfileOperationToDataCenter() {
+    if (!userAuthData.ready && userAuthData.fetch) {
+      renderModalLoader('modalDisplay', 'block', 'Loading Profile');
+    }
+    if (userAuthData.ready) renderModalLoader('modalDisplay', 'none', '');
+    if (userAuthData.fail) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+
+    if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
+      console.log(userAuthData.errors);
+      if (userAuthData.errors[0].message.includes('Unauthorized')
+      || userAuthData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        userAuthData.data.loginStatus = 0;
+        userAuthData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      if (userAuthData.data.profile.length > 0 && userAuthData.ready
+        && userAuthData.errors[0].message.includes('found')
+      ) {
+        renderModalLoader('modalDisplay', 'none', '');
+        renderUserProfile('profileDisplay', 'block', userAuthData.data.profile);
+        QuestionViewController.attachrefreshEvent('refresh');
+        QuestionViewController.attachrefreshEvent('refreshTwo');
+      }
+
+      if (userAuthData.data.profile.length === 0 && userAuthData.ready
+      ) {
+        renderModalLoader('modalDisplay', 'none', '');
+        QuestionViewController.attachrefreshEvent('refresh');
+        QuestionViewController.attachrefreshEvent('refreshTwo');
+      }
+    }
+
+
+    if (userAuthData.ready && userAuthData.data.questions.length > 0 && userAuthData.data.profile.length > 0) {
+      renderModalLoader('modalDisplay', 'none', '');
+      renderUserProfile('profileDisplay', 'block', userAuthData.data.profile);
+      renderMostAnsweredQuestions('mostAnsweredQuestionsDisplay', 'block',
+        userAuthData.data.questions);
+      renderRecentQuestions('recentQuestionsDisplay', 'block', userAuthData.data.questions);
+      attachViewEvents('viewButton');
+      toggleAllByClassName('load');
+      QuestionViewController.attachrefreshEvent('refresh');
+      QuestionViewController.attachrefreshEvent('refreshTwo');
     }
   }
 

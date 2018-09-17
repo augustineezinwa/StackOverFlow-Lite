@@ -8,8 +8,8 @@ import ResourceHelper from '../../helper/ResourceHelper.js';
 import RenderUi from '../../views/RenderUi.js';
 
 
-const { validateSignup, loginOnDemand } = UserViewController;
-const { signUpUser, loginUser } = UserApiController;
+const { validateSignup, loginOnDemand, connectfetchUserProfileOperationToDataCenter } = UserViewController;
+const { signUpUser, loginUser, fetchUserProfile } = UserApiController;
 const {
   fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer
 } = QuestionApiController;
@@ -131,6 +131,10 @@ window.addEventListener('load', () => {
     toggleDiv('logoutLink', 'block');
     forceLogout();
     logoutAction();
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    fetchUserProfile();
   } else {
     toggleDiv('logoutLink');
   }
@@ -167,6 +171,11 @@ window.addEventListener('hashchange', () => {
     toggleDiv('logoutLink', 'block');
     forceLogout();
     logoutAction();
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    if (!userAuthData.data.profile.length) fetchUserProfile();
+    else { connectfetchUserProfileOperationToDataCenter(); }
   } else {
     toggleDiv('logoutLink');
   }

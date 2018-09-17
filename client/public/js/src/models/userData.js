@@ -1,6 +1,8 @@
 const userAuthData = {
   data: {
-    loginStatus: 0
+    loginStatus: 0,
+    profile: [],
+    questions: [],
   },
   errors: [
 

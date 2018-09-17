@@ -58,7 +58,7 @@ const formatMostAnsweredQuestions = (data) => {
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
       answers: [],
-      numberOfAnswers: Number.parseInt(x.answersnumber, 10),
+      numberOfAnswers: Number.parseInt(Number(x.answersnumber), 10),
       time: x.time,
       date: x.date,
       userId: x.userid
@@ -113,6 +113,10 @@ const formatUsers = (data) => {
       jobRole: x.jobrole,
       company: x.company,
       photo: x.photo,
+      numberOfAnswers: Number.parseInt(Number(x.answersnumber), 10),
+      earnedUpvotes: Number.parseInt(Number(x.upvotes), 10),
+      earnedDownvotes: Number.parseInt(Number(x.downvotes), 10),
+      numberOfQuestions: Number.parseInt(Number(x.questionsnumber), 10),
       time: x.time,
       date: x.date
     });
