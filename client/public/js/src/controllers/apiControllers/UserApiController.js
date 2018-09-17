@@ -7,7 +7,8 @@ const {
 } = ResourceHelper;
 const {
   connectSignUpUserOperationToDataCenter,
-  connectloginUserOperationToDataCenter
+  connectloginUserOperationToDataCenter,
+  connectfetchUserProfileOperationToDataCenter
 } = UserViewController;
 /**
   * @class UserViewController
@@ -129,6 +130,109 @@ class UserApiController {
         userAuthData.ready = 1;
         userAuthData.fetch = 0;
         connectloginUserOperationToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    *
+    * @returns {object} - fetches user profile.
+    *
+    * @description This method fetches user profile
+    * @memberOf UserApiController
+    */
+  static fetchUserProfile() {
+    userAuthData.errors.length = 0;
+    userAuthData.data.profile.length = 0;
+    userAuthData.ready = 0;
+    userAuthData.fail = 0;
+    userAuthData.fetch = 1;
+    connectfetchUserProfileOperationToDataCenter();
+    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/users/profile', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status === 'success') {
+          userAuthData.errors.length = 0;
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          userAuthData.data.profile.push(data.data.users);
+          console.log(userAuthData);
+          return UserApiController.fetchUserQuestions();
+        }
+        userAuthData.errors.push(data);
+        console.log(userAuthData);
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectfetchUserProfileOperationToDataCenter();
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        userAuthData.errors.push(error);
+        userAuthData.fail = 1;
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectfetchUserProfileOperationToDataCenter();
+      });
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {string} email - the email of the user
+    * @param {string} password - the password of the user
+    *
+    * @returns {object} - logins user
+    *
+    * @description This method signs up in the application
+    * @memberOf UserApiController
+    */
+  static fetchUserQuestions() {
+    userAuthData.errors.length = 0;
+    userAuthData.data.questions.length = 0;
+    userAuthData.ready = 0;
+    userAuthData.fail = 0;
+    userAuthData.fetch = 1;
+    connectfetchUserProfileOperationToDataCenter();
+    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/users/questions', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status === 'success') {
+          userAuthData.errors.length = 0;
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          userAuthData.data.questions = data.data.questions;
+          console.log(userAuthData);
+          connectfetchUserProfileOperationToDataCenter();
+        } else {
+          userAuthData.errors.push(data);
+          console.log(userAuthData);
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          connectfetchUserProfileOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        userAuthData.errors.push(error);
+        userAuthData.fail = 1;
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectfetchUserProfileOperationToDataCenter();
       });
   }
 }

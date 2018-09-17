@@ -1,6 +1,7 @@
 import questionData from '../models/dataCenter.js';
 import userAuthData from '../models/userData.js';
 import ResourceHelper from '../helper/ResourceHelper.js';
+import routeTable from '../router/routeTable.js';
 
 const { getInformationFromDataCenter } = ResourceHelper;
 
@@ -463,7 +464,7 @@ class RenderUi {
       reformedQuestion += '<div class ="col"></div></div>';
       formattedQuestionDispay = refinedQuestions + reformedQuestion;
     }
-    const loadMoreButton = `<div class ="mb-1 mt-1" style="text-align: center"><button id ="loadMore" type="answer">Load more</button></div>
+    const loadMoreButton = `<div class ="mb-1 mt-1 load" style="text-align: center"><button id ="loadMore" type="answer">Load more</button></div>
     `;
     targetDiv.innerHTML = `<div class = "container " style = "background-color: #f1f1f1">
               ${formattedQuestionDispay} 
@@ -579,6 +580,153 @@ class RenderUi {
     if (questionData.errors[0].message.includes('answer')) {
       answer.style.borderColor = 'red';
     }
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the element that will display the profile
+    * @param {string} setDisplay - The sets the visibility of the div element
+    * @param {string} profileArray - This is the profileData of the currently logged in user
+    * @param {string} userQuestionsArray - These are questions asked by this user
+    * @returns {object} - renders user's data on the client side
+    *
+    * @description This method renders the user's profile.
+    * @memberOf RenderUi
+    */
+  static renderUserProfile(elementId, setDisplay, profileArray) {
+    const targetDiv = document.getElementById(elementId);
+    const profileDisplay = `${RenderUi.renderProfileDetail(profileArray)}`;
+    targetDiv.style.display = setDisplay;
+    targetDiv.innerHTML = profileDisplay;
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the element to be displayed
+    * @param {string} setDisplay - The sets the visibility of the div element
+    * @param {string} questionsArray - This is the question array data to be passed in
+    * @returns {object} - renders recent questions to the profile page
+    *
+    * @description This method renders recents question in a div.
+    * @memberOf RenderUi
+    */
+  static renderRecentQuestions(elementId, setDisplay, questionsArray) {
+    const todaysDate = (new Date(Date.now())).toDateString();
+    const recentQuestions = questionsArray.filter(x => x.date.includes(todaysDate.split(' ')[1])
+  && x.date.includes(todaysDate.split(' ')[3]));
+    if (recentQuestions.length > 0) {
+      RenderUi.renderAllQuestions('recentQuestionsDisplay', 'block', recentQuestions.length, recentQuestions);
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the element to be displayed
+    * @param {string} setDisplay - The sets the visibility of the div element
+    * @param {string} questionsArray - This is the question array data to be passed in
+    * @returns {object} - renders recent questions to the profile page
+    *
+    * @description This method renders mostAnswered question in a div.
+    * @memberOf RenderUi
+    */
+  static renderMostAnsweredQuestions(elementId, setDisplay, questionsArray) {
+    const mostAnsweredQuestions = questionsArray.sort((x, y) => x.numberOfAnswers > y.numberOfAnswers);
+    const refinedMostAnsweredQuestions = mostAnsweredQuestions.filter(x => x.numberOfAnswers > 0);
+    if (refinedMostAnsweredQuestions.length > 0) {
+      if (refinedMostAnsweredQuestions.length > 6) {
+        RenderUi.renderAllQuestions('mostAnsweredQuestionsDisplay', 'block',
+          6, refinedMostAnsweredQuestions);
+      } else {
+        RenderUi.renderAllQuestions('mostAnsweredQuestionsDisplay', 'block',
+          refinedMostAnsweredQuestions.length, mostAnsweredQuestions);
+      }
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} profileArray - This is the profileData of the currently logged in user
+    * @returns {object} - renders user's data on the client side
+    *
+    * @description This method renders the user's profile.
+    * @memberOf RenderUi
+    */
+  static renderProfileDetail(profileArray) {
+    const userProfileData = `<div class = "container image-background profile-height" style = "margin: 0 auto;">
+    
+    <div class = "row ">
+        
+        <div class = "col mt-17" >
+          <h1 style = "color: white; text-align: center">Welcome to StackOverFlow-Lite</h1>
+        </div>
+        <div class = "col">
+          <div class = "profile-box" >
+            <div class = "container">
+              <div class = "col profile-header" >My Profile</div>
+              <div class = "row">
+                <div class = "col-2"> 
+                  <div class = "user-icon-div"> <i class = "fa fa-user user-icon-profile"></i></div></div>
+                <div class = "col-5"> 
+                  <div class = "container mt-7 ml-3">
+                    <div class = "row mt-2">
+                        <div class = "col-3"><div class = "name">Name:</div></div>
+                        <div class = "col-5"><div class = "name">${profileArray[0].fullName}</div></div>
+                    </div>
+                  
+                    <div class = "row mt-2">
+                        <div class = "col-3"><div class = "name">Job role:</div></div>
+                        <div class = "col-5"><div class = "name">${profileArray[0].jobRole}</div></div>
+                    </div>
+
+                    <div class = "row mt-2">
+                        <div class = "col-3"><div class = "name">Company:</div></div>
+                        <div class = "col-5"><div class = "name">${profileArray[0].company}</div></div>
+                    </div>
+
+
+                  
+                    <div class = "row mt-7">
+                        <div class = "col-3"><div class = "name"><button id ="updateProfileButton">Update</button></div></div>
+                        <div class = "col-5"><div class = "name"></div></div>
+                    </div>
+
+                 
+
+                  </div>
+
+                </div>
+              </div>
+              
+              <div class = "col mt-7" style = "font-weight:bold; font-size: 18pt;">Stats</div>
+              <div class = "row mt-2" style = "margin-left: 1%">
+                  <div class = "col-2"><div class = "name">You asked:</div></div>
+                  <div class = "col-5"><div class = "name">${profileArray[0].numberOfQuestions} Questions</div></div>
+              </div>
+
+              <div class = "row mt-2" style = "margin-left: 1%">
+                  <div class = "col-2"><div class = "name">You answered:</div></div>
+                  <div class = "col-5"><div class = "name">${profileArray[0].numberOfAnswers} Questions</div></div>
+              </div>
+              
+
+              <div class = "row mt-2" style = "margin-left: 1%">
+                  <div class = "col-2"><div class = "name">You earned:</div></div>
+                  <div class = "col-5"><div class = "name">${profileArray[0].earnedUpvotes} Upvotes</div></div>
+              </div>
+
+            </div>
+      </div>
+                </div>
+    </div>
+
+   
+   </div>`;
+    return userProfileData;
   }
 }
 

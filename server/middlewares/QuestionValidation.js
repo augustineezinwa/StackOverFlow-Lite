@@ -129,6 +129,26 @@ class QuestionValidation {
     * @description This method validates the req url
     * @memberOf QuestionValidation
     */
+  static validateUserUrl(request, response, next) {
+    if (Number.parseInt(request.params.userId, 10) === +request.params.userId) return next();
+    return response.status(400).json({
+      status: 'fail',
+      message: 'invalid url'
+    });
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message or next
+    *
+    * @description This method validates the req url
+    * @memberOf QuestionValidation
+    */
   static reValidateUrl(request, response, next) {
     if (Number.parseInt(request.params.answerId, 10) === +request.params.answerId) return next();
     return response.status(400).json({

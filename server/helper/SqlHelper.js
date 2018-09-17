@@ -482,7 +482,12 @@ class SqlHelper {
     */
   static getAllUserQuestions(userId) {
     const query = {
-      text: 'SELECT * FROM questions where questions.userid = $1',
+      text: `SELECT * FROM (SELECT questions.*, count(answers.questionid) as answersnumber,
+      sum(answers.upvotes) as upvotes,
+      sum(answers.downvotes) as downvotes from questions
+      left  join answers on (questions.id =answers.questionid)
+      group by questions.id) as c where c.userid =$1
+    `,
       values: [userId]
     };
     return query;
@@ -630,13 +635,17 @@ class SqlHelper {
     */
   static findUser(id) {
     const query = {
-      text: 'SELECT * from users where users.id =$1',
+      text: `SELECT * FROM (SELECT users.*, count(answers.userid) as answersnumber, sum(answers.upvotes) as upvotes,
+               sum(answers.downvotes) as downvotes from users left join answers on (users.id = answers.userid)
+               group by users.id) as b, (SELECT users.*, count(questions.userid) as questionsnumber from users left join 
+               questions on (users.id = questions.userid) group by users.id) as c where  b.id =$1 and c.id =$1
+       `,
       values: [id]
     };
     return query;
   }
 
-    /**
+  /**
     * @static
     *
     *
@@ -645,9 +654,13 @@ class SqlHelper {
     * @description This method finds a user by id
     * @memberOf SqlHelper
     */
-   static getUsers() {
+  static getUsers() {
     const query = {
-      text: 'SELECT * from users',
+      text: `SELECT * FROM (SELECT users.*, count(answers.userid) as answersnumber, sum(answers.upvotes) as upvotes,
+      sum(answers.downvotes) as downvotes from users left join answers on (users.id = answers.userid)
+      group by users.id) as b, (SELECT users.*, count(questions.userid) as questionsnumber from users left join 
+      questions on (users.id = questions.userid) group by users.id) as c where  b.id = c.id
+      `,
     };
     return query;
   }

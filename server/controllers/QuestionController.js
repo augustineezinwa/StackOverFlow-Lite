@@ -74,7 +74,7 @@ class QuestionController {
           default: {
             response.status(200).json({
               status: 'success',
-              data: { questions: formatQuestions(data.rows) }
+              data: { questions: formatAllQuestions(data.rows) }
             });
           }
         }
