@@ -9,7 +9,7 @@ const { isValid, validateConfirmPassword } = Validation;
 const {
   renderNotifications, renderNotification, renderNotificationInButton, renderModal, showErrors,
   toggleDiv, renderModalLoader, renderUserProfile, renderRecentQuestions,
-  renderAllQuestions, renderMostAnsweredQuestions
+  renderMostAnsweredQuestions, showErrorsOnProfileUpdateForm
 } = RenderUi;
 const { storeData, destroyData } = ResourceHelper;
 /**
@@ -148,6 +148,75 @@ class UserViewController {
       toggleAllByClassName('load');
       QuestionViewController.attachrefreshEvent('refresh');
       QuestionViewController.attachrefreshEvent('refreshTwo');
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds update profile views to datacenter
+    *
+    * @description This method binds update profile actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectUpdateUserProfileOperationToDataCenter() {
+    if (!userAuthData.ready && userAuthData.fetch) {
+      console.log('I am here');
+      renderNotificationInButton('updateProfileButton', 'block', 'Saving...', '');
+    }
+    if (userAuthData.ready) renderNotificationInButton('updateProfileButton', 'block', '', 'Update');
+    if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
+      if (userAuthData.errors[0].message.includes('Unauthorized')
+          || userAuthData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        userAuthData.data.loginStatus = 0;
+        userAuthData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnProfileUpdateForm();
+    }
+    if (userAuthData.data.updateStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'Profile update was successful');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      window.location.reload();
+    }
+    if (userAuthData.fail && userAuthData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds update profile views to datacenter
+    *
+    * @description This method binds update profile actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectUpdateProfilePhotoOperationToDataCenter() {
+    if (!userAuthData.ready && userAuthData.fetch) {
+      console.log('I am here');
+      renderNotificationInButton('updateProfileButton', 'block', 'Uploading Photo...', '');
+    }
+    if (userAuthData.ready) renderNotificationInButton('updateProfileButton', 'block', '', 'Update');
+    if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
+      renderNotification('notificationDisplay', 'block', 'Error Occurred uploading profile photo');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+    }
+    if (userAuthData.data.updatePhotoStatus === 1) {
+      renderNotification('notificationDisplay', 'block', 'Photo update was successful');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+    }
+    if (userAuthData.fail && userAuthData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
     }
   }
 

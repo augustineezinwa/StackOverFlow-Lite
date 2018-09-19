@@ -13,6 +13,33 @@ body {
   box-shadow:inset 0 0 0 2000px rgba(0,0,0,0.3);
   
 }
+.photoCloseButton {
+  font-weight: bold; 
+  color: white;
+   float:right; 
+   font-size:3.4rem
+}
+.zoomPhoto {
+  border: 2px solid white;
+   text-align:center; 
+    width:100%;
+    height: 70vh;
+     border-radius: 50%
+}
+.photoCollapseButton {
+  padding:10px 14px;
+   cursor:pointer
+}
+#zoomedPhoto {
+  padding-top:7%;
+}
+
+.profilePhoto {
+  width:99%;
+  height: 22vh;
+   border-radius: 50%;
+    display:none
+}
 
 #pageDisplay {
   min-height: 90vh;
@@ -494,5 +521,9 @@ color: darkgray;
 
 .notification {
   padding:4% 5%;
+}
+
+.profilePhoto {
+  height : 40vh;
 }
 }

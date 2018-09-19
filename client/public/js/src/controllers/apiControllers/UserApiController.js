@@ -8,7 +8,9 @@ const {
 const {
   connectSignUpUserOperationToDataCenter,
   connectloginUserOperationToDataCenter,
-  connectfetchUserProfileOperationToDataCenter
+  connectfetchUserProfileOperationToDataCenter,
+  connectUpdateUserProfileOperationToDataCenter,
+  connectUpdateProfilePhotoOperationToDataCenter
 } = UserViewController;
 /**
   * @class UserViewController
@@ -233,6 +235,120 @@ class UserApiController {
         userAuthData.ready = 1;
         userAuthData.fetch = 0;
         connectfetchUserProfileOperationToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} photoUrl - The url of the photo that is stored on the cloud
+    * @param {string} company - The new company value to be update
+    * @param {string} jobRole - The new job role to be update.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method binds the update user profile.
+    * @memberOf UserApiController
+    */
+  static updateUserProfile(photoUrl, company, jobRole) {
+    userAuthData.errors.length = 0;
+    userAuthData.data.updateStatus = 0;
+    userAuthData.ready = 0;
+    userAuthData.fail = 0;
+    userAuthData.fetch = 1;
+    connectUpdateUserProfileOperationToDataCenter();
+    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/users', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      },
+      body: JSON.stringify({
+        jobRole,
+        company,
+        photo: photoUrl
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          userAuthData.data.updateStatus = 1;
+          userAuthData.errors.length = 0;
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          userAuthData.data.message = data.message;
+          connectUpdateUserProfileOperationToDataCenter();
+        } else {
+          userAuthData.errors.push(data);
+          console.log(userAuthData);
+          userAuthData.ready = 1;
+          userAuthData.fetch = 0;
+          connectUpdateUserProfileOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        userAuthData.errors.push(error);
+        userAuthData.fail = 1;
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectUpdateUserProfileOperationToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} photoUrl - The generated url/file of the photo
+    * @param {string} company - The new company value to be updated
+    * @param {string} jobRole - The new job role to be updated.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method uploads photo to the cloud
+    * @memberOf UserApiController
+    */
+  static updatePhotoToCloud(photoUrl, company, jobRole) {
+    userAuthData.errors.length = 0;
+    userAuthData.data.updateStatus = 0;
+    userAuthData.data.updatePhotoStatus = 0;
+    userAuthData.ready = 0;
+    userAuthData.fail = 0;
+    userAuthData.fetch = 1;
+    connectUpdateProfilePhotoOperationToDataCenter();
+    window.fetch('https://api.cloudinary.com/v1_1/stack-o-lite-herokuapp-com/image/upload', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        file: photoUrl,
+        upload_preset: 'veralqd6'
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.url) {
+          console.log(data);
+          userAuthData.data.updatePhotoStatus = 1;
+          userAuthData.data.photo = data.url;
+          userAuthData.errors.length = 0;
+          userAuthData.ready = 0;
+          userAuthData.fetch = 0;
+          userAuthData.data.message = data.message;
+          return UserApiController.updateUserProfile(data.url, company, jobRole);
+        }
+        userAuthData.errors.push(data);
+        console.log(userAuthData);
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectUpdateProfilePhotoOperationToDataCenter();
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        userAuthData.errors.push(error);
+        userAuthData.fail = 1;
+        userAuthData.ready = 1;
+        userAuthData.fetch = 0;
+        connectUpdateProfilePhotoOperationToDataCenter();
       });
   }
 }

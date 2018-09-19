@@ -1,4 +1,8 @@
-const profile = `  <div id ="profileDisplay">  <div class = "container image-background profile-height" style = "margin: 0 auto;">
+const profile = `  
+
+<div id ="profileDisplay"> 
+<div id = "photoDisplay"></div>
+<div class = "container image-background profile-height" style = "margin: 0 auto;">
     
 <div class = "row ">
     
@@ -11,7 +15,11 @@ const profile = `  <div id ="profileDisplay">  <div class = "container image-bac
           <div class = "col profile-header" >My Profile</div>
           <div class = "row">
             <div class = "col-2"> 
-              <div class = "user-icon-div"> <i class = "fa fa-user user-icon-profile"></i></div></div>
+            <div class = "user-icon-div" id ="dummyImage" style ="display:block"> <i class = "fa fa-user user-icon-profile"></i></div>
+            <div class = "mt-1" > <img id ="imageHolder" class ="profilePhoto" src ="http://donkeys.com"></div>
+            <input type ="file" name =" file"  id= "imageUpload" style ="width:100%; display:none" accept ="images/*">
+            </div>
+              
             <div class = "col-5"> 
               <div class = "container mt-7 ml-3">
                 <div class = "row mt-2">
@@ -21,18 +29,18 @@ const profile = `  <div id ="profileDisplay">  <div class = "container image-bac
               
                 <div class = "row mt-2">
                     <div class = "col-3"><div class = "name">Job role:</div></div>
-                    <div class = "col-5"><div class = "name">---- --- ---</div></div>
+                    <div class = "col-5"><div id="jobRoleDisplay" class = "name">---- --- ---</div><div><input style ="display:none" id ="jobRoleEdit" type ="text"></div></div>
                 </div>
 
                 <div class = "row mt-2">
                     <div class = "col-3"><div class = "name">Company:</div></div>
-                    <div class = "col-5"><div class = "name">----</div></div>
+                    <div class = "col-5"><div id = "companyDisplay"class = "name">----</div><div><input style ="display:none" id ="companyEdit" type ="text"></div></div>
                 </div>
 
 
               
                 <div class = "row mt-7">
-                    <div class = "col-3"><div class = "name"><button>Update</button></div></div>
+                    <div class = "col-3"><div class = "name"><button id ="updateProfileButton">Update</button></div></div>
                     <div class = "col-5"><div class = "name"></div></div>
                 </div>
 

@@ -9,13 +9,17 @@ import RenderUi from '../../views/RenderUi.js';
 
 
 const { validateSignup, loginOnDemand, connectfetchUserProfileOperationToDataCenter } = UserViewController;
-const { signUpUser, loginUser, fetchUserProfile } = UserApiController;
+const {
+  signUpUser, loginUser, fetchUserProfile, updateUserProfile, updatePhotoToCloud
+} = UserApiController;
 const {
   fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
-const { toggleDiv, renderNotification } = RenderUi;
+const {
+ toggleDiv, renderNotification, renderNotificationInButton, togglePhoto 
+} = RenderUi;
 
 
 const signupAction = () => {
@@ -83,9 +87,48 @@ const forceLogout = () => {
   }
 };
 
+const updateProfileAction = () => {
+  const photo = document.getElementById('imageUpload');
+  const imageHolder = document.getElementById('imageHolder');
+  let photoUrl;
+  try {
+    photoUrl = window.URL.createObjectURL(photo.files[0]);
+    imageHolder.src = photoUrl;
+    imageHolder.onload = () => window.URL.revokeObjectURL(photo.files[0]);
+    toggleDiv('imageHolder', 'block');
+    toggleDiv('dummyImage');
+  } catch (err) {
+    if (userAuthData.data.profile[0].photo !== 'image-url') {
+      toggleDiv('imageHolder', 'block');
+      toggleDiv('dummyImage');
+    } else {
+      toggleDiv('dummyImage', 'block');
+      toggleDiv('imageHolder');
+      userAuthData.data.photo = 'image-url';
+    }
+  }
+};
+
+const uploadPhotoAction = () => {
+  const photo = document.getElementById('imageUpload');
+  photo.addEventListener('change', () => {
+    const imageHolder = document.getElementById('imageHolder');
+    const photoUrl = window.URL.createObjectURL(photo.files[0]);
+    imageHolder.src = photoUrl;
+    imageHolder.onload = () => window.URL.revokeObjectURL(photo.files[0]);
+    const reader = new FileReader();
+    reader.onload = (b) => {
+      const newUrl = b.srcElement.result;
+      userAuthData.data.photo = newUrl;
+    };
+    reader.readAsDataURL(photo.files[0]);
+    toggleDiv('imageHolder', 'block');
+    toggleDiv('dummyImage');
+  });
+};
+
 const pageDisplay = document.getElementById('pageDisplay');
 pageDisplay.addEventListener('click', (e) => {
-  e.preventDefault();
   if (e.target.id === 'refresh') window.location.reload();
   if (e.target.id === 'answerButton') {
     const answer = document.getElementById('answer').value;
@@ -99,6 +142,52 @@ pageDisplay.addEventListener('click', (e) => {
       userAuthData.data.token = retrieveData('token');
     }
     postAnswer(answer, +e.target.attributes[1].value);
+  }
+  if (e.target.innerText === 'Save') {
+    const company = document.getElementById('companyEdit').value;
+    const jobRole = document.getElementById('jobRoleEdit').value;
+    const imageHolder = document.getElementById('imageHolder');
+    updateProfileAction();
+
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    if (userAuthData.data.photo === 'image-url') {
+      updateUserProfile(userAuthData.data.photo, company, jobRole);
+    } else {
+      if (imageHolder.src === userAuthData.data.profile[0].photo) {
+        updateUserProfile(imageHolder.src, company, jobRole);
+      } else {
+        updatePhotoToCloud(userAuthData.data.photo, company, jobRole);
+      }
+     
+    }
+  }
+
+  if (e.target.id === 'updateProfileButton' && e.target.innerText === 'Update') {
+    const company = document.getElementById('companyDisplay').innerText;
+    const jobRole = document.getElementById('jobRoleDisplay').innerText;
+    toggleDiv('jobRoleDisplay');
+    toggleDiv('jobRoleEdit', 'block');
+    toggleDiv('companyDisplay');
+    toggleDiv('companyEdit', 'block');
+    toggleDiv('imageUpload', 'block');
+    document.getElementById('companyEdit').value = company;
+    document.getElementById('jobRoleEdit').value = jobRole;
+    renderNotificationInButton('updateProfileButton', 'block', '', 'Save');
+  }
+
+  if (e.target.id === 'imageUpload') {
+    uploadPhotoAction();
+  }
+
+  if (e.target.id === 'imageHolder') {
+    const imageHolder = document.getElementById('imageHolder');
+    togglePhoto('photoDisplay', 'block', imageHolder.src);
+  }
+
+  if (e.target.id === 'cancelPhotoButton') {
+    togglePhoto('photoDisplay');
   }
 });
 
