@@ -2,9 +2,11 @@ import bcrypt from 'bcrypt';
 import CatchErrors from '../helper/CatchErrors';
 import dbConnect from '../connections/dbConnect';
 import SqlHelper from '../helper/SqlHelper';
+import Helper from '../helper/Helper';
 
 const { checkEmail } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
+const { validateField } = Helper;
 /**
   * @class UserValidation
   *
@@ -29,14 +31,14 @@ class UserValidation {
       return response.status(400).json({
         status: 'fail',
         message: 'please provide an email to login'
-        
+
       });
     }
     if (!password) {
       return response.status(400).json({
         status: 'fail',
-        message:  'please provide password to login'
-        
+        message: 'please provide password to login'
+
       });
     }
     return next();
@@ -102,6 +104,64 @@ class UserValidation {
         });
       })
       .catch(error => catchDatabaseConnectionError(error, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the response object
+    *
+    * @description This method validates the user input
+    * @memberOf UserValidation
+    */
+  static validateJobRole(request, response, next) {
+    const { jobRole } = request.body;
+    validateField('jobRole', jobRole, response, next);
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the response object
+    *
+    * @description This method validates the user input
+    * @memberOf UserValidation
+    */
+  static validateProfileUpdate(request, response, next) {
+    const oldUpdates = {
+      jobRole: request.jobRole,
+      company: request.company,
+      photo: request.photo
+    };
+    const newUpdates = { ...oldUpdates, ...request.body };
+    request.body = newUpdates;
+    return next();
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the middleware
+    * @param {object} response - The response payload sent back from the middleware
+    * @param {object} next - The call back function to resume the next middleware
+    *
+    * @returns {object} - status Message and the response object
+    *
+    * @description This method validates the user input
+    * @memberOf UserValidation
+    */
+  static validateCompanyName(request, response, next) {
+    const { company } = request.body;
+    validateField('company', company, response, next);
   }
 }
 

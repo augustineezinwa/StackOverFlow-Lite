@@ -43,7 +43,7 @@ class RenderUi {
   static renderNotificationInButton(elementId, setDisplay = 'none', message = '', defaultLabel = 'Signup') {
     const content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
       : `${defaultLabel}`;
-
+    console.log(content);
     const targetDiv = document.getElementById(elementId);
     targetDiv.innerHTML = content;
     targetDiv.style.display = setDisplay;
@@ -96,6 +96,37 @@ class RenderUi {
     const targetButton = document.getElementById(elementId);
     targetButton.style.display = setDisplay;
   }
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the div element
+    * @param {string} setDisplay - This sets the display of the div element;
+    * @param {string} imageSrc - This sets the display of the div element;
+    * @returns {object} - renders a div ;
+    *
+    * @description This method renders a div element
+    * @memberOf RenderUi
+    */
+  static togglePhoto(elementId, setDisplay = 'none', imageSrc = '') {
+    const targetDiv = document.getElementById(elementId);
+    targetDiv.innerHTML = `<div class ="modal container " id ="zoomedPhoto" style ="" >
+    <div class = "row">
+      <div class = "col-2"></div>
+      <div class = "col-3">
+        <div  class ="photoCloseButton"><span id = "cancelPhotoButton" class = "photoCollapseButton">x</span></div>
+        <div>
+          <img style ="" class ="zoomPhoto" src ="${imageSrc}">
+  
+  
+        </div>
+      </div>
+     <div class = "col-2"></div>
+    </div>
+  </div>`;
+    targetDiv.style.display = setDisplay;
+  }
+
 
   /**
     * @static
@@ -573,12 +604,34 @@ class RenderUi {
     */
   static showErrorsOnPostAnswerForm() {
     const answer = document.getElementById('answer');
-    console.log(answer);
     answer.style.borderColor = '';
     RenderUi.renderNotification('notificationDisplay', 'block', questionData.errors[0].message);
     setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
     if (questionData.errors[0].message.includes('answer')) {
       answer.style.borderColor = 'red';
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on update profile form
+    *
+    * @description This method renders a validation messages and signs
+    * @memberOf RenderUi
+    */
+  static showErrorsOnProfileUpdateForm() {
+    const jobRole = document.getElementById('jobRoleEdit');
+    const company = document.getElementById('companyEdit');
+    jobRole.style.borderColor = '';
+    company.style.borderColor = '';
+    RenderUi.renderNotification('notificationDisplay', 'block', userAuthData.errors[0].message);
+    setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    if (userAuthData.errors[0].message.includes('company')) {
+      company.style.borderColor = 'red';
+    }
+    if (userAuthData.errors[0].message.includes('jobRole')) {
+      jobRole.style.borderColor = 'red';
     }
   }
 
@@ -599,6 +652,10 @@ class RenderUi {
     const profileDisplay = `${RenderUi.renderProfileDetail(profileArray)}`;
     targetDiv.style.display = setDisplay;
     targetDiv.innerHTML = profileDisplay;
+    if (profileArray[0].photo !== 'image-url') {
+      RenderUi.toggleDiv('dummyImage');
+      RenderUi.toggleDiv('imageHolder', 'block');
+    }
   }
 
 
@@ -634,7 +691,8 @@ class RenderUi {
     * @memberOf RenderUi
     */
   static renderMostAnsweredQuestions(elementId, setDisplay, questionsArray) {
-    const mostAnsweredQuestions = questionsArray.sort((x, y) => x.numberOfAnswers > y.numberOfAnswers);
+    let mostAnsweredQuestions = [...questionsArray];
+    mostAnsweredQuestions = mostAnsweredQuestions.sort((x, y) => x.numberOfAnswers > y.numberOfAnswers);
     const refinedMostAnsweredQuestions = mostAnsweredQuestions.filter(x => x.numberOfAnswers > 0);
     if (refinedMostAnsweredQuestions.length > 0) {
       if (refinedMostAnsweredQuestions.length > 6) {
@@ -657,7 +715,9 @@ class RenderUi {
     * @memberOf RenderUi
     */
   static renderProfileDetail(profileArray) {
-    const userProfileData = `<div class = "container image-background profile-height" style = "margin: 0 auto;">
+    const userProfileData = `
+    <div id = "photoDisplay"></div>
+    <div class = "container image-background profile-height" style = "margin: 0 auto;">
     
     <div class = "row ">
         
@@ -670,29 +730,33 @@ class RenderUi {
               <div class = "col profile-header" >My Profile</div>
               <div class = "row">
                 <div class = "col-2"> 
-                  <div class = "user-icon-div"> <i class = "fa fa-user user-icon-profile"></i></div></div>
+                  <div class = "user-icon-div" id ="dummyImage" style ="display:block"> <i class = "fa fa-user user-icon-profile"></i></div>
+                  <div class = "mt-1" > <img id ="imageHolder" class ="profilePhoto" src ="${profileArray[0].photo}"></div>
+                  <input type ="file" name =" file"  id= "imageUpload" style ="width:100%; display:none" accept ="images/*">
+                  </div>
+                  
                 <div class = "col-5"> 
                   <div class = "container mt-7 ml-3">
                     <div class = "row mt-2">
                         <div class = "col-3"><div class = "name">Name:</div></div>
-                        <div class = "col-5"><div class = "name">${profileArray[0].fullName}</div></div>
+                        <div class = "col-5"><div class = "name">${profileArray[0].fullName}</div> </div>
                     </div>
                   
                     <div class = "row mt-2">
                         <div class = "col-3"><div class = "name">Job role:</div></div>
-                        <div class = "col-5"><div class = "name">${profileArray[0].jobRole}</div></div>
+                        <div class = "col-5"><div id ="jobRoleDisplay" class = "name">${profileArray[0].jobRole}</div> <div><input style ="display:none"id ="jobRoleEdit" type ="text"></div></div>
                     </div>
 
                     <div class = "row mt-2">
                         <div class = "col-3"><div class = "name">Company:</div></div>
-                        <div class = "col-5"><div class = "name">${profileArray[0].company}</div></div>
+                        <div class = "col-5"><div id ="companyDisplay"class = "name">${profileArray[0].company}</div><div><input style ="display:none" id ="companyEdit" type ="text"></div></div>
                     </div>
 
 
                   
                     <div class = "row mt-7">
-                        <div class = "col-3"><div class = "name"><button id ="updateProfileButton">Update</button></div></div>
-                        <div class = "col-5"><div class = "name"></div></div>
+                        <div class = "col"><div class = "name"><button id ="updateProfileButton">Update</button></div></div>
+                        
                     </div>
 
                  

@@ -49,8 +49,12 @@ class Security {
               message: 'Please signup!'
             });
           }
+          const { jobrole, photo, company } = data.rows[0];
           request.id = id;
           request.email = email;
+          request.jobRole = jobrole;
+          request.photo = photo;
+          request.company = company;
           return next();
         })
         .catch(newError => catchDatabaseConnectionError(`error reading user table ${newError}`, response));

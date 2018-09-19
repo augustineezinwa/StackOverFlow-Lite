@@ -4,11 +4,11 @@ import bcrypt from 'bcrypt';
 import dbConnect from '../connections/dbConnect';
 import SqlHelper from '../helper/SqlHelper';
 import CatchErrors from '../helper/CatchErrors';
-import { formatUsers } from '../helper/format';
+import { formatUsers, formatUserUpdate } from '../helper/format';
 
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
-  createUser, checkEmail, getUsers, findUser
+  createUser, checkEmail, getUsers, findUser, updateUser
 } = SqlHelper;
 dotenv.config();
 /**
@@ -167,6 +167,29 @@ class UserController {
         }
       })
       .catch(error => catchDatabaseConnectionError(`error reading users table ${error}`, response));
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method updates user's profile
+    * @memberOf UserController
+    */
+  static updateUserProfile(request, response) {
+    const userId = request.id;
+    const { jobRole, company, photo } = request.body;
+    dbConnect.query(updateUser(userId, jobRole, company, photo))
+      .then(data => response.status(200).json({
+        status: 'success',
+        message: 'profile update was successful',
+        data: { user: formatUserUpdate(data.rows)[0] }
+      }))
+      .catch(error => catchDatabaseConnectionError(`error updating users table ${error}`, response));
   }
 }
 

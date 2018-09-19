@@ -21,7 +21,7 @@ class SqlHelper {
         password VARCHAR(130) NOT NULL,
         jobRole VARCHAR(60) NOT NULL,
         company VARCHAR(60) NOT NULL,
-        photo VARCHAR(100) NOT NULL,
+        photo VARCHAR(900) NOT NULL,
         time VARCHAR(80) NOT NULL,
         date VARCHAR(80) NOT NULL);`;
   }
@@ -664,6 +664,25 @@ class SqlHelper {
     };
     return query;
   }
+
+    /**
+    * @static
+    *
+    *
+    * @returns {object} - query string
+    *
+    * @description This method finds a user by id
+    * @memberOf SqlHelper
+    */
+   static updateUser(userId, jobRole, company, photo) {
+    const query = {
+      text: `UPDATE users SET jobrole = $2, company = $3, photo = $4
+      WHERE users.id =$1 RETURNING *`,
+      values: [userId, jobRole, company, photo]
+    };
+    return query;
+   }
+  
 }
 
 export default SqlHelper;

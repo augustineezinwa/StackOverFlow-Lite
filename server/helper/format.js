@@ -124,7 +124,23 @@ const formatUsers = (data) => {
   return newUsers;
 };
 
+const formatUserUpdate = (data) => {
+  const newUsers = [];
+  data.forEach((x) => {
+    newUsers.push({
+      id: x.id,
+      fullName: ((() => `${x.firstname} ${x.lastname}`)()),
+      jobRole: x.jobrole,
+      company: x.company,
+      photo: x.photo,
+      time: x.time,
+      date: x.date
+    });
+  });
+  return newUsers;
+};
+
 export {
   formatQuestions, formatAnswers, formatComments, formatMostAnsweredQuestions, formatQuestionsWithAnswers,
-  formatAllQuestions, formatUsers
+  formatAllQuestions, formatUsers, formatUserUpdate
 };
