@@ -253,6 +253,10 @@ button[type=answer]:hover {
 .ml-3 {
   margin-left: 3% !important;
 }
+
+.whitebg {
+  background-color:white;
+}
 .footer {
   text-align: center;
   color:white; 

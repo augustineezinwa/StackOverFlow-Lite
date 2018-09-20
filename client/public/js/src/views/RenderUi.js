@@ -52,6 +52,51 @@ class RenderUi {
   /**
     * @static
     *
+    * @param {string} e - The event object passed in.
+    * @param {string} elementId - This is the id of the element to display the notification star
+    * @param {string} setDisplay - This sets the display of the notifciation star
+    * @param {string} starColor - This sets the color of the star
+    * @param {string} status - The status of the prefered star
+    * @param {string} ready - The prefered status of the star
+    * @returns {object} - renders the notification star
+    *
+    * @description This method renders notification on stars
+    * @memberOf RenderUi
+    */
+  static renderNotificationInStar(e, elementId, setDisplay = 'none', starColor = '', status = 0, ready = '') {
+    let newKey = e.target.attributes[0].value;
+    if (!e.target.attributes[0].value.startsWith('prefer')) newKey = e.target.id;
+    let animation = '';
+    let star = 'far fa-star';
+    if (ready) star = 'fas fa-star';
+    if (!status) animation = 'fa-spin';
+    const animatedStar = `<i key=${newKey} id = "star" class='${star} ${animation} stars' style ="color:${starColor}"></i>`;
+    const targetDiv = document.getElementById(elementId);
+    targetDiv.innerHTML = animatedStar;
+    targetDiv.style.display = setDisplay;
+  }
+
+
+  /**
+    * @static
+    *
+    * @returns {object} - renders the notification box
+    *
+    * @description This method clears notification in stars
+    * @memberOf RenderUi
+    */
+  static clearNotificationsInStar() {
+    const stars = document.querySelectorAll('.stars');
+    if (stars.length) stars.forEach((x) => { 
+      x.style.color = '';
+      x.classList.toggle('fas');
+      x.classList.toggle('far');
+    });
+  }
+
+  /**
+    * @static
+    *
     * @param {string} elementId - This is the id of the button element
     * @param {string} setDisplay - This sets the display of the button;
     * @returns {object} - renders a button;
@@ -360,15 +405,17 @@ class RenderUi {
     * @memberOf RenderUi
     */
   static renderAnswer(answerId, answer, upVotes, downVotes, approved = false) {
+    let preferIndicator = 'far fa-star';
+    let styleIndicator = '';
+    if (approved) { preferIndicator = 'fas fa-star'; styleIndicator = 'hotpink'; }
     let updateAnswerButton = `<div class ="" style ="">
- 
     <div> <span key="${answerId}" id ="updateAnswerPopUpButton" style ="padding:10px 20px; border: 1px solid lightgrey; float:right">
      <i key="${answerId}" id="updateAnswerPopUpButton" class ="far fa-edit blue resize"> </i></span></div>
     <div>&nbsp</div
     <div>&nbsp</div
    </div>
-   
     `;
+    const questionId = questionData.data.questionWithAnswers.id;
     const userId = getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId');
     if (userId !== userAuthData.data.id) updateAnswerButton = '';
     return `<div class = "row">
@@ -404,9 +451,9 @@ class RenderUi {
      </div>
 
      <div class = "row">
-         <div class = "col"><span id ="thumbsUp" key= ${answerId}> <i class="fas fa-thumbs-up blue resize"></i></span></div>
-         <div class = "col"><span id ="prefer" key=${answerId}> <i class="fas fa-star blue resize"></i></span></div>
-         <div class = "col"><span id= "thumbsDown" key= ${answerId}> <i class="fas fa-thumbs-down blue resize"></i></span></div>
+         <div class = "col"><span key= ${answerId} id ="thumbsUp"style ="padding:auto" > <i class="fas fa-thumbs-up" ></i></span></div>
+         <div class = "col"><span key="${questionId}/answers/${answerId}" id ="prefer${answerId}" style ="padding:auto"> <i key ="prefer${answerId}" class='${preferIndicator} stars' id ="star" style="color:${styleIndicator}"></i></span></div>
+         <div class = "col"><span key= ${answerId}  id= "thumbsDown"style ="padding:auto" > <i class="fas fa-thumbs-down" ></i></span></div>
      </div>
    </div>
 
@@ -740,6 +787,20 @@ class RenderUi {
     }
   }
 
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on update answer form
+    *
+    * @description This method renders a validation messages and signs
+    * @memberOf RenderUi
+    */
+  static showErrorsOnPreferAnswer() {
+    if (questionData.errors[0].message.includes('answer')) {
+      RenderUi.renderNotification('notificationDisplay', 'block', 'You cant prefer this answer');
+      setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    }
+  }
 
   /**
     * @static
