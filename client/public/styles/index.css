@@ -331,6 +331,14 @@ button[type=comment] {
     border: 1px solid hotpink;
 }
 
+button[type=deleteButton] {
+  font-size:inherit;
+  margin: auto;
+   background-color:white;
+   color: red;
+    border: 1px solid red;
+}
+
 .modal {
   position:fixed;
   z-index:5;
@@ -424,6 +432,14 @@ button[type=comment] {
    background-color:white;
    color: hotpink;
     border: 1px solid hotpink;
+}
+
+button[type=deleteButton] {
+  font-size:inherit;
+  margin: auto;
+   background-color:white;
+   color: red;
+    border: 1px solid red;
 }
 
 input[type=text], input[type=password] {
