@@ -7,7 +7,8 @@ import routeTable from '../../router/routeTable.js';
 const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
   modifyTitle, renderQuestionWithAnswers, renderNotificationInButton, renderNotification,
-  showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm, showErrorsOnUpdateAnswerForm
+  showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm, showErrorsOnUpdateAnswerForm,
+  renderNotificationInStar, showErrorsOnPreferAnswer, clearNotificationsInStar
 } = RenderUi;
 const { destroyData } = ResourceHelper;
 
@@ -158,7 +159,7 @@ class QuestionViewController {
     }
   }
 
-    /**
+  /**
     * @static
     *
     * @returns {object} - binds post question views to datacenter
@@ -166,7 +167,7 @@ class QuestionViewController {
     * @description This method binds post question actions to datacenter;
     * @memberOf QuestionViewController
     */
-   static connectDeleteQuestionOperationToDataCenter() {
+  static connectDeleteQuestionOperationToDataCenter() {
     if (!questionData.ready && questionData.fetch) {
       renderModalLoader('modalDisplay', 'block', 'Deleting Question');
     }
@@ -198,6 +199,7 @@ class QuestionViewController {
       QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
     }
   }
+
   /**
     * @static
     *
@@ -275,6 +277,49 @@ class QuestionViewController {
       renderNotificationInButton('updateAnswerButton', 'block', 'Update was successful ...');
       setTimeout(() => renderNotificationInButton('updateAnswerButton', 'block', '', 'Update'), 3500);
       window.location.reload();
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} e - The event object
+    * @returns {object} - binds post question views to datacenter
+    *
+    * @description This method binds post question actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectPreferAnswerOperationToDataCenter(e) {
+    if (!questionData.ready && questionData.fetch) {
+      renderNotificationInStar(e, e.target.id, 'block', 'hotpink', 0);
+    }
+    if (questionData.ready) renderNotificationInStar(e, e.target.id, 'block', '', 1);
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')
+          || questionData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        destroyData('loginId');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnPreferAnswer();
+    }
+    if (questionData.data.preferStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'You succesfully preferred this answer');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      clearNotificationsInStar();
+      renderNotificationInStar(e, e.target.id, 'block', 'hotpink', 1, 1);
     }
     if (questionData.fail && questionData.ready) {
       renderModal('modalDisplay', 'block', 'Internet Connection Error!');

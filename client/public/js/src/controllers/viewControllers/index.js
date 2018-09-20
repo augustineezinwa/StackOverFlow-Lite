@@ -13,13 +13,14 @@ const {
   signUpUser, loginUser, fetchUserProfile, updateUserProfile, updatePhotoToCloud
 } = UserApiController;
 const {
-  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion
+  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion,
+  preferAnswer
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
   toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp,
-  renderDeleteQuestionPopUpModal
+  renderDeleteQuestionPopUpModal, renderNotificationInStar
 } = RenderUi;
 
 
@@ -218,6 +219,17 @@ pageDisplay.addEventListener('click', (e) => {
       userAuthData.data.token = retrieveData('token');
     }
     deleteQuestion(e.target.attributes[0].value);
+  }
+
+  if (e.target.id.startsWith('prefer')) {
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    preferAnswer(e, e.target.attributes[0].value);
+  }
+  if (e.target.id.startsWith('star')) {
+    const prefer = document.getElementById(e.target.attributes[0].value);
+    prefer.click();
   }
 });
 

@@ -10,7 +10,8 @@ const {
   connectPostQuestionOperationToDataCenter,
   connectPostAnswerOperationToDataCenter,
   connectUpdateAnswerOperationToDataCenter,
-  connectDeleteQuestionOperationToDataCenter
+  connectDeleteQuestionOperationToDataCenter,
+  connectPreferAnswerOperationToDataCenter
 } = QuestionViewController;
 
 const { decrypt } = ResourceHelper;
@@ -391,6 +392,58 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectUpdateAnswerOperationToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} e - the event object
+    * @param {string} keyUrl - The url of the answer to be updated.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method prefers an answer  in the application
+    * @memberOf QuestionApiController
+    */
+  static preferAnswer(e, keyUrl) {
+    questionData.errors.length = 0;
+    questionData.data.preferStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectPreferAnswerOperationToDataCenter(e);
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.preferStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          console.log(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`);
+          connectPreferAnswerOperationToDataCenter(e);
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectPreferAnswerOperationToDataCenter(e);
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectPreferAnswerOperationToDataCenter(e);
       });
   }
 }
