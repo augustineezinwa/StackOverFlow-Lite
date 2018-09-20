@@ -183,6 +183,43 @@ class RenderUi {
   /**
     * @static
     *
+    * @param {string} elementId - This is the id of the div element
+    * @param {string} setDisplay - This sets the display of the div element;
+    * @param {integer} questionId - This is the id of the question in question;
+    * @returns {object} - renders a div ;
+    *
+    * @description This method renders a div element
+    * @memberOf RenderUi
+    */
+  static renderDeleteQuestionPopUpModal(elementId, setDisplay = 'none', questionId = '') {
+    const targetDiv = document.getElementById(elementId);
+    targetDiv.innerHTML = `
+    <div class ="modal container pd-2">
+    <div class = "row mt-4">
+      <div class = "col-2"></div>
+      <div class = "col-3">
+          <div class = "card">
+              <div class = "row">
+                  <div class = "col">
+                    <div class= "turnOffUpdateAnswerModal" id ="turnOffDeleteQuestion">X</div>
+                   <div class ="question">Are you sure you want to delete this question?</div>
+                   <div class = "mt-4"><button key=${questionId} id ="confirmDeleteQuestion"type="answer">Yes</button></div>
+                  </div>
+                </div>
+          </div>
+      </div>
+      <div class = "col-2"></div>
+    </div>
+
+ 
+  </div>
+    `;
+    targetDiv.style.display = setDisplay;
+  }
+
+  /**
+    * @static
+    *
     * @param {string} elementId - This is the id of the element to display the modal
     * @param {string} setDisplay - This sets the display of the modal div
     * @param {string} message - This is the message to be displayed
@@ -439,6 +476,7 @@ class RenderUi {
   static renderQuestionWithAnswers(elementId, setDisplay = 'none') {
     const targetDiv = document.getElementById(elementId);
     targetDiv.style.display = setDisplay;
+
     const formatAnswers = questionData.data
       .questionWithAnswers.answers.map(x => RenderUi.renderAnswer(x.id, x.answer, x.upvotes, x.downvotes, x.approved));
     const refineAnswers = formatAnswers.join(' ');
@@ -447,7 +485,14 @@ class RenderUi {
       questionData.data.questionWithAnswers.answers.forEach((x) => { i += x[votes]; });
       return i;
     };
-
+    let deleteButton = `
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div class ="underline"></div>
+    <div class ="mt-2" style ="text-align:right;">
+    <button type ="deleteButton" id="deleteQuestion"> Delete this question </button></div>`;
+    const { userId } = questionData.data.questionWithAnswers;
+    if (userId !== userAuthData.data.id) deleteButton = '';
     const totalUpVotes = calcVotes('upvotes');
     const totalDownVotes = calcVotes('downvotes');
     const answerHeader = `<div class =""> <h3>${questionData.data.questionWithAnswers.answers.length} 
@@ -495,9 +540,11 @@ class RenderUi {
                 ${answerHeader}
                 ${refineAnswers}
                 ${addAnswer}
+                ${deleteButton}
             </div>
             </div>
             </div>
+            
             </div>`;
     targetDiv.innerHTML = formattedQuestionDisplay;
   }

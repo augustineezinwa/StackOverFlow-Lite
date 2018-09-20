@@ -13,12 +13,13 @@ const {
   signUpUser, loginUser, fetchUserProfile, updateUserProfile, updatePhotoToCloud
 } = UserApiController;
 const {
-  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer
+  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
-  toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp
+  toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp,
+  renderDeleteQuestionPopUpModal
 } = RenderUi;
 
 
@@ -201,6 +202,22 @@ pageDisplay.addEventListener('click', (e) => {
     }
     const answer = document.getElementById('answerForUpdate').value;
     updateAnswer(answer, e.target.attributes[0].value);
+  }
+
+  if (e.target.id === 'deleteQuestion') {
+    renderDeleteQuestionPopUpModal('updateAnswerPopUpDisplay', 'block',
+      questionData.data.questionWithAnswers.id);
+  }
+
+  if (e.target.id === 'turnOffDeleteQuestion') {
+    renderDeleteQuestionPopUpModal('updateAnswerPopUpDisplay');
+  }
+
+  if (e.target.id === 'confirmDeleteQuestion') {
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    deleteQuestion(e.target.attributes[0].value);
   }
 });
 

@@ -9,7 +9,8 @@ const {
   connectQuestionDetailsDisplayToDataCenter,
   connectPostQuestionOperationToDataCenter,
   connectPostAnswerOperationToDataCenter,
-  connectUpdateAnswerOperationToDataCenter
+  connectUpdateAnswerOperationToDataCenter,
+  connectDeleteQuestionOperationToDataCenter
 } = QuestionViewController;
 
 const { decrypt } = ResourceHelper;
@@ -233,6 +234,57 @@ class QuestionApiController {
         connectPostQuestionOperationToDataCenter();
       });
   }
+
+  /**
+    * @static
+    *
+    * @param {string} key - The id of the question to be deleted
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method deletes a question  in the application
+    * @memberOf QuestionApiController
+    */
+  static deleteQuestion(key) {
+    questionData.errors.length = 0;
+    questionData.data.deleteStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectDeleteQuestionOperationToDataCenter();
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${key}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.deleteStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          connectDeleteQuestionOperationToDataCenter();
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectDeleteQuestionOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectDeleteQuestionOperationToDataCenter();
+      });
+  }
+
 
   /**
     * @static

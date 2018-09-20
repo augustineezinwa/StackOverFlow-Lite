@@ -158,6 +158,46 @@ class QuestionViewController {
     }
   }
 
+    /**
+    * @static
+    *
+    * @returns {object} - binds post question views to datacenter
+    *
+    * @description This method binds post question actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+   static connectDeleteQuestionOperationToDataCenter() {
+    if (!questionData.ready && questionData.fetch) {
+      renderModalLoader('modalDisplay', 'block', 'Deleting Question');
+    }
+    if (questionData.ready) renderModalLoader('modalDisplay', 'none', '');
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')
+          || questionData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        destroyData('loginId');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+    }
+    if (questionData.data.deleteStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'You succesfully deleted this question');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+      window.location.hash = '';
+      window.location.reload();
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
   /**
     * @static
     *
@@ -199,7 +239,7 @@ class QuestionViewController {
     }
   }
 
-    /**
+  /**
     * @static
     *
     * @returns {object} - binds post question views to datacenter
@@ -207,7 +247,7 @@ class QuestionViewController {
     * @description This method binds post question actions to datacenter;
     * @memberOf QuestionViewController
     */
-   static connectUpdateAnswerOperationToDataCenter() {
+  static connectUpdateAnswerOperationToDataCenter() {
     if (!questionData.ready && questionData.fetch) {
       renderNotificationInButton('updateAnswerButton', 'block', 'Updating Answer...');
     }
