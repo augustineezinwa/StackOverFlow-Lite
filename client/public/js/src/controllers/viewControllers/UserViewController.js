@@ -37,6 +37,7 @@ class UserViewController {
     if (userAuthData.data.loginStatus === 1) {
       storeData('token', userAuthData.data.token);
       storeData('loginStatus', 1);
+      storeData('loginId', userAuthData.data.id);
       userAuthData.data.token = '';
       renderNotification('notificationDisplay', 'block', userAuthData.data.message);
       setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
@@ -73,6 +74,7 @@ class UserViewController {
     if (userAuthData.data.loginStatus === 1) {
       storeData('token', userAuthData.data.token);
       storeData('loginStatus', 1);
+      storeData('loginId', userAuthData.data.id);
       userAuthData.data.token = '';
       renderNotification('notificationDisplay', 'block', userAuthData.data.message);
       setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
@@ -112,6 +114,7 @@ class UserViewController {
       || userAuthData.errors[0].message.includes('signup')) {
         destroyData('token');
         destroyData('loginStatus');
+        destroyData('loginId');
         userAuthData.data.loginStatus = 0;
         userAuthData.data.token = '';
         renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
@@ -170,6 +173,7 @@ class UserViewController {
           || userAuthData.errors[0].message.includes('signup')) {
         destroyData('token');
         destroyData('loginStatus');
+        destroyData('loginId');
         userAuthData.data.loginStatus = 0;
         userAuthData.data.token = '';
         renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');

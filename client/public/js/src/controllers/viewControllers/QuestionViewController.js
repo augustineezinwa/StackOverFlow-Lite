@@ -7,7 +7,7 @@ import routeTable from '../../router/routeTable.js';
 const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
   modifyTitle, renderQuestionWithAnswers, renderNotificationInButton, renderNotification,
-  showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm
+  showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm, showErrorsOnUpdateAnswerForm
 } = RenderUi;
 const { destroyData } = ResourceHelper;
 
@@ -134,6 +134,7 @@ class QuestionViewController {
           || questionData.errors[0].message.includes('signup')) {
         destroyData('token');
         destroyData('loginStatus');
+        destroyData('loginId');
         questionData.data.loginStatus = 0;
         questionData.data.token = '';
         renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
@@ -175,6 +176,7 @@ class QuestionViewController {
           || questionData.errors[0].message.includes('signup')) {
         destroyData('token');
         destroyData('loginStatus');
+        destroyData('loginId');
         questionData.data.loginStatus = 0;
         questionData.data.token = '';
         renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
@@ -189,6 +191,49 @@ class QuestionViewController {
       userAuthData.data.token = '';
       renderNotification('notificationDisplay', 'block', 'You succesfully answered this question');
       setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      window.location.reload();
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+    /**
+    * @static
+    *
+    * @returns {object} - binds post question views to datacenter
+    *
+    * @description This method binds post question actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+   static connectUpdateAnswerOperationToDataCenter() {
+    if (!questionData.ready && questionData.fetch) {
+      renderNotificationInButton('updateAnswerButton', 'block', 'Updating Answer...');
+    }
+    if (questionData.ready) renderNotificationInButton('updateAnswerButton', 'block', '', 'Update');
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')
+          || questionData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        destroyData('loginId');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnUpdateAnswerForm();
+    }
+    if (questionData.data.updateStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'You succesfully updated this answer');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      renderNotificationInButton('updateAnswerButton', 'block', 'Update was successful ...');
+      setTimeout(() => renderNotificationInButton('updateAnswerButton', 'block', '', 'Update'), 3500);
       window.location.reload();
     }
     if (questionData.fail && questionData.ready) {

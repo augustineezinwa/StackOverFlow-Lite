@@ -60,6 +60,7 @@ class UserApiController {
           userAuthData.fetch = 0;
           userAuthData.data.message = data.message;
           userAuthData.data.token = encrypt('blowfish.io', data.data.token);
+          userAuthData.data.id = data.data.id;
           connectSignUpUserOperationToDataCenter();
         } else {
           userAuthData.errors.push(data);
@@ -116,6 +117,7 @@ class UserApiController {
           userAuthData.fetch = 0;
           userAuthData.data.message = data.message;
           userAuthData.data.token = encrypt('blowfish.io', data.data.token);
+          userAuthData.data.id = data.data.id;
           connectloginUserOperationToDataCenter();
         } else {
           userAuthData.errors.push(data);
@@ -159,7 +161,6 @@ class UserApiController {
       }
     }).then(response => response.json())
       .then((data) => {
-        console.log(data);
         if (data.status === 'success') {
           userAuthData.errors.length = 0;
           userAuthData.ready = 1;
@@ -329,12 +330,12 @@ class UserApiController {
         if (data.url) {
           console.log(data);
           userAuthData.data.updatePhotoStatus = 1;
-          userAuthData.data.photo = data.url;
+          userAuthData.data.photo = data.secure_url;
           userAuthData.errors.length = 0;
           userAuthData.ready = 0;
           userAuthData.fetch = 0;
           userAuthData.data.message = data.message;
-          return UserApiController.updateUserProfile(data.url, company, jobRole);
+          return UserApiController.updateUserProfile(data.secure_url, company, jobRole);
         }
         userAuthData.errors.push(data);
         console.log(userAuthData);

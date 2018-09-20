@@ -13,12 +13,12 @@ const {
   signUpUser, loginUser, fetchUserProfile, updateUserProfile, updatePhotoToCloud
 } = UserApiController;
 const {
-  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer
+  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
- toggleDiv, renderNotification, renderNotificationInButton, togglePhoto 
+  toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp
 } = RenderUi;
 
 
@@ -154,13 +154,10 @@ pageDisplay.addEventListener('click', (e) => {
     }
     if (userAuthData.data.photo === 'image-url') {
       updateUserProfile(userAuthData.data.photo, company, jobRole);
+    } else if (imageHolder.src === userAuthData.data.profile[0].photo) {
+      updateUserProfile(imageHolder.src, company, jobRole);
     } else {
-      if (imageHolder.src === userAuthData.data.profile[0].photo) {
-        updateUserProfile(imageHolder.src, company, jobRole);
-      } else {
-        updatePhotoToCloud(userAuthData.data.photo, company, jobRole);
-      }
-     
+      updatePhotoToCloud(userAuthData.data.photo, company, jobRole);
     }
   }
 
@@ -189,10 +186,27 @@ pageDisplay.addEventListener('click', (e) => {
   if (e.target.id === 'cancelPhotoButton') {
     togglePhoto('photoDisplay');
   }
+
+  if (e.target.id === 'updateAnswerPopUpButton') {
+    renderUpdateAnswerPopUp('updateAnswerPopUpDisplay', 'block', +e.target.attributes[0].value);
+  }
+  if (e.target.id === 'turnOffUpdateAnswer') {
+    renderUpdateAnswerPopUp('updateAnswerPopUpDisplay');
+  }
+
+  if (e.target.id === 'updateAnswerButton') {
+    e.preventDefault();
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    const answer = document.getElementById('answerForUpdate').value;
+    updateAnswer(answer, e.target.attributes[0].value);
+  }
 });
 
 window.addEventListener('load', () => {
   userAuthData.data.loginStatus = retrieveData('loginStatus');
+  userAuthData.data.id = retrieveData('loginId');
   if (userAuthData.data.loginStatus) {
     toggleDiv('loginLink');
     toggleDiv('signupLink');
@@ -238,6 +252,7 @@ window.addEventListener('hashchange', () => {
   }
   if (window.location.hash.startsWith('#questions')) {
     const url = window.location.hash.substring(window.location.hash.lastIndexOf('-') + 1);
+    if (!userAuthData.data.id) userAuthData.data.id = retrieveData('loginId');
     if (searchQuestionInHistory(url)) return renderQuestionInHistory(url);
 
     questionData.url = url;

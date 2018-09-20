@@ -8,7 +8,8 @@ const {
   connectSearchQuestionsDisplayToDataCenter,
   connectQuestionDetailsDisplayToDataCenter,
   connectPostQuestionOperationToDataCenter,
-  connectPostAnswerOperationToDataCenter
+  connectPostAnswerOperationToDataCenter,
+  connectUpdateAnswerOperationToDataCenter
 } = QuestionViewController;
 
 const { decrypt } = ResourceHelper;
@@ -284,6 +285,60 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectPostAnswerOperationToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} answer - The answer to be updated
+    * @param {string} keyUrl - The url of the answer to be updated.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method updates an answer  in the application
+    * @memberOf QuestionApiController
+    */
+  static updateAnswer(answer, keyUrl) {
+    questionData.errors.length = 0;
+    questionData.data.updateStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectUpdateAnswerOperationToDataCenter();
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      },
+      body: JSON.stringify({
+        answer
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.updateStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          connectUpdateAnswerOperationToDataCenter();
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectUpdateAnswerOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectUpdateAnswerOperationToDataCenter();
       });
   }
 }
