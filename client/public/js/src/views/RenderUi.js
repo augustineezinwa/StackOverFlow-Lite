@@ -127,6 +127,58 @@ class RenderUi {
     targetDiv.style.display = setDisplay;
   }
 
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the div element
+    * @param {string} setDisplay - This sets the display of the div element;
+    * @param {integer} answerId - This is the id of the answer to be updated;
+    * @returns {object} - renders a div ;
+    *
+    * @description This method renders a div element
+    * @memberOf RenderUi
+    */
+  static renderUpdateAnswerPopUp(elementId, setDisplay = 'none', answerId = '') {
+    const targetDiv = document.getElementById(elementId);
+    let answer = '';
+    let questionId = '';
+    if (answerId) {
+      answer = getInformationFromDataCenter(questionData.data.questionWithAnswers.answers,
+        'id', answerId, 'answer');
+      questionId = getInformationFromDataCenter(questionData.data.questionWithAnswers.answers,
+        'id', answerId, 'questionId');
+    }
+
+    targetDiv.innerHTML = `
+    <div class ="modal container pd-2">
+    <div class = "row">
+      <div class = "col-2"></div>
+      <div class = "col-3">
+          <div class = "card">
+              <div class = "row">
+                  <div class = "col">
+                    <div class= "turnOffUpdateAnswerModal" id ="turnOffUpdateAnswer">X</div>
+                    <form class = "" method = "POST">
+                    
+                      <label for="password"><b>Update answer</b></label>
+                      <textarea  class ="mt-4 txtarea" id = "answerForUpdate">${answer}</textarea>
+                  
+                      <button key="${questionId}/answers/${answerId}" id = "updateAnswerButton" > 
+                      Update
+                      </button>
+                  </form>
+                  </div>
+                </div>
+          </div>
+      </div>
+      <div class = "col-2"></div>
+    </div>
+
+ 
+  </div>
+    `;
+    targetDiv.style.display = setDisplay;
+  }
 
   /**
     * @static
@@ -271,6 +323,17 @@ class RenderUi {
     * @memberOf RenderUi
     */
   static renderAnswer(answerId, answer, upVotes, downVotes, approved = false) {
+    let updateAnswerButton = `<div class ="" style ="">
+ 
+    <div> <span key="${answerId}" id ="updateAnswerPopUpButton" style ="padding:10px 20px; border: 1px solid lightgrey; float:right">
+     <i key="${answerId}" id="updateAnswerPopUpButton" class ="far fa-edit blue resize"> </i></span></div>
+    <div>&nbsp</div
+    <div>&nbsp</div
+   </div>
+   
+    `;
+    const userId = getInformationFromDataCenter(questionData.data.questionWithAnswers.answers, 'id', answerId, 'userId');
+    if (userId !== userAuthData.data.id) updateAnswerButton = '';
     return `<div class = "row">
    <div class = "col-5">${answer} 
      <div class = "row mt-4">
@@ -312,13 +375,11 @@ class RenderUi {
 
  </div>
 
- 
-
-
- <div>&nbsp</div>
+ ${updateAnswerButton}
 
  <div class = "underline">&nbsp</div>`;
   }
+
 
   /**
     * @static
@@ -424,7 +485,9 @@ class RenderUi {
     </button>
 </form>`;
 
-    const formattedQuestionDisplay = `<div class = "container question-background " >
+    const formattedQuestionDisplay = `
+    <div id = "updateAnswerPopUpDisplay"></div>
+    <div class = "container question-background " >
     <div class = "row ">
         <div class = "col">
             <div class = "question-card">
@@ -611,6 +674,25 @@ class RenderUi {
       answer.style.borderColor = 'red';
     }
   }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on update answer form
+    *
+    * @description This method renders a validation messages and signs
+    * @memberOf RenderUi
+    */
+  static showErrorsOnUpdateAnswerForm() {
+    const answer = document.getElementById('answerForUpdate');
+    answer.style.borderColor = '';
+    RenderUi.renderNotification('notificationDisplay', 'block', questionData.errors[0].message);
+    setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    if (questionData.errors[0].message.includes('answer')) {
+      answer.style.borderColor = 'red';
+    }
+  }
+
 
   /**
     * @static

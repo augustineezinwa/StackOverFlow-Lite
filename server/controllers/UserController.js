@@ -52,7 +52,7 @@ class UserController {
           status: 'success',
           message: `${firstname}, you signed up successfully.`,
           data: {
-            token
+            token, id
           }
         });
       })
@@ -94,7 +94,7 @@ class UserController {
           return response.status(200).json({
             status: 'success',
             message: `${firstname}, you are logged in`,
-            data: { token }
+            data: { token, id }
           });
         }
         return response.status(401).json({
