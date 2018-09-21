@@ -8,7 +8,7 @@ const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
   modifyTitle, renderQuestionWithAnswers, renderNotificationInButton, renderNotification,
   showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm, showErrorsOnUpdateAnswerForm,
-  renderNotificationInStar, showErrorsOnPreferAnswer, clearNotificationsInStar
+  renderNotificationInStar, showErrorsOnPreferAnswer, clearNotificationsInStar, showErrorsOnVoteAnswer
 } = RenderUi;
 const { destroyData } = ResourceHelper;
 
@@ -330,6 +330,91 @@ class QuestionViewController {
   /**
     * @static
     *
+    * @param {object} e - The event object
+    * @returns {object} - binds post question views to datacenter
+    *
+    * @description This method binds upvote answer actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectUpvoteAnswerOperationToDataCenter(e) {
+    if (!questionData.ready && questionData.fetch) {
+      renderNotification('notificationDisplay', 'block', 'Upvoting answer ...');
+    }
+    if (questionData.ready) renderNotification('notificationDisplay', 'none');
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')
+          || questionData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        destroyData('loginId');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnVoteAnswer();
+    }
+    if (questionData.data.upvoteStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'You succesfully upvoted this answer');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      QuestionViewController.incrementUpvotes(e);
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} e - The event object
+    * @returns {object} - binds post question views to datacenter
+    *
+    * @description This method binds upvote answer actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectDownvoteAnswerOperationToDataCenter(e) {
+    if (!questionData.ready && questionData.fetch) {
+      renderNotification('notificationDisplay', 'block', 'Downvoting answer ...');
+    }
+    if (questionData.ready) renderNotification('notificationDisplay', 'none');
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')
+          || questionData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        destroyData('loginId');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnVoteAnswer();
+    }
+    if (questionData.data.upvoteStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'You succesfully downvoted this answer');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      QuestionViewController.incrementDownvotes(e);
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+
+  /**
+    * @static
+    *
     * @param {string} elementId - the id of the element
     * @param {string} targetId - the id of the target element
     * @returns {object} - binds view to datacenter
@@ -365,6 +450,51 @@ class QuestionViewController {
     }
   }
 
+  /**
+    * @static
+    *
+    * @param {string} e - the event object
+    * @param {string} targetId - the id of the target element
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method binds question views to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static incrementUpvotes(e) {
+    console.log(e.target.id);
+    const targetId = e.target.id.substring(6);
+    const targetDiv = document.getElementById(`numUpvotes${targetId}`);
+    const downvoteDiv = document.getElementById(`numDownvotes${targetId}`);
+    let b = +downvoteDiv.innerText;
+    if(b) b -= 1;
+    downvoteDiv.innerText = b;
+    let a = +targetDiv.innerText;
+    a += 1;
+    targetDiv.innerText = a;
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} e - the event object
+    * @param {string} targetId - the id of the target element
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method binds question views to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static incrementDownvotes(e) {
+    console.log(e.target.id);
+    const targetId = e.target.id.substring(8);
+    const targetDiv = document.getElementById(`numDownvotes${targetId}`);
+    const upvoteDiv = document.getElementById(`numUpvotes${targetId}`);
+    let b = +upvoteDiv.innerText;
+    if(b) b -=1;
+    upvoteDiv.innerText = b;
+    let a = +targetDiv.innerText;
+    a += 1;
+    targetDiv.innerText = a;
+  }
 
   /**
     * @static

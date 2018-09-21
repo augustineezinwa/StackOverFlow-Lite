@@ -11,7 +11,9 @@ const {
   connectPostAnswerOperationToDataCenter,
   connectUpdateAnswerOperationToDataCenter,
   connectDeleteQuestionOperationToDataCenter,
-  connectPreferAnswerOperationToDataCenter
+  connectPreferAnswerOperationToDataCenter,
+  connectUpvoteAnswerOperationToDataCenter,
+  connectDownvoteAnswerOperationToDataCenter
 } = QuestionViewController;
 
 const { decrypt } = ResourceHelper;
@@ -427,7 +429,6 @@ class QuestionApiController {
           questionData.ready = 1;
           questionData.fetch = 0;
           questionData.data.message = data.message;
-          console.log(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`);
           connectPreferAnswerOperationToDataCenter(e);
         } else {
           questionData.errors.push(data);
@@ -444,6 +445,109 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectPreferAnswerOperationToDataCenter(e);
+      });
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {object} e - the event object
+    * @param {string} keyUrl - The url of the answer to be updated.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method upovtes an answer  in the application
+    * @memberOf QuestionApiController
+    */
+  static upvoteAnswer(e, keyUrl) {
+    questionData.errors.length = 0;
+    questionData.data.upvoteStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectUpvoteAnswerOperationToDataCenter(e);
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}/upvote`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.upvoteStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          connectUpvoteAnswerOperationToDataCenter(e);
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectUpvoteAnswerOperationToDataCenter(e);
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectUpvoteAnswerOperationToDataCenter(e);
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {object} e - the event object
+    * @param {string} keyUrl - The url of the answer to be updated.
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method upovtes an answer  in the application
+    * @memberOf QuestionApiController
+    */
+  static downvoteAnswer(e, keyUrl) {
+    questionData.errors.length = 0;
+    questionData.data.upvoteStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectDownvoteAnswerOperationToDataCenter(e);
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}/downvote`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.upvoteStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          connectDownvoteAnswerOperationToDataCenter(e);
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectDownvoteAnswerOperationToDataCenter(e);
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectDownvoteAnswerOperationToDataCenter(e);
       });
   }
 }

@@ -14,13 +14,13 @@ const {
 } = UserApiController;
 const {
   fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion,
-  preferAnswer
+  preferAnswer, upvoteAnswer, downvoteAnswer
 } = QuestionApiController;
 const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
   toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp,
-  renderDeleteQuestionPopUpModal, renderNotificationInStar
+  renderDeleteQuestionPopUpModal
 } = RenderUi;
 
 
@@ -230,6 +230,28 @@ pageDisplay.addEventListener('click', (e) => {
   if (e.target.id.startsWith('star')) {
     const prefer = document.getElementById(e.target.attributes[0].value);
     prefer.click();
+  }
+
+  if (e.target.id.startsWith('upvote')) {
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    upvoteAnswer(e, e.target.attributes[0].value);
+  }
+  if (e.target.id.startsWith('thumbUp')) {
+    const upvote = document.getElementById(e.target.attributes[0].value);
+    upvote.click();
+  }
+
+  if (e.target.id.startsWith('downvote')) {
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    downvoteAnswer(e, e.target.attributes[0].value);
+  }
+  if (e.target.id.startsWith('thumbDown')) {
+    const downvote = document.getElementById(e.target.attributes[0].value);
+    downvote.click();
   }
 });
 
