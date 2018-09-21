@@ -87,11 +87,11 @@ class RenderUi {
     */
   static clearNotificationsInStar() {
     const stars = document.querySelectorAll('.stars');
-    if (stars.length) stars.forEach((x) => { 
+    if (stars.length) {stars.forEach((x) => { 
       x.style.color = '';
       x.classList.toggle('fas');
       x.classList.toggle('far');
-    });
+    });}
   }
 
   /**
@@ -446,14 +446,21 @@ class RenderUi {
    </div>
    <div class = "col-2">
      <div class = "row">
-         <div class = "col"> ${upVotes} upvotes</div>
-         <div class = "col">${downVotes} downvotes</div>
+         <div class = "col" > <span id ="numUpvotes${answerId}">${upVotes}</span> upvotes</div>
+         <div class = "col"><span  id ="numDownvotes${answerId}">${downVotes}</span> downvotes</div>
      </div>
 
      <div class = "row">
-         <div class = "col"><span key= ${answerId} id ="thumbsUp"style ="padding:auto" > <i class="fas fa-thumbs-up" ></i></span></div>
-         <div class = "col"><span key="${questionId}/answers/${answerId}" id ="prefer${answerId}" style ="padding:auto"> <i key ="prefer${answerId}" class='${preferIndicator} stars' id ="star" style="color:${styleIndicator}"></i></span></div>
-         <div class = "col"><span key= ${answerId}  id= "thumbsDown"style ="padding:auto" > <i class="fas fa-thumbs-down" ></i></span></div>
+         <div class = "col"><span key= "${questionId}/answers/${answerId}" id ="upvote${answerId}" style ="padding:auto" >
+         <i key="upvote${answerId}" class="fas fa-thumbs-up" id ="thumbUp"></i></span></div>
+         
+         <div class = "col"><span key="${questionId}/answers/${answerId}" id ="prefer${answerId}" style ="padding:auto">
+          <i key ="prefer${answerId}" class='${preferIndicator} stars' id ="star" style="color:${styleIndicator}"></i>
+          </span></div>
+
+         <div class = "col"><span key= "${questionId}/answers/${answerId}"  id= "downvote${answerId}" style ="padding:auto">
+          <i key ="downvote${answerId}" id= "thumbDownk" class="fas fa-thumbs-down" ></i></span></div>
+
      </div>
    </div>
 
@@ -798,6 +805,21 @@ class RenderUi {
   static showErrorsOnPreferAnswer() {
     if (questionData.errors[0].message.includes('answer')) {
       RenderUi.renderNotification('notificationDisplay', 'block', 'You cant prefer this answer');
+      setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on update answer form
+    *
+    * @description This method renders a validation messages and signs
+    * @memberOf RenderUi
+    */
+  static showErrorsOnVoteAnswer() {
+    if (questionData.errors[0].message.includes('answer')) {
+      RenderUi.renderNotification('notificationDisplay', 'block', questionData.errors[0].message);
       setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
     }
   }

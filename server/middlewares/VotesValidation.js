@@ -1,11 +1,9 @@
 import dbConnect from '../connections/dbConnect';
-import VotesController from '../controllers/VotesController';
 import SqlHelper from '../helper/SqlHelper';
 import CatchErrors from '../helper/CatchErrors';
 
 const { searchVotes, resetVotes } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
-const { upvote, downvote } = VotesController;
 /**
   * @class VotesValidation
   *
@@ -126,10 +124,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
     dbConnect.query(searchVotes(answerId, userId, 1))
-      .then((data) => {
-        if (data.rows.length < 1) return next();
-        return VotesValidation.resetVoteEntry(request, response, 'decide');
-      })
+      .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
 
@@ -150,10 +145,7 @@ class VotesValidation {
     const answerId = request.answers.id;
 
     dbConnect.query(searchVotes(answerId, userId, 0))
-      .then((data) => {
-        if (data.rows.length < 1) return next();
-        return VotesValidation.resetVoteEntry(request, response);
-      })
+      .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
 
@@ -162,21 +154,18 @@ class VotesValidation {
     *
     * @param {object} request - The request payload sent to the middleware
     * @param {object} response - The response payload sent back from middleware
-    * @param {object} decide - The response payload sent back from middleware
+    * @param {object} next - The call back function to the next middleware
     *
     * @returns {object} - status Message
     *
     * @description This method resets vote from a user to 0.
     * @memberOf VotesValidation
     */
-  static resetVoteEntry(request, response, decide = '') {
+  static resetVoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
     dbConnect.query(resetVotes(answerId, userId))
-      .then((data) => {
-        if (!decide) return upvote(request, response);
-        return downvote(request, response);
-      })
+      .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error updating votes table ${error}`, response));
   }
 }

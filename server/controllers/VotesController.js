@@ -19,21 +19,41 @@ class VotesController {
     *
     * @param {object} request - The request payload sent to the controller
     * @param {object} response - The response payload sent back from the controller
+    * @param {object} next - The next middleware
     *
     * @returns {object} - status Message and the added upvote
     *
     * @description This method increases the upvotes to an answer
     * @memberOf VotesController
     */
-  static upvote(request, response) {
+  static upvote(request, response, next) {
     const answerId = request.answers.id;
     const questionId = request.data.id;
     const userId = request.id;
     dbConnect.query(createUpvote(questionId, answerId, userId))
-      .then(data => response.status(200).json({
-        status: 'success',
-        message: 'You have successfully upvoted this answer'
-      }))
+      .then(data => next())
+      .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    * @param {object} next - The next middleware
+    *
+    * @returns {object} - status Message and the added upvote
+    *
+    * @description This method increases the upvotes to an answer
+    * @memberOf VotesController
+    */
+  static downvote(request, response, next) {
+    const answerId = request.answers.id;
+    const questionId = request.data.id;
+    const userId = request.id;
+    dbConnect.query(createDownvote(questionId, answerId, userId))
+      .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
   }
 
@@ -48,16 +68,30 @@ class VotesController {
     * @description This method increases the upvotes to an answer
     * @memberOf VotesController
     */
-  static downvote(request, response) {
-    const answerId = request.answers.id;
-    const questionId = request.data.id;
-    const userId = request.id;
-    dbConnect.query(createDownvote(questionId, answerId, userId))
-      .then(data => response.status(200).json({
-        status: 'success',
-        message: 'You have successfully downvoted this answer'
-      }))
-      .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
+  static finalizeDownvote(request, response) {
+    return response.status(200).json({
+      status: 'success',
+      message: 'You have successfully downvoted this answer'
+    });
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and the added upvote
+    *
+    * @description This method increases the upvotes to an answer
+    * @memberOf VotesController
+    */
+  static finalizeUpvote(request, response) {
+    return response.status(200).json({
+      status: 'success',
+      message: 'You have successfully upvoted this answer'
+    });
   }
 
   /**
