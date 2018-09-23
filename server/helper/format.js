@@ -76,6 +76,7 @@ const formatAnswers = (data) => {
       upvotes: x.upvotes,
       downvotes: x.downvotes,
       approved: x.approved,
+      numberOfComments: Number.parseInt(Number(x.commentsnumber), 10),
       comments: [],
       time: x.time,
       date: x.date,

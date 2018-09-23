@@ -5,9 +5,13 @@ const questionData = {
     ],
     searchedQuestions: [],
     questionWithAnswers: [],
+    answerWithComments: [],
     users: []
   },
   history: [
+
+  ],
+  answerHistory: [
 
   ],
   errors: [

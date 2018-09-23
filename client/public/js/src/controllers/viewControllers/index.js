@@ -14,9 +14,12 @@ const {
 } = UserApiController;
 const {
   fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion,
-  preferAnswer, upvoteAnswer, downvoteAnswer
+  preferAnswer, upvoteAnswer, downvoteAnswer, fetchComment
 } = QuestionApiController;
-const { connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory } = QuestionViewController;
+const {
+ connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory,
+  searchAnswerInHistory, renderAnswerInHistory 
+} = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
   toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp,
@@ -233,6 +236,7 @@ pageDisplay.addEventListener('click', (e) => {
   }
 
   if (e.target.id.startsWith('upvote')) {
+    e.stopImmediatePropagation();
     if (!userAuthData.data.token) {
       userAuthData.data.token = retrieveData('token');
     }
@@ -253,6 +257,17 @@ pageDisplay.addEventListener('click', (e) => {
     const downvote = document.getElementById(e.target.attributes[0].value);
     downvote.click();
   }
+
+  if (e.target.id.startsWith('comment') || e.target.id.startsWith('viewComment')) {
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    window.location.hash = `#comments/questions/${e.target.attributes[0].value}`;
+    const answerId = window.location.hash.substring(window.location.hash.lastIndexOf('/') + 1);
+    if (!userAuthData.data.id) userAuthData.data.id = retrieveData('loginId');
+    if (searchAnswerInHistory(answerId)) return renderAnswerInHistory(answerId);
+    fetchComment(e.target.attributes[0].value);
+  }
 });
 
 window.addEventListener('load', () => {
@@ -269,6 +284,11 @@ window.addEventListener('load', () => {
     const url = window.location.hash.substring(window.location.hash.lastIndexOf('-') + 1);
     questionData.url = url;
     fetchQuestion(url);
+  }
+
+  if (window.location.hash.startsWith('#comments')) {
+    const url = window.location.hash.substring(20);
+    fetchComment(url);
   }
   if (window.location.hash === '#signup') {
     if (userAuthData.data.loginStatus) window.location.hash = ''; else { signupAction(); }
@@ -308,6 +328,14 @@ window.addEventListener('hashchange', () => {
 
     questionData.url = url;
     fetchQuestion(url);
+  }
+
+  if (window.location.hash.startsWith('#comments')) {
+    const url = window.location.hash.substring(20);
+    const answerId = window.location.hash.substring(window.location.hash.lastIndexOf('/') + 1);
+    if (!userAuthData.data.id) userAuthData.data.id = retrieveData('loginId');
+    if (searchAnswerInHistory(answerId)) return renderAnswerInHistory(answerId);
+    fetchComment(url);
   }
 
   if (window.location.hash === '#signup') {
