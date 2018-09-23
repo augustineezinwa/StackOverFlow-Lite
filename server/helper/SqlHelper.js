@@ -409,7 +409,9 @@ class SqlHelper {
     */
   static getAllAnswersForAQuestion(questionId) {
     const query = {
-      text: 'SELECT * FROM answers where answers.questionid = $1',
+      text: `SELECT * FROM (SELECT answers.*, count(comments.answerid) as commentsnumber
+    from answers left  join comments on (answers.id =comments.answerid) 
+    group by answers.id) as c where c.questionid=$1`,
       values: [questionId]
     };
     return query;
@@ -665,7 +667,7 @@ class SqlHelper {
     return query;
   }
 
-    /**
+  /**
     * @static
     *
     *
@@ -674,15 +676,14 @@ class SqlHelper {
     * @description This method finds a user by id
     * @memberOf SqlHelper
     */
-   static updateUser(userId, jobRole, company, photo) {
+  static updateUser(userId, jobRole, company, photo) {
     const query = {
       text: `UPDATE users SET jobrole = $2, company = $3, photo = $4
       WHERE users.id =$1 RETURNING *`,
       values: [userId, jobRole, company, photo]
     };
     return query;
-   }
-  
+  }
 }
 
 export default SqlHelper;

@@ -87,11 +87,13 @@ class RenderUi {
     */
   static clearNotificationsInStar() {
     const stars = document.querySelectorAll('.stars');
-    if (stars.length) {stars.forEach((x) => { 
-      x.style.color = '';
-      x.classList.toggle('fas');
-      x.classList.toggle('far');
-    });}
+    if (stars.length) {
+      stars.forEach((x) => {
+        x.style.color = '';
+        x.classList.toggle('fas');
+        x.classList.toggle('far');
+      });
+    }
   }
 
   /**
@@ -394,20 +396,141 @@ class RenderUi {
   /**
     * @static
     *
+    * @param {string} commentId - This is the id of the comment to be displayed
+    * @param {string} comment - The comment to be displayed
+    * @returns {object} - renders the particularcomment
+    *
+    * @description This method renders a particular comment in a div
+    * @memberOf RenderUi
+    */
+  static renderComment(commentId, comment) {
+    return `<div class = "row">
+    <div class = "col">${comment}
+      <div class = "row mt-4">
+        <div class = "col"><div class = "ft">
+        comment by 
+        ${getInformationFromDataCenter(questionData.data.users, 'id',
+    getInformationFromDataCenter(questionData.data.answerWithComments.comments, 'id', commentId, 'userId'), 'fullName')} 
+        &nbsp on &nbsp <span class = "darkgray">
+        ${
+  getInformationFromDataCenter(questionData.data.answersWithComments.comments, 'id', commentId, 'date')}
+            &nbsp at &nbsp
+            ${
+  getInformationFromDataCenter(questionData.data.answersWithComments.comments, 'id', commentId, 'time')}
+        </span></div></div>
+        <div class = "col ">
+          </div>
+         
+      </div>
+    </div>
+
+  </div>
+
+  <div>&nbsp</div>
+  <div class = "underline">&nbsp</div>`;
+  }
+
+
+  /**
+    * @static
+    *
+    * @param {string} elementId - This is the id of the element that will display the question
+    * @param {string} setDisplay - The sets the visibility of the div element
+    * @returns {object} - renders a an answer with all its comments to the client side
+    *
+    * @description This method renders a particular question in a div.
+    * @memberOf RenderUi
+    */
+  static renderAnswerWithComments(elementId, setDisplay = 'none') {
+    const targetDiv = document.getElementById(elementId);
+    targetDiv.style.display = setDisplay;
+    const answerId = questionData.data.answerWithComments.id;
+    const questionId = questionData.data.answerWithComments.questionid;
+    const { approved } = questionData.data.answerWithComments;
+    let preferIndicator = 'far fa-star';
+    let styleIndicator = '';
+    if (approved) { preferIndicator = 'fas fa-star'; styleIndicator = 'hotpink'; }
+    const header = '<div class =""> <h3> Comments </h3></div><div class = "underline">&nbsp</div>';
+    let commentHeader = `<div class =""> <h4>${questionData.data.answerWithComments.comments.length} 
+    Comment</h3></div><div class = "underline">&nbsp</div>`;
+    if (questionData.data.answerWithComments.comments.length > 1) {
+      commentHeader = `<div class =""> <h4>${questionData.data.answerWithComments.comments.length} 
+      Comments</h3></div><div class = "underline">&nbsp</div>`;
+    }
+    const answer = `<div class = "row">
+    <div class = "col-5 pr-1" >${questionData.data.answerWithComments.answer} 
+      <div class = "mt-4 ft">Answered by 
+      ${getInformationFromDataCenter(questionData.data.users, 'id', questionData.data.answerWithComments.userid, 'fullName')}  
+      &nbsp <span class = "darkgray" >
+      ${questionData.data.answerWithComments.date}
+      &nbsp at &nbsp
+      ${questionData.data.answerWithComments.time.substr(0, 15)}
+      </span></div>
+    </div>
+    <div class = "col-2 ">
+      <div class = "row ">
+          <div class = "col-3">${questionData.data.answerWithComments.upvotes} upvotes</div>
+          <div class = "col-2"><span key="${questionId}/answers/${answerId}" id ="prefer${answerId}" style ="padding:auto">
+          <i key ="prefer${answerId}" class='${preferIndicator} stars' id ="star" style="color:${styleIndicator}; text-align:center"></i>
+          </span></div>
+          <div class = "col-3">${questionData.data.answerWithComments.downvotes} downvotes</div>
+      </div>
+    </div>
+  </div>
+
+  <div>&nbsp</div>
+  <div class = "underline;">&nbsp</div>`;
+    const formatComments = questionData.data
+      .answerWithComments.comments.map(x => RenderUi.renderComment(x.id, x.comment));
+    const refinedComments = formatComments.join(' ');
+    const addComment = `<form class = "" method = "POST">
+        
+    <label for="password"><b>Add Comment</b></label>
+    <textarea  class ="mt-2 txtarea" id = "boxComment"></textarea>
+
+    <button type="submit" key=${questionData.data.answerWithComments.id} id = "commentButton" > 
+    Add
+    </button>
+</form>`;
+    const formattedAnswerDisplay = `
+<div id = "updateAnswerPopUpDisplay"></div>
+<div class = "container question-background " >
+<div class = "row ">
+    <div class = "col">
+        <div class = "question-card">
+            ${header}
+            ${answer}
+            ${commentHeader}
+            ${refinedComments}
+            ${addComment}
+        </div>
+        </div>
+        </div>
+        
+        </div>`;
+    targetDiv.innerHTML = formattedAnswerDisplay;
+  }
+
+  /**
+    * @static
+    *
     * @param {string} answerId - This is the id of the answer to be displayed
     * @param {string} answer - The answer to be displayed
     * @param {string} upVotes - This is the total upvotes to this answer
     * @param {string} downVotes - This is the total downvotes to this answer
     * @param {string} approved - This is indicates if an answer is preffered or not
+    * @param {string} numberOfComments - This is the number of comments to a particular answer
     * @returns {object} - renders the particular answer
     *
     * @description This method renders a particular answer in a div
     * @memberOf RenderUi
     */
-  static renderAnswer(answerId, answer, upVotes, downVotes, approved = false) {
+  static renderAnswer(answerId, answer, upVotes, downVotes, approved = false, numberOfComments = 0) {
     let preferIndicator = 'far fa-star';
     let styleIndicator = '';
     if (approved) { preferIndicator = 'fas fa-star'; styleIndicator = 'hotpink'; }
+    let numberOfCommentsDisplay = 'View all comments';
+    if (numberOfComments > 2) numberOfCommentsDisplay = `View all ${numberOfComments} comments`;
     let updateAnswerButton = `<div class ="" style ="">
     <div> <span key="${answerId}" id ="updateAnswerPopUpButton" style ="padding:10px 20px; border: 1px solid lightgrey; float:right">
      <i key="${answerId}" id="updateAnswerPopUpButton" class ="far fa-edit blue resize"> </i></span></div>
@@ -433,9 +556,10 @@ class RenderUi {
     </span></div></div>
        <div class = "col ">
          <div class = "row">
-           <div class = "col"> <a href=""><button key="${answerId}"type =comment>Comment</button></a></div>
+           <div class = "col"><button key="${questionId}/answers/${answerId}" id ="comment${answerId}"type =comment>Comment</button></div>
            
-           <div class = "col " > <div class = "darkgray" key ="${answerId}">View Comments </div></div>
+           <div class = "col " > <div key ="${questionId}/answers/${answerId}" class = "darkgray commentLink"  id ="viewComment${answerId}">
+           ${numberOfCommentsDisplay}</div></div>
            
          </div>
          
@@ -489,14 +613,16 @@ class RenderUi {
     totalUpVotes, totalDownVotes) {
     let newQuestionTitle;
     if (questionTitle.length > 55) {
-      newQuestionTitle = `${questionTitle.substr(0, 70)} ...`;
+      newQuestionTitle = `${questionTitle.substr(0, 88)} ...`;
     }
+    let answerNumberDisplay = `${answerNumber} Answer`;
+    if (answerNumber > 1) answerNumberDisplay = `${answerNumber} Answers`;
     return `<div class = "card">
       <div class = "container">
         <div class = "row mt-4 pd-1" >
           <div class = "col-2">
             <div class = "symbol-display">
-              <div class = "alignSymbol">A</div>
+              <div class = "alignSymbol">${questionTitle.substr(0, 1)}</div>
             </div>
             
           </div>
@@ -506,7 +632,7 @@ class RenderUi {
           </div>
         </div>
         <div class = "row mt-2 pd-1">
-          <div class = "col"> <span> ${answerNumber} Answers</span></div>
+          <div class = "col"> <span>${answerNumberDisplay}</span></div>
     <div class = "col"><span> <i class="fas fa-thumbs-up"></i></span>&nbsp ${totalUpVotes}<span></span></div>
           <div class = "col"><span> <i class="fas fa-thumbs-down "></i></span>&nbsp ${totalDownVotes}<span><span></span></div>
           <div class = "col"><span></span><span></span><a href =#question-${questionId} >
@@ -532,7 +658,8 @@ class RenderUi {
     targetDiv.style.display = setDisplay;
 
     const formatAnswers = questionData.data
-      .questionWithAnswers.answers.map(x => RenderUi.renderAnswer(x.id, x.answer, x.upvotes, x.downvotes, x.approved));
+      .questionWithAnswers.answers.map(x => RenderUi.renderAnswer(x.id, x.answer, x.upvotes, x.downvotes,
+        x.approved, x.numberOfComments));
     const refineAnswers = formatAnswers.join(' ');
     const calcVotes = (votes) => {
       let i = 0;
@@ -549,8 +676,10 @@ class RenderUi {
     if (userId !== userAuthData.data.id) deleteButton = '';
     const totalUpVotes = calcVotes('upvotes');
     const totalDownVotes = calcVotes('downvotes');
-    const answerHeader = `<div class =""> <h3>${questionData.data.questionWithAnswers.answers.length} 
-    Answers</h3></div><div class = "underline">&nbsp</div>`;
+    const numberOfAnswers = questionData.data.questionWithAnswers.answers.length;
+    let answerNumberDisplay = `${numberOfAnswers} Answer`;
+    if (numberOfAnswers > 1) answerNumberDisplay = `${numberOfAnswers} Answers`;
+    const answerHeader = `<div class =""> <h3>${answerNumberDisplay}</h3></div><div class = "underline">&nbsp</div>`;
     const question = `<h2>${questionData.data.questionWithAnswers.questionTitle}</h2>
     <div class = "underline">&nbsp</div>
     <div class = "row">
@@ -602,6 +731,7 @@ class RenderUi {
             </div>`;
     targetDiv.innerHTML = formattedQuestionDisplay;
   }
+
 
   /**
     * @static
@@ -904,7 +1034,7 @@ class RenderUi {
     */
   static renderMostAnsweredQuestions(elementId, setDisplay, questionsArray) {
     let mostAnsweredQuestions = [...questionsArray];
-    mostAnsweredQuestions = mostAnsweredQuestions.sort((x, y) => x.numberOfAnswers > y.numberOfAnswers);
+    mostAnsweredQuestions = mostAnsweredQuestions.sort((x, y) => y.numberOfAnswers - x.numberOfAnswers);
     const refinedMostAnsweredQuestions = mostAnsweredQuestions.filter(x => x.numberOfAnswers > 0);
     if (refinedMostAnsweredQuestions.length > 0) {
       if (refinedMostAnsweredQuestions.length > 6) {

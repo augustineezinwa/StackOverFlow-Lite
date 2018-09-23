@@ -13,7 +13,8 @@ const {
   connectDeleteQuestionOperationToDataCenter,
   connectPreferAnswerOperationToDataCenter,
   connectUpvoteAnswerOperationToDataCenter,
-  connectDownvoteAnswerOperationToDataCenter
+  connectDownvoteAnswerOperationToDataCenter,
+  connectCommentsDisplayToDataCenter
 } = QuestionViewController;
 
 const { decrypt } = ResourceHelper;
@@ -69,7 +70,7 @@ class QuestionApiController {
     * @description This method fetches questions from the database and binds it to views
     * @memberOf QuestionApiController
     */
-  static fetchUsers() {
+  static fetchUsers(propertyType) {
     questionData.errors.length = 0;
     questionData.data.users.length = 0;
     questionData.ready = 0;
@@ -87,7 +88,9 @@ class QuestionApiController {
         console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
-        connectQuestionDetailsDisplayToDataCenter();
+        if (propertyType) connectCommentsDisplayToDataCenter(); else {
+          connectQuestionDetailsDisplayToDataCenter();
+        }
       })
       .catch((error) => {
         console.log(`${error}`);
@@ -95,7 +98,9 @@ class QuestionApiController {
         questionData.fail = 1;
         questionData.ready = 1;
         questionData.fetch = 0;
-        connectQuestionsDisplayToDataCenter();
+        if (propertyType) connectCommentsDisplayToDataCenter(); else {
+          connectQuestionDetailsDisplayToDataCenter();
+        }
       });
   }
 
@@ -513,7 +518,7 @@ class QuestionApiController {
     */
   static downvoteAnswer(e, keyUrl) {
     questionData.errors.length = 0;
-    questionData.data.upvoteStatus = 0;
+    questionData.data.downvoteStatus = 0;
     questionData.ready = 0;
     questionData.fail = 0;
     questionData.fetch = 1;
@@ -527,7 +532,7 @@ class QuestionApiController {
     }).then(response => response.json())
       .then((data) => {
         if (data.status === 'success') {
-          questionData.data.upvoteStatus = 1;
+          questionData.data.downvoteStatus = 1;
           questionData.errors.length = 0;
           questionData.ready = 1;
           questionData.fetch = 0;
@@ -548,6 +553,48 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectDownvoteAnswerOperationToDataCenter(e);
+      });
+  }
+
+  /**
+    * @static
+    *
+    *@param {string} keyUrl - the id of the comment to be fetched
+    * @returns {object} - searches comments and pushes it to datacenter
+    *
+    * @description This method fetches comments from the database and binds to datacenter.
+    * @memberOf QuestionApiController
+    */
+  static fetchComment(keyUrl) {
+    questionData.errors.length = 0;
+    questionData.data.answerWithComments.length = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectCommentsDisplayToDataCenter();
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`, {
+      headers: {
+        'Content-type': 'application/json',
+      }
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.answerWithComments = data.data.answer;
+          questionData.answerHistory.push(data.data.answer);
+          return QuestionApiController.fetchUsers('comments');
+        }
+        console.log(questionData);
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectCommentsDisplayToDataCenter();
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectCommentsDisplayToDataCenter();
       });
   }
 }

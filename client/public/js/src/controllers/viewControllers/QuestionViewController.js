@@ -8,7 +8,8 @@ const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
   modifyTitle, renderQuestionWithAnswers, renderNotificationInButton, renderNotification,
   showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm, showErrorsOnUpdateAnswerForm,
-  renderNotificationInStar, showErrorsOnPreferAnswer, clearNotificationsInStar, showErrorsOnVoteAnswer
+  renderNotificationInStar, showErrorsOnPreferAnswer, clearNotificationsInStar, showErrorsOnVoteAnswer,
+  renderAnswerWithComments
 } = RenderUi;
 const { destroyData } = ResourceHelper;
 
@@ -159,6 +160,7 @@ class QuestionViewController {
     }
   }
 
+
   /**
     * @static
     *
@@ -197,6 +199,39 @@ class QuestionViewController {
     if (questionData.fail && questionData.ready) {
       renderModal('modalDisplay', 'block', 'Internet Connection Error!');
       QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
+
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method binds and display an answer with all comments  to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectCommentsDisplayToDataCenter() {
+    if (!questionData.ready && questionData.fetch) {
+      QuestionViewController.bindDataFromSearchBox('searchBox');
+      renderModalLoader('modalDisplay', 'block', 'Loading Comments');
+    }
+    if (questionData.ready) renderModalLoader('modalDisplay', 'none', '');
+    if (questionData.fail) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+    if (questionData.data.answerWithComments.id && questionData.ready) {
+      renderModalLoader('modalDisplay', 'none', '');
+      if (questionData.fail) {
+        renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+        QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+      }
+      renderAnswerWithComments('pageDisplay', 'block');
+    } else if (questionData.ready) {
+      notifyEmptyResult('questionsDisplay', 'block', 'Sorry! Page not found!');
+      QuestionViewController.attachrefreshEvent('refresh');
+      modifyTitle('dashBoardTitle', 'Oops! An Error Occured');
     }
   }
 
@@ -355,7 +390,7 @@ class QuestionViewController {
         window.location.hash = '#login';
         return;
       }
-      showErrorsOnVoteAnswer();
+      return showErrorsOnVoteAnswer();
     }
     if (questionData.data.upvoteStatus === 1) {
       userAuthData.data.token = '';
@@ -397,9 +432,9 @@ class QuestionViewController {
         window.location.hash = '#login';
         return;
       }
-      showErrorsOnVoteAnswer();
+      return showErrorsOnVoteAnswer();
     }
-    if (questionData.data.upvoteStatus === 1) {
+    if (questionData.data.downvoteStatus === 1) {
       userAuthData.data.token = '';
       renderNotification('notificationDisplay', 'block', 'You succesfully downvoted this answer');
       setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
@@ -466,7 +501,7 @@ class QuestionViewController {
     const targetDiv = document.getElementById(`numUpvotes${targetId}`);
     const downvoteDiv = document.getElementById(`numDownvotes${targetId}`);
     let b = +downvoteDiv.innerText;
-    if(b) b -= 1;
+    if (b) b -= 1;
     downvoteDiv.innerText = b;
     let a = +targetDiv.innerText;
     a += 1;
@@ -489,7 +524,7 @@ class QuestionViewController {
     const targetDiv = document.getElementById(`numDownvotes${targetId}`);
     const upvoteDiv = document.getElementById(`numUpvotes${targetId}`);
     let b = +upvoteDiv.innerText;
-    if(b) b -=1;
+    if (b) b -= 1;
     upvoteDiv.innerText = b;
     let a = +targetDiv.innerText;
     a += 1;
@@ -629,6 +664,23 @@ class QuestionViewController {
   /**
     * @static
     *
+    * @param {string} answerId - the id of the answer
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method checks for an answer in history;
+    * @memberOf QuestionViewController
+    */
+  static searchAnswerInHistory(answerId) {
+    const answer = questionData.answerHistory.find(x => +x.id === +answerId);
+    console.log(questionData.answerHistory);
+    console.log(answer);
+    if (answer) { return 1; } return 0;
+  }
+
+  /**
+    * @static
+    *
     * @param {string} questionId - the id of the question
     *
     * @returns {object} - binds view to datacenter
@@ -640,6 +692,22 @@ class QuestionViewController {
     const question = questionData.history.find(x => +x.id === +questionId);
     questionData.data.questionWithAnswers = question;
     renderQuestionWithAnswers('pageDisplay', 'block');
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} answerId - the id of the answer
+    *
+    * @returns {object} - binds view to datacenter
+    *
+    * @description This method checks for an answer in history;
+    * @memberOf QuestionViewController
+    */
+  static renderAnswerInHistory(answerId) {
+    const answer = questionData.answerHistory.find(x => +x.id === +answerId);
+    questionData.data.answerWithComments = answer;
+    renderAnswerWithComments('pageDisplay', 'block');
   }
 }
 
