@@ -43,7 +43,6 @@ class RenderUi {
   static renderNotificationInButton(elementId, setDisplay = 'none', message = '', defaultLabel = 'Signup') {
     const content = (message) ? `<span><i class ="fas fa-spinner fa-pulse"></i></span> &nbsp ${message}`
       : `${defaultLabel}`;
-    console.log(content);
     const targetDiv = document.getElementById(elementId);
     targetDiv.innerHTML = content;
     targetDiv.style.display = setDisplay;
@@ -208,7 +207,7 @@ class RenderUi {
                     <form class = "" method = "POST">
                     
                       <label for="password"><b>Update answer</b></label>
-                      <textarea  class ="mt-4 txtarea" id = "answerForUpdate">${answer}</textarea>
+                      <textarea  class ="mt-4 txtarea pd-1" id = "answerForUpdate">${answer}</textarea>
                   
                       <button key="${questionId}/answers/${answerId}" id = "updateAnswerButton" > 
                       Update
@@ -408,15 +407,15 @@ class RenderUi {
     <div class = "col">${comment}
       <div class = "row mt-4">
         <div class = "col"><div class = "ft">
-        comment by 
+        Comment by 
         ${getInformationFromDataCenter(questionData.data.users, 'id',
     getInformationFromDataCenter(questionData.data.answerWithComments.comments, 'id', commentId, 'userId'), 'fullName')} 
         &nbsp on &nbsp <span class = "darkgray">
         ${
-  getInformationFromDataCenter(questionData.data.answersWithComments.comments, 'id', commentId, 'date')}
+  getInformationFromDataCenter(questionData.data.answerWithComments.comments, 'id', commentId, 'date')}
             &nbsp at &nbsp
             ${
-  getInformationFromDataCenter(questionData.data.answersWithComments.comments, 'id', commentId, 'time')}
+  getInformationFromDataCenter(questionData.data.answerWithComments.comments, 'id', commentId, 'time')}
         </span></div></div>
         <div class = "col ">
           </div>
@@ -486,9 +485,9 @@ class RenderUi {
     const addComment = `<form class = "" method = "POST">
         
     <label for="password"><b>Add Comment</b></label>
-    <textarea  class ="mt-2 txtarea" id = "boxComment"></textarea>
+    <textarea  class ="mt-2 txtarea pd-1" id = "boxComment"></textarea>
 
-    <button type="submit" key=${questionData.data.answerWithComments.id} id = "commentButton" > 
+    <button key= "${questionId}/answers/${answerId}" id = "commenButton" > 
     Add
     </button>
 </form>`;
@@ -706,7 +705,7 @@ class RenderUi {
     const addAnswer = `<form class = "" method = "POST">
         
     <label for="password"><b>Add an answer</b></label>
-    <textarea  class ="mt-2 txtarea" id = "answer"></textarea>
+    <textarea  class ="mt-2 txtarea pd-1" id = "answer"></textarea>
 
     <button type="submit" key=${questionData.data.questionWithAnswers.id} id = "answerButton" > 
     Add
@@ -903,6 +902,24 @@ class RenderUi {
     setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
     if (questionData.errors[0].message.includes('answer')) {
       answer.style.borderColor = 'red';
+    }
+  }
+
+  /**
+    * @static
+    *
+    * @returns {object} - shows errors on post comment form
+    *
+    * @description This method renders a validation messages and signs
+    * @memberOf RenderUi
+    */
+  static showErrorsOnPostCommentForm() {
+    const comment = document.getElementById('boxComment');
+    comment.style.borderColor = '';
+    RenderUi.renderNotification('notificationDisplay', 'block', questionData.errors[0].message);
+    setTimeout(() => RenderUi.renderNotification('notificationDisplay', 'none'), 3500);
+    if (questionData.errors[0].message.includes('comment')) {
+      comment.style.borderColor = 'red';
     }
   }
 

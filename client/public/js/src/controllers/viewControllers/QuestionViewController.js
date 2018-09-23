@@ -9,7 +9,7 @@ const {
   modifyTitle, renderQuestionWithAnswers, renderNotificationInButton, renderNotification,
   showErrorsOnPostQuestionForm, showErrorsOnPostAnswerForm, showErrorsOnUpdateAnswerForm,
   renderNotificationInStar, showErrorsOnPreferAnswer, clearNotificationsInStar, showErrorsOnVoteAnswer,
-  renderAnswerWithComments
+  renderAnswerWithComments, showErrorsOnPostCommentForm
 } = RenderUi;
 const { destroyData } = ResourceHelper;
 
@@ -446,6 +446,47 @@ class QuestionViewController {
     }
   }
 
+
+  /**
+    * @static
+    *
+    * @returns {object} - binds post comment views to datacenter
+    *
+    * @description This method binds post comment actions to datacenter;
+    * @memberOf QuestionViewController
+    */
+  static connectPostCommentOperationToDataCenter() {
+    if (!questionData.ready && questionData.fetch) {
+      renderNotificationInButton('commenButton', 'block', 'Posting Comment...');
+    }
+    if (questionData.ready) renderNotificationInButton('commenButton', 'block', '', 'Add');
+    if (questionData.ready && questionData.errors.length > 0 && !questionData.fail) {
+      if (questionData.errors[0].message.includes('Unauthorized')
+          || questionData.errors[0].message.includes('signup')) {
+        destroyData('token');
+        destroyData('loginStatus');
+        destroyData('loginId');
+        questionData.data.loginStatus = 0;
+        questionData.data.token = '';
+        renderNotification('notificationDisplay', 'block', 'Your session has expired, Please login');
+        setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
+        window.location.reload();
+        window.location.hash = '#login';
+        return;
+      }
+      showErrorsOnPostCommentForm();
+    }
+    if (questionData.data.postStatus === 1) {
+      userAuthData.data.token = '';
+      renderNotification('notificationDisplay', 'block', 'Comment post was successful');
+      setTimeout(() => renderNotification('notificationDisplay', 'none'), 3500);
+      window.location.reload();
+    }
+    if (questionData.fail && questionData.ready) {
+      renderModal('modalDisplay', 'block', 'Internet Connection Error!');
+      QuestionViewController.attachSwitchOffModalEvent('shutDownButton', 'modalDisplay');
+    }
+  }
 
   /**
     * @static

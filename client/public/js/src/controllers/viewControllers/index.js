@@ -14,11 +14,11 @@ const {
 } = UserApiController;
 const {
   fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion,
-  preferAnswer, upvoteAnswer, downvoteAnswer, fetchComment
+  preferAnswer, upvoteAnswer, downvoteAnswer, fetchComment, postComment
 } = QuestionApiController;
 const {
- connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory,
-  searchAnswerInHistory, renderAnswerInHistory 
+  connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory,
+  searchAnswerInHistory, renderAnswerInHistory
 } = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
@@ -236,7 +236,6 @@ pageDisplay.addEventListener('click', (e) => {
   }
 
   if (e.target.id.startsWith('upvote')) {
-    e.stopImmediatePropagation();
     if (!userAuthData.data.token) {
       userAuthData.data.token = retrieveData('token');
     }
@@ -267,6 +266,15 @@ pageDisplay.addEventListener('click', (e) => {
     if (!userAuthData.data.id) userAuthData.data.id = retrieveData('loginId');
     if (searchAnswerInHistory(answerId)) return renderAnswerInHistory(answerId);
     fetchComment(e.target.attributes[0].value);
+  }
+
+  if (e.target.id === 'commenButton') {
+    e.preventDefault();
+    if (!userAuthData.data.token) {
+      userAuthData.data.token = retrieveData('token');
+    }
+    const comment = document.getElementById('boxComment').value;
+    postComment(comment, e.target.attributes[0].value);
   }
 });
 
