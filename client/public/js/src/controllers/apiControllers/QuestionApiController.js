@@ -14,7 +14,8 @@ const {
   connectPreferAnswerOperationToDataCenter,
   connectUpvoteAnswerOperationToDataCenter,
   connectDownvoteAnswerOperationToDataCenter,
-  connectCommentsDisplayToDataCenter
+  connectCommentsDisplayToDataCenter,
+  connectPostCommentOperationToDataCenter
 } = QuestionViewController;
 
 const { decrypt } = ResourceHelper;
@@ -595,6 +596,60 @@ class QuestionApiController {
         questionData.ready = 1;
         questionData.fetch = 0;
         connectCommentsDisplayToDataCenter();
+      });
+  }
+
+  /**
+    * @static
+    *
+    * @param {string} comment - The comment to be posted
+    * @param {string} keyUrl - The url of the answer to be posted
+    *
+    * @returns {object} - updates data center
+    *
+    * @description This method posts a question  in the application
+    * @memberOf QuestionApiController
+    */
+  static postComment(comment, keyUrl) {
+    questionData.errors.length = 0;
+    questionData.data.postStatus = 0;
+    questionData.ready = 0;
+    questionData.fail = 0;
+    questionData.fetch = 1;
+    connectPostCommentOperationToDataCenter();
+    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        authorization: decrypt('blowfish.io', userAuthData.data.token)
+      },
+      body: JSON.stringify({
+        comment
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          questionData.data.postStatus = 1;
+          questionData.errors.length = 0;
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          questionData.data.message = data.message;
+          connectPostCommentOperationToDataCenter();
+        } else {
+          questionData.errors.push(data);
+          console.log(questionData);
+          questionData.ready = 1;
+          questionData.fetch = 0;
+          connectPostCommentOperationToDataCenter();
+        }
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        questionData.errors.push(error);
+        questionData.fail = 1;
+        questionData.ready = 1;
+        questionData.fetch = 0;
+        connectPostCommentOperationToDataCenter();
       });
   }
 }
