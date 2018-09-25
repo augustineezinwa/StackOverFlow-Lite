@@ -13,7 +13,7 @@ const ask = `    <div class = "container image-background ask-bg">
             <input type="text" id = "questionTitle" >
 
             <label for="password"><b>Describe your Question</b></label>
-            <textarea  class ="mt-2 txtarea" id = "questionDescription" ></textarea>
+            <textarea  class ="mt-2 txtarea pd-2" id = "questionDescription" ></textarea>
 
             <button type="submit" id = "askButton"> <span id ="askNotification">Ask</span></button>
         </form>

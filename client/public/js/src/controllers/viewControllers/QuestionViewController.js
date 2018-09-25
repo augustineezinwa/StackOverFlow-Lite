@@ -2,7 +2,6 @@ import questionData from '../../models/dataCenter.js';
 import userAuthData from '../../models/userData.js';
 import RenderUi from '../../views/RenderUi.js';
 import ResourceHelper from '../../helper/ResourceHelper.js';
-import routeTable from '../../router/routeTable.js';
 
 const {
   renderAllQuestions, renderModalLoader, renderModal, toggleButton, notifyEmptyResult,
@@ -599,12 +598,9 @@ class QuestionViewController {
     */
   static attachViewEvents(className) {
     const targetButtons = document.querySelectorAll(`.${className}`);
-    console.log(targetButtons);
     if (targetButtons.length) {
-      targetButtons.forEach(x => x.addEventListener('click', (e) => {
+      [...targetButtons].forEach(x => x.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log(+e.target.attributes);
-        console.log(+e.target.attributes[1].value);
         questionData.retrieveId = +e.target.attributes[1].value;
         window.location.hash = `#questions-${questionData.retrieveId}`;
       }));
@@ -624,7 +620,7 @@ class QuestionViewController {
     */
   static toggleAllByClassName(className, setDisplay = 'none') {
     const targetButtons = document.querySelectorAll(`.${className}`);
-    targetButtons.forEach((x) => {
+    [...targetButtons].forEach((x) => {
       x.style.display = setDisplay;
     });
   }
