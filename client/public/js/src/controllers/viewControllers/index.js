@@ -8,24 +8,26 @@ import ResourceHelper from '../../helper/ResourceHelper.js';
 import RenderUi from '../../views/RenderUi.js';
 
 
-const { validateSignup, loginOnDemand, connectfetchUserProfileOperationToDataCenter } = UserViewController;
-const {
-  signUpUser, loginUser, fetchUserProfile, updateUserProfile, updatePhotoToCloud
-} = UserApiController;
-const {
-  fetchQuestions, fetchSearchQuestions, fetchQuestion, postQuestion, postAnswer, updateAnswer, deleteQuestion,
-  preferAnswer, upvoteAnswer, downvoteAnswer, fetchComment, postComment
-} = QuestionApiController;
-const {
-  connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory,
-  searchAnswerInHistory, renderAnswerInHistory
-} = QuestionViewController;
 const { retrieveData, destroyData } = ResourceHelper;
 const {
   toggleDiv, renderNotification, renderNotificationInButton, togglePhoto, renderUpdateAnswerPopUp,
   renderDeleteQuestionPopUpModal
 } = RenderUi;
+const { validateSignup, loginOnDemand, connectfetchUserProfileOperationToDataCenter } = UserViewController;
 
+const {
+  connectQuestionsDisplayToDataCenter, searchQuestionInHistory, renderQuestionInHistory,
+  searchAnswerInHistory, renderAnswerInHistory
+} = QuestionViewController;
+const {
+  postQuestion, postAnswer, updateAnswer, deleteQuestion,
+  preferAnswer, upvoteAnswer, downvoteAnswer, fetchComment, postComment,
+  fetchQuestions, fetchSearchQuestions, fetchQuestion
+} = QuestionApiController;
+
+const {
+  signUpUser, loginUser, fetchUserProfile, updateUserProfile, updatePhotoToCloud
+} = UserApiController;
 
 const signupAction = () => {
   const signupButton = document.getElementById('signupButton');

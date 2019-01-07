@@ -1,7 +1,6 @@
 import questionData from '../models/dataCenter.js';
 import userAuthData from '../models/userData.js';
 import ResourceHelper from '../helper/ResourceHelper.js';
-import routeTable from '../router/routeTable.js';
 
 const { getInformationFromDataCenter } = ResourceHelper;
 
@@ -87,7 +86,7 @@ class RenderUi {
   static clearNotificationsInStar() {
     const stars = document.querySelectorAll('.stars');
     if (stars.length) {
-      stars.forEach((x) => {
+      [...stars].forEach((x) => {
         x.style.color = '';
         x.classList.toggle('fas');
         x.classList.toggle('far');
@@ -207,7 +206,7 @@ class RenderUi {
                     <form class = "" method = "POST">
                     
                       <label for="password"><b>Update answer</b></label>
-                      <textarea  class ="mt-4 txtarea pd-1" id = "answerForUpdate">${answer}</textarea>
+                      <textarea  class ="mt-4 txtarea pd-2" id = "answerForUpdate">${answer}</textarea>
                   
                       <button key="${questionId}/answers/${answerId}" id = "updateAnswerButton" > 
                       Update
@@ -485,7 +484,7 @@ class RenderUi {
     const addComment = `<form class = "" method = "POST">
         
     <label for="password"><b>Add Comment</b></label>
-    <textarea  class ="mt-2 txtarea pd-1" id = "boxComment"></textarea>
+    <textarea  class ="mt-2 txtarea pd-2" id = "boxComment"></textarea>
 
     <button key= "${questionId}/answers/${answerId}" id = "commenButton" > 
     Add
@@ -705,7 +704,7 @@ class RenderUi {
     const addAnswer = `<form class = "" method = "POST">
         
     <label for="password"><b>Add an answer</b></label>
-    <textarea  class ="mt-2 txtarea pd-1" id = "answer"></textarea>
+    <textarea  class ="mt-2 txtarea pd-2" id = "answer"></textarea>
 
     <button type="submit" key=${questionData.data.questionWithAnswers.id} id = "answerButton" > 
     Add
