@@ -467,7 +467,7 @@ class SqlHelper {
       sum(answers.upvotes) as upvotes,
       sum(answers.downvotes) as downvotes from questions
       left  join answers on (questions.id =answers.questionid)
-      group by questions.id
+      group by questions.id ORDER BY ID DESC
     `
     };
     return query;
