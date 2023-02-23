@@ -10,7 +10,7 @@
   "scripts": {
     "test": "npm run db:initialize --exit --exit --exit && cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 10000000 server/tests/**/*.js --exit",
     "start": "node server/app.js",
-    "heroku-postbuild": "node server/migrations/index.js --exit",
+    "build": "node server/migrations/index.js --exit && npm run build-client",
     "db:initialize": "cross-env NODE_ENV=test babel-node server/migrations/index.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "npm run db:initialize --exit && cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit ",
