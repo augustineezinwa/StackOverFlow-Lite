@@ -67,7 +67,6 @@ class UserViewController {
     }
     if (userAuthData.ready) renderNotificationInButton('loginNotification', 'block', '', 'Login');
     if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
-      console.log(userAuthData.errors);
       renderNotification('notificationDisplay', 'block', userAuthData.errors[0].message);
       setTimeout(() => renderNotification('notificationDisplay', 'none'), 4000);
     }
@@ -109,7 +108,6 @@ class UserViewController {
     }
 
     if (userAuthData.ready && userAuthData.errors.length > 0 && !userAuthData.fail) {
-      console.log(userAuthData.errors);
       if (userAuthData.errors[0].message.includes('Unauthorized')
       || userAuthData.errors[0].message.includes('signup')) {
         destroyData('token');
@@ -206,7 +204,6 @@ class UserViewController {
     */
   static connectUpdateProfilePhotoOperationToDataCenter() {
     if (!userAuthData.ready && userAuthData.fetch) {
-      console.log('I am here');
       renderNotificationInButton('updateProfileButton', 'block', 'Uploading Photo...', '');
     }
     if (userAuthData.ready) renderNotificationInButton('updateProfileButton', 'block', '', 'Update');

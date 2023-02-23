@@ -536,7 +536,6 @@ class QuestionViewController {
     * @memberOf QuestionViewController
     */
   static incrementUpvotes(e) {
-    console.log(e.target.id);
     const targetId = e.target.id.substring(6);
     const targetDiv = document.getElementById(`numUpvotes${targetId}`);
     const downvoteDiv = document.getElementById(`numDownvotes${targetId}`);
@@ -693,8 +692,6 @@ class QuestionViewController {
     */
   static searchQuestionInHistory(questionId) {
     const question = questionData.history.find(x => +x.id === +questionId);
-    console.log(questionData.history);
-    console.log(question);
     if (question) { return 1; } return 0;
   }
 
@@ -710,8 +707,6 @@ class QuestionViewController {
     */
   static searchAnswerInHistory(answerId) {
     const answer = questionData.answerHistory.find(x => +x.id === +answerId);
-    console.log(questionData.answerHistory);
-    console.log(answer);
     if (answer) { return 1; } return 0;
   }
 
