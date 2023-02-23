@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../app';
-import dbConnect from '../../connections/dbConnect';
-import SqlHelper from '../../helper/SqlHelper';
+import app from '../../app.js';
+import dbConnect from '../../connections/dbConnect.js';
+import SqlHelper from '../../helper/SqlHelper.js';
 
 const { checkEmail } = SqlHelper;
 
@@ -20,6 +20,7 @@ describe('testing signup feature', () => {
     };
     chai.request(app).post('/api/v1/auth/signup')
       .send(newUser).end((error, response) => {
+        console.log(response);
         response.should.have.status(201);
         response.body.should.be.a('object');
         response.body.should.have.property('status').eql('success');

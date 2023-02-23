@@ -1,5 +1,5 @@
 import pg from 'pg';
-import config from '../config/config';
+import config from '../config/config.js';
 
 const { Pool } = pg;
 process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : '';

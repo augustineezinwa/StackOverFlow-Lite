@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
-import CatchErrors from '../helper/CatchErrors';
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
-import Helper from '../helper/Helper';
+import bcrypt from 'bcryptjs';
+import CatchErrors from '../helper/CatchErrors.js';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
+import Helper from '../helper/Helper.js';
 
 const { checkEmail } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -75,7 +75,7 @@ class UserValidation {
     if (password.toString().trim().length < 6) return sendErrorResponse('password must contain at least six characters');
     if (!confirmPassword) return sendErrorResponse('confirm password cant be empty');
     if (confirmPassword !== request.body.password) return sendErrorResponse('confirm password does not match');
-    request.body.password = bcrypt.hashSync(request.body.password, 10);
+    request.body.password = bcrypt.hashSync(request.body.password, bcrypt.genSaltSync(10));
     return next();
   }
 

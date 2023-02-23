@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../app';
-import { firstUser, newUser, secondUser } from '../../models/users';
-import SqlHelper from '../../helper/SqlHelper';
-import dbConnect from '../../connections/dbConnect';
+import app from '../../app.js';
+import { firstUser, newUser, secondUser } from '../../models/users.js';
+import SqlHelper from '../../helper/SqlHelper.js';
+import dbConnect from '../../connections/dbConnect.js';
 
 const { getAUserAnswer } = SqlHelper;
 

@@ -1,6 +1,6 @@
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
-import CatchErrors from '../helper/CatchErrors';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
+import CatchErrors from '../helper/CatchErrors.js';
 
 const {
   createUpvote, createDownvote, getDownvotesForAnswer, getUpvotesForAnswer,

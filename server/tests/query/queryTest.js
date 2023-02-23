@@ -1,5 +1,5 @@
 import chai from 'chai';
-import SqlHelper from '../../helper/SqlHelper';
+import SqlHelper from '../../helper/SqlHelper.js';
 
 const { checkEmail } = SqlHelper;
 

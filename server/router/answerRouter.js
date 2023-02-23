@@ -1,11 +1,11 @@
 import express from 'express';
-import AnswerController from '../controllers/AnswerController';
-import CommentController from '../controllers/CommentController';
-import CommentValidation from '../middlewares/CommentValidation';
-import QuestionValidation from '../middlewares/QuestionValidation';
-import AnswerValidation from '../middlewares/AnswerValidation';
-import Security from '../middlewares/Security';
-import VotesController from '../controllers/VotesController';
+import AnswerController from '../controllers/AnswerController.js';
+import CommentController from '../controllers/CommentController.js';
+import CommentValidation from '../middlewares/CommentValidation.js';
+import QuestionValidation from '../middlewares/QuestionValidation.js';
+import AnswerValidation from '../middlewares/AnswerValidation.js';
+import Security from '../middlewares/Security.js';
+import VotesController from '../controllers/VotesController.js';
 
 const {
   validateAnswer, validatePermissionToEditAnswer, validatePermissionToUpdateAnswer,

@@ -7,7 +7,7 @@ StackOverFlow-Lite Application is a platform where users can ask questions and g
 #
 * *Pivotal Tracker Project Management Board Link* : https://www.pivotaltracker.com/n/projects/2189325 
 * *StackOverFlow-Lite Application github page UI link* :  https://augustineezinwa.github.io/StackOverFlow-Lite/UI/index.html
-* *Application API Documentation Link* : https://stack-o-lite.herokuapp.com/api-docs
+* *Application API Documentation Link* : /api-docs
 
 ## Table of content
 * [Problem Statement](#problem)

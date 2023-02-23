@@ -1,7 +1,7 @@
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
-import { formatComments } from '../helper/format';
-import CatchErrors from '../helper/CatchErrors';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
+import { formatComments } from '../helper/format.js';
+import CatchErrors from '../helper/CatchErrors.js';
 
 const { catchDatabaseConnectionError } = CatchErrors;
 const { createComment, getAllCommentsForAnAnswer } = SqlHelper;

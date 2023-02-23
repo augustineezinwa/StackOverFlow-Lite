@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
-import CatchErrors from '../helper/CatchErrors';
-import { formatUsers, formatUserUpdate } from '../helper/format';
+import bcrypt from 'bcryptjs';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
+import CatchErrors from '../helper/CatchErrors.js';
+import { formatUsers, formatUserUpdate } from '../helper/format.js';
 
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
