@@ -1,8 +1,8 @@
-import UsersMigration from './UsersMigration';
-import QuestionsMigration from './QuestionsMigration';
-import AnswersMigration from './AnswersMigration';
-import CommentsMigration from './CommentsMigration';
-import VotesMigration from './VotesMigration';
+import UsersMigration from './UsersMigration.js';
+import QuestionsMigration from './QuestionsMigration.js';
+import AnswersMigration from './AnswersMigration.js';
+import CommentsMigration from './CommentsMigration.js';
+import VotesMigration from './VotesMigration.js';
 
 const { migrateUsers } = UsersMigration;
 const { migrateQuestions } = QuestionsMigration;

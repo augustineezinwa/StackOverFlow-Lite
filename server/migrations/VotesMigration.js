@@ -1,5 +1,5 @@
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
 
 const { createTableForVotes } = SqlHelper;
 /**

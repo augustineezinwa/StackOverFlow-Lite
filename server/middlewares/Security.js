@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
-import CatchErrors from '../helper/CatchErrors';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
+import CatchErrors from '../helper/CatchErrors.js';
 
 const { findUser } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;

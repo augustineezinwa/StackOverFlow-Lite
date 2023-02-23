@@ -1,16 +1,17 @@
 {
   "name": "StackOverFlow-Lite",
   "version": "1.0.0",
+  "type": "module",
   "engines": {
-    "node": "8.10.0"
+    "node": "16.19.1"
   },
   "description": "StackOverFlow-Lite Application is a platform where users can ask questions and get answers to their questions",
   "main": "index.js",
   "scripts": {
     "test": "npm run db:initialize --exit --exit --exit && cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 10000000 server/tests/**/*.js --exit",
-    "start": "babel-node server/app.js",
-    "heroku-postbuild": "babel-node server/migrations/index.js --exit",
-    "db:initialize": "cross-env NODE_ENV=test babel-node server/migrations/index.js --exit",
+    "start": "node server/app.js",
+    "build": "node server/migrations/index.js --exit && npm run build-client",
+    "db:initialize": "cross-env NODE_ENV=test babel-node server/migrations/index.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "npm run db:initialize --exit && cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit ",
     "build-client-one": "browserify client/public/js/src/router/index.js -t babelify --outfile client/public/js/build/indexRouter.js",
@@ -30,9 +31,10 @@
   },
   "homepage": "https://github.com/augustineezinwa/StackOverFlow-Lite#readme",
   "dependencies": {
+    "app-root-path": "^3.1.0",
     "babel-plugin-istanbul": "^5.0.1",
     "babel-preset-env": "^1.7.0",
-    "bcrypt": "^3.0.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
@@ -45,7 +47,7 @@
     "mocha": "^5.2.0",
     "morgan": "^1.9.0",
     "nyc": "^12.0.2",
-    "pg": "^7.4.3",
+    "pg": "^8.9.0",
     "swagger-ui-express": "^4.0.0",
     "yamljs": "^0.3.0"
   },

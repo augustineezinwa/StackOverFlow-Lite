@@ -1,8 +1,8 @@
-import Helper from '../helper/Helper';
-import CatchErrors from '../helper/CatchErrors';
-import AnswerController from '../controllers/AnswerController';
-import dbConnect from '../connections/dbConnect';
-import SqlHelper from '../helper/SqlHelper';
+import Helper from '../helper/Helper.js';
+import CatchErrors from '../helper/CatchErrors.js';
+import AnswerController from '../controllers/AnswerController.js';
+import dbConnect from '../connections/dbConnect.js';
+import SqlHelper from '../helper/SqlHelper.js';
 
 const { getAnAnswer } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;

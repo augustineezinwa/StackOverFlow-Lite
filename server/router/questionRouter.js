@@ -1,8 +1,8 @@
 import express from 'express';
-import QuestionController from '../controllers/QuestionController';
-import QuestionValidation from '../middlewares/QuestionValidation';
-import Security from '../middlewares/Security';
-import AnswerController from '../controllers/AnswerController';
+import QuestionController from '../controllers/QuestionController.js';
+import QuestionValidation from '../middlewares/QuestionValidation.js';
+import Security from '../middlewares/Security.js';
+import AnswerController from '../controllers/AnswerController.js';
 
 const {
   fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion, fetchUserQuestions,

@@ -1,8 +1,8 @@
 import express from 'express';
-import UserValidation from '../middlewares/UserValidation';
-import UserController from '../controllers/UserController';
-import Security from '../middlewares/Security';
-import QuestionValidation from '../middlewares/QuestionValidation';
+import UserValidation from '../middlewares/UserValidation.js';
+import UserController from '../controllers/UserController.js';
+import Security from '../middlewares/Security.js';
+import QuestionValidation from '../middlewares/QuestionValidation.js';
 
 const {
   validateUser, checkEmailReuse, validateLogin, validateJobRole, validateCompanyName,

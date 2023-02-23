@@ -39,7 +39,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectQuestionsDisplayToDataCenter();
-    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/questions', {
+    window.fetch('/api/v1/questions', {
       headers: {
         'Content-type': 'application/json',
       }
@@ -48,13 +48,11 @@ class QuestionApiController {
         if (data.status === 'success') {
           questionData.data.questions = data.data.questions;
         }
-        console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
         connectQuestionsDisplayToDataCenter();
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -77,7 +75,7 @@ class QuestionApiController {
     questionData.ready = 0;
     questionData.fail = 0;
     questionData.fetch = 1;
-    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/users', {
+    window.fetch('/api/v1/users', {
       headers: {
         'Content-type': 'application/json',
       }
@@ -86,7 +84,6 @@ class QuestionApiController {
         if (data.status === 'success') {
           questionData.data.users = data.data.users;
         }
-        console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
         if (propertyType) connectCommentsDisplayToDataCenter(); else {
@@ -94,7 +91,6 @@ class QuestionApiController {
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -121,7 +117,7 @@ class QuestionApiController {
     questionData.fetch = 1;
     connectSearchQuestionsDisplayToDataCenter();
     window.location.hash = '';
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions?search=${questionData.search}`, {
+    window.fetch(`/api/v1/questions?search=${questionData.search}`, {
       headers: {
         'Content-type': 'application/json',
       }
@@ -130,14 +126,12 @@ class QuestionApiController {
         if (data.status === 'success') {
           questionData.data.searchedQuestions = data.data.questions;
         }
-        console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
         questionData.search = '';
         connectSearchQuestionsDisplayToDataCenter();
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -163,7 +157,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectQuestionDetailsDisplayToDataCenter();
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${questionData.retrieveId || hashData}`, {
+    window.fetch(`/api/v1/questions/${questionData.retrieveId || hashData}`, {
       headers: {
         'Content-type': 'application/json',
       }
@@ -174,13 +168,11 @@ class QuestionApiController {
           questionData.history.push(data.data.question);
           return QuestionApiController.fetchUsers();
         }
-        console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
         connectQuestionDetailsDisplayToDataCenter();
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -207,7 +199,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectPostQuestionOperationToDataCenter();
-    window.fetch('https://stack-o-lite.herokuapp.com/api/v1/questions', {
+    window.fetch('/api/v1/questions', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -228,14 +220,12 @@ class QuestionApiController {
           connectPostQuestionOperationToDataCenter();
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectPostQuestionOperationToDataCenter();
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -261,7 +251,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectDeleteQuestionOperationToDataCenter();
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${key}`, {
+    window.fetch(`/api/v1/questions/${key}`, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
@@ -278,14 +268,12 @@ class QuestionApiController {
           connectDeleteQuestionOperationToDataCenter();
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectDeleteQuestionOperationToDataCenter();
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -313,7 +301,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectPostAnswerOperationToDataCenter();
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${questionId}/answers`, {
+    window.fetch(`/api/v1/questions/${questionId}/answers`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -333,14 +321,12 @@ class QuestionApiController {
           connectPostAnswerOperationToDataCenter();
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectPostAnswerOperationToDataCenter();
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -367,7 +353,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectUpdateAnswerOperationToDataCenter();
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`, {
+    window.fetch(`/api/v1/questions/${keyUrl}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
@@ -387,14 +373,12 @@ class QuestionApiController {
           connectUpdateAnswerOperationToDataCenter();
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectUpdateAnswerOperationToDataCenter();
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -421,7 +405,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectPreferAnswerOperationToDataCenter(e);
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`, {
+    window.fetch(`/api/v1/questions/${keyUrl}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
@@ -438,14 +422,12 @@ class QuestionApiController {
           connectPreferAnswerOperationToDataCenter(e);
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectPreferAnswerOperationToDataCenter(e);
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -473,7 +455,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectUpvoteAnswerOperationToDataCenter(e);
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}/upvote`, {
+    window.fetch(`/api/v1/questions/${keyUrl}/upvote`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
@@ -490,14 +472,12 @@ class QuestionApiController {
           connectUpvoteAnswerOperationToDataCenter(e);
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectUpvoteAnswerOperationToDataCenter(e);
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -524,7 +504,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectDownvoteAnswerOperationToDataCenter(e);
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}/downvote`, {
+    window.fetch(`/api/v1/questions/${keyUrl}/downvote`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
@@ -541,14 +521,12 @@ class QuestionApiController {
           connectDownvoteAnswerOperationToDataCenter(e);
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectDownvoteAnswerOperationToDataCenter(e);
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -573,7 +551,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectCommentsDisplayToDataCenter();
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}`, {
+    window.fetch(`/api/v1/questions/${keyUrl}`, {
       headers: {
         'Content-type': 'application/json',
       }
@@ -584,13 +562,11 @@ class QuestionApiController {
           questionData.answerHistory.push(data.data.answer);
           return QuestionApiController.fetchUsers('comments');
         }
-        console.log(questionData);
         questionData.ready = 1;
         questionData.fetch = 0;
         connectCommentsDisplayToDataCenter();
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;
@@ -617,7 +593,7 @@ class QuestionApiController {
     questionData.fail = 0;
     questionData.fetch = 1;
     connectPostCommentOperationToDataCenter();
-    window.fetch(`https://stack-o-lite.herokuapp.com/api/v1/questions/${keyUrl}/comments`, {
+    window.fetch(`/api/v1/questions/${keyUrl}/comments`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -637,14 +613,12 @@ class QuestionApiController {
           connectPostCommentOperationToDataCenter();
         } else {
           questionData.errors.push(data);
-          console.log(questionData);
           questionData.ready = 1;
           questionData.fetch = 0;
           connectPostCommentOperationToDataCenter();
         }
       })
       .catch((error) => {
-        console.log(`${error}`);
         questionData.errors.push(error);
         questionData.fail = 1;
         questionData.ready = 1;

@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../app';
-import dbConnect from '../../connections/dbConnect';
-import SqlHelper from '../../helper/SqlHelper';
+import app from '../../app.js';
+import dbConnect from '../../connections/dbConnect.js';
+import SqlHelper from '../../helper/SqlHelper.js';
 
 const { getAUserAnswer } = SqlHelper;
 

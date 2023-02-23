@@ -1,9 +1,9 @@
 import express from 'express';
-import VotesController from '../controllers/VotesController';
-import VotesValidation from '../middlewares/VotesValidation';
-import Security from '../middlewares/Security';
-import QuestionValidation from '../middlewares/QuestionValidation';
-import AnswerValidation from '../middlewares/AnswerValidation';
+import VotesController from '../controllers/VotesController.js';
+import VotesValidation from '../middlewares/VotesValidation.js';
+import Security from '../middlewares/Security.js';
+import QuestionValidation from '../middlewares/QuestionValidation.js';
+import AnswerValidation from '../middlewares/AnswerValidation.js';
 
 const { validateQuestionExistence, validateUrl, reValidateUrl } = QuestionValidation;
 const { validateAnswerExistence } = AnswerValidation;

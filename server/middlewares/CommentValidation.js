@@ -1,4 +1,4 @@
-import Helper from '../helper/Helper';
+import Helper from '../helper/Helper.js';
 
 const { validateField } = Helper;
 

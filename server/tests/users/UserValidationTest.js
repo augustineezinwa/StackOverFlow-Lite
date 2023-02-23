@@ -1,5 +1,5 @@
 import chai from 'chai';
-import app from '../../app';
+import app from '../../app.js';
 
 const should = chai.should();
 describe('Testing user validation', () => {
