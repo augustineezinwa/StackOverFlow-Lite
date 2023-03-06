@@ -32,9 +32,9 @@ class QuestionController {
     dbConnect.query(getAllQuestions())
       .then((data) => {
         switch (data.rows.length) {
-          case 0: response.status(404).json({
-            status: 'fail',
-            message: 'No questions were found!'
+          case 0: response.status(200).json({
+            status: 'success',
+            data: { questions: [] }
           });
             break;
 
