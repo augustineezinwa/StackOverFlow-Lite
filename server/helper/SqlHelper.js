@@ -37,8 +37,8 @@ class SqlHelper {
   static createTableForQuestions() {
     return `DROP TABLE IF EXISTS questions CASCADE;
     CREATE TABLE questions(id SERIAL UNIQUE PRIMARY KEY,
-    questionTitle VARCHAR(100) NOT NULL,
-    questionDescription VARCHAR(300) NOT NULL,
+    questionTitle VARCHAR(1000) NOT NULL,
+    questionDescription VARCHAR(1000) NOT NULL,
     time VARCHAR(80) NOT NULL,
     date VARCHAR(80) NOT NULL,
     userId SERIAL references users(ID) ON DELETE CASCADE);`;
