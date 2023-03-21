@@ -86,10 +86,6 @@ StackOverFlow-Lite Application consists of the following features:
 
 * To contribute, clone the repository. Create a branch, add in your contributions, raise a pull request and send in the link to the pull request.
 
-## Special Thanks / Credits
-
-* [Fred]() - Week 2 Learning Facilitator Assistant. Thanks for your feedback and great inputs towards the success and durability of this project
-* [Nenerae]() - Week 1 Learning Facilitator Assistant. Thanks for your feedback on the UI and guidance towards a quality codebase
 
 ## Author
 
