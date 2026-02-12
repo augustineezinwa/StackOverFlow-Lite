@@ -18,7 +18,8 @@
     "build-client-one": "browserify client/public/js/src/router/index.js -t babelify --outfile client/public/js/build/indexRouter.js",
     "build-client-two": "browserify client/public/js/src/controllers/viewControllers/index.js -t babelify --outfile client/public/js/build/index.js",
     "build-client-three": "browserify client/public/js/src/views/nav.js -t babelify --outfile client/public/js/build/nav.js",
-    "build-client": "npm run build-client-one && npm run build-client-two && npm run build-client-three"
+    "build-client": "npm run build-client-one && npm run build-client-two && npm run build-client-three",
+    "seed:questions": "node server/scripts/seedThemedQuestions.js"
   },
   "repository": {
     "type": "git",
