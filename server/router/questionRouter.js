@@ -8,7 +8,7 @@ const {
   fetchQuestions, fetchAQuestion, addQuestion, deleteQuestion, fetchUserQuestions,
   fetchSearchedQuestions, fetchQuestionsWithMostAnswers
 } = QuestionController;
-const { fetchAnswersForAQueston } = AnswerController;
+const { fetchAnswersForAQuestion } = AnswerController;
 const {
   validateQuestionTitle, validateQuestionDescription, validatePermissionToDeleteQuestion,
   validateQuestionExistence, validateUrl
@@ -20,7 +20,7 @@ const questionRouter = express.Router();
 questionRouter.get('/questions', fetchSearchedQuestions, fetchQuestions);
 questionRouter.get('/questions/mostanswers', fetchQuestionsWithMostAnswers);
 questionRouter.get('/users/questions', guardRoute, fetchUserQuestions);
-questionRouter.get('/questions/:questionId', validateUrl, fetchAnswersForAQueston, fetchAQuestion);
+questionRouter.get('/questions/:questionId', validateUrl, fetchAnswersForAQuestion, fetchAQuestion);
 questionRouter.post('/questions', validateQuestionTitle, validateQuestionDescription,
   guardRoute, addQuestion);
 questionRouter.delete('/questions/:questionId', validateUrl, guardRoute, validateQuestionExistence,

@@ -123,6 +123,11 @@ class AnswerController {
       .catch(error => catchDatabaseConnectionError(`error reading answers table ${error}`, response));
   }
 
+  // Backward-compatible alias with corrected spelling.
+  static fetchAnswersForAQuestion(request, response, next) {
+    return AnswerController.fetchAnswersForAQueston(request, response, next);
+  }
+
   /**
     * @static
     *
