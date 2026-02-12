@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
+import fs from 'fs';
 import appRootPath from 'app-root-path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
@@ -9,12 +10,22 @@ import baseRouter from './router/baseRouter.js';
 
 const app = express();
 
-const swaggerDocument = YAML.load(`${process.cwd()}/swagger.yaml`);
+let swaggerDocument = null;
+const swaggerPath = `${process.cwd()}/swagger.yaml`;
+if (fs.existsSync(swaggerPath)) {
+  try {
+    swaggerDocument = YAML.load(swaggerPath);
+  } catch (error) {
+    swaggerDocument = null;
+  }
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors());
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+if (swaggerDocument) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 app.use('/api/v1', baseRouter);
 app.use(express.static(appRootPath.resolve('/client/public')));
 app.get('/', (request, response) => {
