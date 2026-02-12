@@ -1,9 +1,4 @@
-/* eslint-disable import/extensions */
-import { ConvexHttpClient } from 'convex/browser';
-import { makeFunctionReference } from 'convex/server';
-
 const convexUrl = process.env.CONVEX_URL;
-const client = convexUrl ? new ConvexHttpClient(convexUrl) : null;
 
 const formatRows = (result) => {
   if (Array.isArray(result)) {
@@ -18,19 +13,35 @@ const formatRows = (result) => {
   return { rows: [result] };
 };
 
+const callConvex = async (request) => {
+  const endpoint = `${convexUrl}/api/${request.type === 'query' ? 'query' : 'mutation'}`;
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      path: request.path,
+      args: request.args || {},
+      format: 'json'
+    })
+  });
+
+  const payload = await response.json();
+  if (!response.ok || payload.status !== 'success') {
+    const message = payload.errorMessage || `Convex request failed with status ${response.status}`;
+    throw new Error(message);
+  }
+
+  return payload.value;
+};
+
 const runConvexRequest = async (request) => {
   if (!request || typeof request !== 'object') {
     return { rows: [] };
   }
-  if (!client) {
+  if (!convexUrl) {
     throw new Error('Missing CONVEX_URL environment variable');
   }
-  const { type, path, args } = request;
-  const ref = makeFunctionReference(path);
-  if (type === 'query') {
-    return formatRows(await client.query(ref, args));
-  }
-  return formatRows(await client.mutation(ref, args));
+  return formatRows(await callConvex(request));
 };
 
 export default {
