@@ -3,21 +3,11 @@ import SqlHelper from '../helper/SqlHelper.js';
 import { formatAnswers } from '../helper/format.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
   createAnswer, getAllAnswersForAQuestion, updateAnAnswer, deactivateUserPrefferedAnswer,
   prefferAnswer
-} = sqlHelper;
+} = SqlHelper;
 /**
   * @class AnswerController
   *
@@ -38,7 +28,7 @@ class AnswerController {
   static addAnswer(request, response) {
     const { answer } = request.body;
     const questionId = request.data.id;
-    database.query(createAnswer(answer, request.id, questionId))
+    dbConnect.query(createAnswer(answer, request.id, questionId))
       .then(data => response.status(201).json({
         status: 'success',
         data: { newAnswer: formatAnswers(data.rows)[0] }
@@ -62,7 +52,7 @@ class AnswerController {
   static updateAnswer(request, response) {
     const { answer } = request.body;
     const { answerId } = request.params;
-    database.query(updateAnAnswer(answer, answerId))
+    dbConnect.query(updateAnAnswer(answer, answerId))
       .then(() => response.status(200).json({
         status: 'success',
         message: 'You have successfully updated your answer'
@@ -85,7 +75,7 @@ class AnswerController {
     */
   static deactivatePrefferedAnswers(request, response) {
     const { questionId } = request.params;
-    database.query(deactivateUserPrefferedAnswer(questionId))
+    dbConnect.query(deactivateUserPrefferedAnswer(questionId))
       .then(() => AnswerController.preferAnswer(request, response))
       .catch(
         error => catchDatabaseConnectionError(
@@ -108,7 +98,7 @@ class AnswerController {
     */
   static preferAnswer(request, response) {
     const { answerId } = request.params;
-    database.query(prefferAnswer(answerId))
+    dbConnect.query(prefferAnswer(answerId))
       .then(() => {
         response.status(200).json({
           status: 'success',
@@ -133,7 +123,7 @@ class AnswerController {
     */
   static fetchAnswersForAQueston(request, response, next) {
     const { questionId } = request.params;
-    database.query(getAllAnswersForAQuestion(questionId))
+    dbConnect.query(getAllAnswersForAQuestion(questionId))
       .then((data) => {
         const foundAnswers = formatAnswers(data.rows);
         request.foundAnswers = foundAnswers;

@@ -4,17 +4,7 @@ import AnswerController from '../controllers/AnswerController.js';
 import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
-const { getAnAnswer } = sqlHelper;
+const { getAnAnswer } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 const { deactivatePrefferedAnswers } = AnswerController;
@@ -101,7 +91,7 @@ class AnswerValidation {
     */
   static validateAnswerExistence(request, response, next) {
     const { answerId, questionId } = request.params;
-    database.query(getAnAnswer(answerId, questionId))
+    dbConnect.query(getAnAnswer(answerId, questionId))
       .then((data) => {
         if (data.rows.length < 1) {
           return response.status(404).json({

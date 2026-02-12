@@ -3,17 +3,7 @@ import CatchErrors from '../helper/CatchErrors.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import dbConnect from '../connections/dbConnect.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
-const { getAQuestion } = sqlHelper;
+const { getAQuestion } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 /**
@@ -70,7 +60,7 @@ class QuestionValidation {
     */
   static validateQuestionExistence(request, response, next) {
     const { questionId } = request.params;
-    database.query(getAQuestion(questionId))
+    dbConnect.query(getAQuestion(questionId))
       .then((data) => {
         if (data.rows.length < 1) {
           return response.status(404).json({

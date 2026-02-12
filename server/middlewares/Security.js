@@ -4,17 +4,7 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
-const { findUser } = sqlHelper;
+const { findUser } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 dotenv.config();
 
@@ -51,7 +41,7 @@ class Security {
       }
 
       const { id, email } = decoded.payload;
-      database.query(findUser(id))
+      dbConnect.query(findUser(id))
         .then((data) => {
           if (data.rows.length === 0) {
             return response.status(401).json({

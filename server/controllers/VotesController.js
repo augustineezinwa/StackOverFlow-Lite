@@ -2,20 +2,10 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
 const {
   createUpvote, createDownvote, getDownvotesForAnswer, getUpvotesForAnswer,
   persistVotes
-} = sqlHelper;
+} = SqlHelper;
 
 const { catchDatabaseConnectionError } = CatchErrors;
 /**
@@ -40,7 +30,7 @@ class VotesController {
     const answerId = request.answers.id;
     const questionId = request.data.id;
     const userId = request.id;
-    database.query(createUpvote(questionId, answerId, userId))
+    dbConnect.query(createUpvote(questionId, answerId, userId))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
   }
@@ -62,7 +52,7 @@ class VotesController {
     const answerId = request.answers.id;
     const questionId = request.data.id;
     const userId = request.id;
-    database.query(createDownvote(questionId, answerId, userId))
+    dbConnect.query(createDownvote(questionId, answerId, userId))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error updating upvotes table ${error}`, response));
   }
@@ -118,7 +108,7 @@ class VotesController {
     */
   static countUpvotesForAnAnswer(request, response, next) {
     const answerId = request.answers.id;
-    database.query(getUpvotesForAnswer(answerId))
+    dbConnect.query(getUpvotesForAnswer(answerId))
       .then((data) => {
         request.upvotes = data.rows.length;
         return next();
@@ -140,7 +130,7 @@ class VotesController {
     */
   static countDownvotesForAnAnswer(request, response, next) {
     const answerId = request.answers.id;
-    database.query(getDownvotesForAnswer(answerId))
+    dbConnect.query(getDownvotesForAnswer(answerId))
       .then((data) => {
         request.downvotes = data.rows.length;
         return next();
@@ -162,7 +152,7 @@ class VotesController {
     */
   static persistVotesToAnswers(request, response, next) {
     const answerId = request.answers.id;
-    database.query(persistVotes(request.upvotes, request.downvotes, answerId))
+    dbConnect.query(persistVotes(request.upvotes, request.downvotes, answerId))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error persisting votes to answer table ${error}`, response));
   }

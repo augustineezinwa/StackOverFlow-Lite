@@ -3,18 +3,8 @@ import SqlHelper from '../helper/SqlHelper.js';
 import { formatComments } from '../helper/format.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
-const { createComment, getAllCommentsForAnAnswer } = sqlHelper;
+const { createComment, getAllCommentsForAnAnswer } = SqlHelper;
 /**
   * @class CommentController
   *
@@ -36,7 +26,7 @@ class CommentController {
     const { comment } = request.body;
     const answerId = request.answers.id;
     const questionId = request.data.id;
-    database.query(createComment(comment, request.id, questionId, answerId))
+    dbConnect.query(createComment(comment, request.id, questionId, answerId))
       .then(data => response.status(201).json({
         status: 'success',
         data: { newComment: formatComments(data.rows)[0] }
@@ -58,7 +48,7 @@ class CommentController {
     */
   static fetchCommentsForAnAnswer(request, response, next) {
     const { answerId } = request.params;
-    database.query(getAllCommentsForAnAnswer(answerId))
+    dbConnect.query(getAllCommentsForAnAnswer(answerId))
       .then((data) => {
         const foundComments = formatComments(data.rows);
         request.foundComments = foundComments;

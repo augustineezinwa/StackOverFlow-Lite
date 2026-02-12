@@ -2,17 +2,7 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
-const { searchVotes, resetVotes } = sqlHelper;
+const { searchVotes, resetVotes } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 /**
   * @class VotesValidation
@@ -80,7 +70,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
 
-    database.query(searchVotes(answerId, userId, 1))
+    dbConnect.query(searchVotes(answerId, userId, 1))
       .then((data) => {
         if (data.rows.length < 1) return next();
         return response.status(403).json({
@@ -107,7 +97,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
 
-    database.query(searchVotes(answerId, userId, 0))
+    dbConnect.query(searchVotes(answerId, userId, 0))
       .then((data) => {
         if (data.rows.length < 1) return next();
         return response.status(403).json({
@@ -133,7 +123,7 @@ class VotesValidation {
   static checkUpvoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
-    database.query(searchVotes(answerId, userId, 1))
+    dbConnect.query(searchVotes(answerId, userId, 1))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
@@ -154,7 +144,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
 
-    database.query(searchVotes(answerId, userId, 0))
+    dbConnect.query(searchVotes(answerId, userId, 0))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
@@ -174,7 +164,7 @@ class VotesValidation {
   static resetVoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
-    database.query(resetVotes(answerId, userId))
+    dbConnect.query(resetVotes(answerId, userId))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error updating votes table ${error}`, response));
   }

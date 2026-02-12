@@ -4,17 +4,7 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import Helper from '../helper/Helper.js';
 
-const resolveModule = (moduleRef) => {
-  let resolved = moduleRef;
-  while (resolved && resolved.default) {
-    resolved = resolved.default;
-  }
-  return resolved || moduleRef;
-};
-
-const database = resolveModule(dbConnect);
-const sqlHelper = resolveModule(SqlHelper);
-const { checkEmail } = sqlHelper;
+const { checkEmail } = SqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 /**
@@ -103,7 +93,7 @@ class UserValidation {
     */
   static checkEmailReuse(request, response, next) {
     const { email } = request.body;
-    database.query(checkEmail(email))
+    dbConnect.query(checkEmail(email))
       .then((data) => {
         if (data.rows.length === 0) {
           return next();
