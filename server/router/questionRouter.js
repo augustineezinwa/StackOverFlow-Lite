@@ -4,40 +4,79 @@ import QuestionValidation from '../middlewares/QuestionValidation.js';
 import Security from '../middlewares/Security.js';
 import AnswerController from '../controllers/AnswerController.js';
 
-const QuestionControllerClass = QuestionController.default || QuestionController;
-const AnswerControllerClass = AnswerController.default || AnswerController;
-const QuestionValidationClass = QuestionValidation.default || QuestionValidation;
-const SecurityClass = Security.default || Security;
+const unwrapModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const toHandler = (resolvedModule, primaryName, secondaryName) => {
+  const candidate = resolvedModule
+    && (resolvedModule[primaryName] || (secondaryName && resolvedModule[secondaryName]));
+  if (typeof candidate === 'function') {
+    return candidate;
+  }
+  return (request, response, next) => next(new Error(`Missing route handler: ${primaryName}`));
+};
+
+const QuestionControllerClass = unwrapModule(QuestionController);
+const AnswerControllerClass = unwrapModule(AnswerController);
+const QuestionValidationClass = unwrapModule(QuestionValidation);
+const SecurityClass = unwrapModule(Security);
+
+const fetchSearchedQuestions = toHandler(QuestionControllerClass, 'fetchSearchedQuestions');
+const fetchQuestions = toHandler(QuestionControllerClass, 'fetchQuestions');
+const fetchQuestionsWithMostAnswers = toHandler(QuestionControllerClass, 'fetchQuestionsWithMostAnswers');
+const fetchUserQuestions = toHandler(QuestionControllerClass, 'fetchUserQuestions');
+const fetchAQuestion = toHandler(QuestionControllerClass, 'fetchAQuestion');
+const addQuestion = toHandler(QuestionControllerClass, 'addQuestion');
+const deleteQuestion = toHandler(QuestionControllerClass, 'deleteQuestion');
+const fetchAnswersForAQuestion = toHandler(
+  AnswerControllerClass,
+  'fetchAnswersForAQuestion',
+  'fetchAnswersForAQueston'
+);
+const validateQuestionTitle = toHandler(QuestionValidationClass, 'validateQuestionTitle');
+const validateQuestionDescription = toHandler(QuestionValidationClass, 'validateQuestionDescription');
+const validateQuestionExistence = toHandler(QuestionValidationClass, 'validateQuestionExistence');
+const validatePermissionToDeleteQuestion = toHandler(
+  QuestionValidationClass,
+  'validatePermissionToDeleteQuestion'
+);
+const validateUrl = toHandler(QuestionValidationClass, 'validateUrl');
+const guardRoute = toHandler(SecurityClass, 'guardRoute');
 
 const questionRouter = express.Router();
 
 questionRouter.get(
   '/questions',
-  QuestionControllerClass.fetchSearchedQuestions,
-  QuestionControllerClass.fetchQuestions
+  fetchSearchedQuestions,
+  fetchQuestions
 );
-questionRouter.get('/questions/mostanswers', QuestionControllerClass.fetchQuestionsWithMostAnswers);
-questionRouter.get('/users/questions', SecurityClass.guardRoute, QuestionControllerClass.fetchUserQuestions);
+questionRouter.get('/questions/mostanswers', fetchQuestionsWithMostAnswers);
+questionRouter.get('/users/questions', guardRoute, fetchUserQuestions);
 questionRouter.get(
   '/questions/:questionId',
-  QuestionValidationClass.validateUrl,
-  AnswerControllerClass.fetchAnswersForAQuestion,
-  QuestionControllerClass.fetchAQuestion
+  validateUrl,
+  fetchAnswersForAQuestion,
+  fetchAQuestion
 );
 questionRouter.post(
   '/questions',
-  QuestionValidationClass.validateQuestionTitle,
-  QuestionValidationClass.validateQuestionDescription,
-  SecurityClass.guardRoute,
-  QuestionControllerClass.addQuestion
+  validateQuestionTitle,
+  validateQuestionDescription,
+  guardRoute,
+  addQuestion
 );
 questionRouter.delete(
   '/questions/:questionId',
-  QuestionValidationClass.validateUrl,
-  SecurityClass.guardRoute,
-  QuestionValidationClass.validateQuestionExistence,
-  QuestionValidationClass.validatePermissionToDeleteQuestion,
-  QuestionControllerClass.deleteQuestion
+  validateUrl,
+  guardRoute,
+  validateQuestionExistence,
+  validatePermissionToDeleteQuestion,
+  deleteQuestion
 );
 
 export default questionRouter;
