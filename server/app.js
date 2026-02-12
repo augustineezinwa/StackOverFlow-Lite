@@ -24,9 +24,4 @@ app.use('*', (request, response) => response.status(404).json({
   status: 'fail',
   message: 'This route is yet to be specified.'
 }));
-
-const port = process.env.PORT || 8000;
-
-app.listen(port, () => console.log(`server is active on port ${port}`));
-
 export default app;

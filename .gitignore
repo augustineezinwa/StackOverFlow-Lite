@@ -3,3 +3,5 @@ node_modules
 .env
 client/public/js/build/*
 
+
+.env.local
