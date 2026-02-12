@@ -10,6 +10,7 @@ const resolveModule = (moduleRef) => {
   return resolved || moduleRef;
 };
 
+const database = resolveModule(dbConnect);
 const sqlHelper = resolveModule(SqlHelper);
 const { searchVotes, resetVotes } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -79,7 +80,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
 
-    dbConnect.query(searchVotes(answerId, userId, 1))
+    database.query(searchVotes(answerId, userId, 1))
       .then((data) => {
         if (data.rows.length < 1) return next();
         return response.status(403).json({
@@ -106,7 +107,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
 
-    dbConnect.query(searchVotes(answerId, userId, 0))
+    database.query(searchVotes(answerId, userId, 0))
       .then((data) => {
         if (data.rows.length < 1) return next();
         return response.status(403).json({
@@ -132,7 +133,7 @@ class VotesValidation {
   static checkUpvoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
-    dbConnect.query(searchVotes(answerId, userId, 1))
+    database.query(searchVotes(answerId, userId, 1))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
@@ -153,7 +154,7 @@ class VotesValidation {
     const userId = request.id;
     const answerId = request.answers.id;
 
-    dbConnect.query(searchVotes(answerId, userId, 0))
+    database.query(searchVotes(answerId, userId, 0))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error reading votes table ${error}`, response));
   }
@@ -173,7 +174,7 @@ class VotesValidation {
   static resetVoteEntry(request, response, next) {
     const userId = request.id;
     const answerId = request.answers.id;
-    dbConnect.query(resetVotes(answerId, userId))
+    database.query(resetVotes(answerId, userId))
       .then(data => next())
       .catch(error => catchDatabaseConnectionError(`error updating votes table ${error}`, response));
   }

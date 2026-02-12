@@ -11,6 +11,7 @@ const resolveModule = (moduleRef) => {
   return resolved || moduleRef;
 };
 
+const database = resolveModule(dbConnect);
 const sqlHelper = resolveModule(SqlHelper);
 const { getAQuestion } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -69,7 +70,7 @@ class QuestionValidation {
     */
   static validateQuestionExistence(request, response, next) {
     const { questionId } = request.params;
-    dbConnect.query(getAQuestion(questionId))
+    database.query(getAQuestion(questionId))
       .then((data) => {
         if (data.rows.length < 1) {
           return response.status(404).json({

@@ -12,6 +12,7 @@ const resolveModule = (moduleRef) => {
   return resolved || moduleRef;
 };
 
+const database = resolveModule(dbConnect);
 const sqlHelper = resolveModule(SqlHelper);
 const { findUser } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -50,7 +51,7 @@ class Security {
       }
 
       const { id, email } = decoded.payload;
-      dbConnect.query(findUser(id))
+      database.query(findUser(id))
         .then((data) => {
           if (data.rows.length === 0) {
             return response.status(401).json({

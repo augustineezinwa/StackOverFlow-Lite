@@ -1,7 +1,7 @@
 [build]
-  command = "npm run build-client"
+  command = "npm run build"
   publish = "client/public"
-  functions = "netlify/functions"
+  functions = "build/netlify/functions"
 
 [[redirects]]
   from = "/api/v1/*"

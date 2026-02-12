@@ -14,6 +14,7 @@ const resolveModule = (moduleRef) => {
   return resolved || moduleRef;
 };
 
+const database = resolveModule(dbConnect);
 const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
@@ -38,7 +39,7 @@ class QuestionController {
     * @memberOf QuestionController
     */
   static fetchQuestions(request, response) {
-    dbConnect.query(getAllQuestions())
+    database.query(getAllQuestions())
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(200).json({
@@ -71,7 +72,7 @@ class QuestionController {
     */
   static fetchUserQuestions(request, response) {
     const userId = request.id;
-    dbConnect.query(getAllUserQuestions(userId))
+    database.query(getAllUserQuestions(userId))
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
@@ -106,7 +107,7 @@ class QuestionController {
   static fetchSearchedQuestions(request, response, next) {
     const { search } = request.query;
     if (!search) return next();
-    dbConnect.query(searchQuestion(search))
+    database.query(searchQuestion(search))
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
@@ -140,7 +141,7 @@ class QuestionController {
     */
   static fetchAQuestion(request, response) {
     const { questionId } = request.params;
-    dbConnect.query(getAQuestion(questionId))
+    database.query(getAQuestion(questionId))
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
@@ -174,7 +175,7 @@ class QuestionController {
     * @memberOf QuestionController
     */
   static fetchQuestionsWithMostAnswers(request, response) {
-    dbConnect.query(getQuestionsWithMostAnswers())
+    database.query(getQuestionsWithMostAnswers())
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
@@ -210,7 +211,7 @@ class QuestionController {
     */
   static addQuestion(request, response) {
     const { questionTitle, questionDescription } = request.body;
-    dbConnect.query(createQuestion(questionTitle, questionDescription, request.id))
+    database.query(createQuestion(questionTitle, questionDescription, request.id))
       .then(data => response.status(201).json({
         status: 'success',
         data: {
@@ -234,7 +235,7 @@ class QuestionController {
     */
   static deleteQuestion(request, response) {
     const { questionId } = request.params;
-    dbConnect.query(deleteAQuestion(questionId))
+    database.query(deleteAQuestion(questionId))
       .then(data => response.status(200).json({
         status: 'success',
         message: 'you have successfully deleted this question'

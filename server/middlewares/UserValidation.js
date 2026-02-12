@@ -12,6 +12,7 @@ const resolveModule = (moduleRef) => {
   return resolved || moduleRef;
 };
 
+const database = resolveModule(dbConnect);
 const sqlHelper = resolveModule(SqlHelper);
 const { checkEmail } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
@@ -102,7 +103,7 @@ class UserValidation {
     */
   static checkEmailReuse(request, response, next) {
     const { email } = request.body;
-    dbConnect.query(checkEmail(email))
+    database.query(checkEmail(email))
       .then((data) => {
         if (data.rows.length === 0) {
           return next();

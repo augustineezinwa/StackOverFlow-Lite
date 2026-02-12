@@ -14,6 +14,7 @@ const resolveModule = (moduleRef) => {
   return resolved || moduleRef;
 };
 
+const database = resolveModule(dbConnect);
 const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
@@ -45,7 +46,7 @@ class UserController {
       email,
       password
     } = request.body;
-    dbConnect.query(createUser(firstName, lastName, email, password))
+    database.query(createUser(firstName, lastName, email, password))
       .then((data) => {
         const {
           id,
@@ -81,7 +82,7 @@ class UserController {
     * @static
     */
   static loginUser(request, response) {
-    dbConnect.query(checkEmail(request.body.email))
+    database.query(checkEmail(request.body.email))
       .then((data) => {
         if (data.rows.length < 1) {
           return response.status(404).json({
@@ -125,7 +126,7 @@ class UserController {
     * @memberOf UserController
     */
   static fetchUsers(request, response) {
-    dbConnect.query(getUsers())
+    database.query(getUsers())
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
@@ -158,7 +159,7 @@ class UserController {
     */
   static fetchUserProfile(request, response) {
     const userId = request.id || request.params.userId;
-    dbConnect.query(findUser(userId))
+    database.query(findUser(userId))
       .then((data) => {
         switch (data.rows.length) {
           case 0: response.status(404).json({
@@ -192,7 +193,7 @@ class UserController {
   static updateUserProfile(request, response) {
     const userId = request.id;
     const { jobRole, company, photo } = request.body;
-    dbConnect.query(updateUser(userId, jobRole, company, photo))
+    database.query(updateUser(userId, jobRole, company, photo))
       .then(data => response.status(200).json({
         status: 'success',
         message: 'profile update was successful',
