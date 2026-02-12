@@ -3,11 +3,20 @@ import SqlHelper from '../helper/SqlHelper.js';
 import { formatAnswers } from '../helper/format.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
   createAnswer, getAllAnswersForAQuestion, updateAnAnswer, deactivateUserPrefferedAnswer,
   prefferAnswer
-} = SqlHelper;
+} = sqlHelper;
 /**
   * @class AnswerController
   *
@@ -33,7 +42,9 @@ class AnswerController {
         status: 'success',
         data: { newAnswer: formatAnswers(data.rows)[0] }
       }))
-      .catch(error => catchDatabaseConnectionError(`error writing to answers table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(`error writing to answers table ${error}`, response)
+      );
   }
 
   /**
@@ -51,11 +62,13 @@ class AnswerController {
     const { answer } = request.body;
     const { answerId } = request.params;
     dbConnect.query(updateAnAnswer(answer, answerId))
-      .then(data => response.status(200).json({
+      .then(() => response.status(200).json({
         status: 'success',
         message: 'You have successfully updated your answer'
       }))
-      .catch(error => catchDatabaseConnectionError(`Error updating database table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(`Error updating database table ${error}`, response)
+      );
   }
 
   /**
@@ -72,8 +85,13 @@ class AnswerController {
   static deactivatePrefferedAnswers(request, response) {
     const { questionId } = request.params;
     dbConnect.query(deactivateUserPrefferedAnswer(questionId))
-      .then(data => AnswerController.preferAnswer(request, response))
-      .catch(error => catchDatabaseConnectionError(`Error reverting prefferred answers on answers table, ${error}`, response));
+      .then(() => AnswerController.preferAnswer(request, response))
+      .catch(
+        error => catchDatabaseConnectionError(
+          `Error reverting prefferred answers on answers table, ${error}`,
+          response
+        )
+      );
   }
 
   /**
@@ -90,7 +108,7 @@ class AnswerController {
   static preferAnswer(request, response) {
     const { answerId } = request.params;
     dbConnect.query(prefferAnswer(answerId))
-      .then((data) => {
+      .then(() => {
         response.status(200).json({
           status: 'success',
           message: 'You have successfully preffered this answer'
@@ -120,10 +138,23 @@ class AnswerController {
         request.foundAnswers = foundAnswers;
         return next();
       })
-      .catch(error => catchDatabaseConnectionError(`error reading answers table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(`error reading answers table ${error}`, response)
+      );
   }
 
-  // Backward-compatible alias with corrected spelling.
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The response payload sent back from the controller
+    * @param {object} next - The callback function to resume the next middleware.
+    *
+    * @returns {object} - status Message and all answers
+    *
+    * @description Backward-compatible alias with corrected spelling.
+    * @memberOf AnswerController
+    */
   static fetchAnswersForAQuestion(request, response, next) {
     return AnswerController.fetchAnswersForAQueston(request, response, next);
   }

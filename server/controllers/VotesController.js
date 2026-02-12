@@ -2,10 +2,19 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
 const {
   createUpvote, createDownvote, getDownvotesForAnswer, getUpvotesForAnswer,
   persistVotes
-} = SqlHelper;
+} = sqlHelper;
 
 const { catchDatabaseConnectionError } = CatchErrors;
 /**

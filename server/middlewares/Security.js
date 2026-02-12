@@ -4,7 +4,16 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const { findUser } = SqlHelper;
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
+const { findUser } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 dotenv.config();
 

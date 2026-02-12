@@ -2,7 +2,16 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
-const { searchVotes, resetVotes } = SqlHelper;
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
+const { searchVotes, resetVotes } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 /**
   * @class VotesValidation

@@ -4,7 +4,16 @@ import AnswerController from '../controllers/AnswerController.js';
 import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 
-const { getAnAnswer } = SqlHelper;
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
+const { getAnAnswer } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 const { deactivatePrefferedAnswers } = AnswerController;

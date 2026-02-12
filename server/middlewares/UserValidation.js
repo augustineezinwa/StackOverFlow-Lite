@@ -4,7 +4,16 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import Helper from '../helper/Helper.js';
 
-const { checkEmail } = SqlHelper;
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
+const { checkEmail } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 /**

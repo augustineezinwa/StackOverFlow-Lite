@@ -6,10 +6,19 @@ import SqlHelper from '../helper/SqlHelper.js';
 import CatchErrors from '../helper/CatchErrors.js';
 import { formatUsers, formatUserUpdate } from '../helper/format.js';
 
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
   createUser, checkEmail, getUsers, findUser, updateUser
-} = SqlHelper;
+} = sqlHelper;
 dotenv.config();
 /**
   * @class UserController

@@ -3,7 +3,16 @@ import CatchErrors from '../helper/CatchErrors.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import dbConnect from '../connections/dbConnect.js';
 
-const { getAQuestion } = SqlHelper;
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
+const { getAQuestion } = sqlHelper;
 const { catchDatabaseConnectionError } = CatchErrors;
 const { validateField } = Helper;
 /**

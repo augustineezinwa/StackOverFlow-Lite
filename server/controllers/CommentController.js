@@ -3,8 +3,17 @@ import SqlHelper from '../helper/SqlHelper.js';
 import { formatComments } from '../helper/format.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
+const resolveModule = (moduleRef) => {
+  let resolved = moduleRef;
+  while (resolved && resolved.default) {
+    resolved = resolved.default;
+  }
+  return resolved || moduleRef;
+};
+
+const sqlHelper = resolveModule(SqlHelper);
 const { catchDatabaseConnectionError } = CatchErrors;
-const { createComment, getAllCommentsForAnAnswer } = SqlHelper;
+const { createComment, getAllCommentsForAnAnswer } = sqlHelper;
 /**
   * @class CommentController
   *
