@@ -213,10 +213,8 @@ class QuestionController {
     const {
       questionTitle,
       questionDescription,
-      image_url: imageUrlFromSnakeCase,
-      imageUrl: imageUrlFromCamelCase
+      imageUrl
     } = request.body;
-    const imageUrl = imageUrlFromSnakeCase || imageUrlFromCamelCase || '';
     dbConnect.query(createQuestion(questionTitle, questionDescription, request.id, imageUrl))
       .then(data => response.status(201).json({
         status: 'success',
