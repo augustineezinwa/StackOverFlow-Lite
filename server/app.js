@@ -20,15 +20,27 @@ app.use(cors());
 app.use('/api/v1', baseRouter);
 app.use(express.static(appRootPath.resolve('/client/public')));
 
-app.use(
-  "/docs",
-  swaggerUi.serve,
-  swaggerUi.setup(null, {
-    swaggerOptions: {
-      url: "/swagger.yaml",
-    },
-  })
-);
+app.get('/docs', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link rel="stylesheet"
+        href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+    </head>
+    <body>
+      <div id="swagger"></div>
+      <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+      <script>
+        SwaggerUIBundle({
+          url: '/swagger.yaml',
+          dom_id: '#swagger'
+        });
+      </script>
+    </body>
+    </html>
+  `)
+})
 
 app.get('/', (request, response) => {
   response.sendFile(appRootPath.resolve('/client/public/index.html'));
