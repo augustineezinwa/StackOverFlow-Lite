@@ -28,6 +28,11 @@ swaggerPaths.some((swaggerPath) => {
   }
   return false;
 });
+
+if (!swaggerDocument) {
+  swaggerDocument = YAML.load(appRootPath.resolve('/client/public/swagger.yaml'));
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
