@@ -2,10 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
-import fs from 'fs';
 import appRootPath from 'app-root-path';
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
 import baseRouter from './router/baseRouter.js';
 
 const app = express();
