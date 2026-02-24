@@ -55,11 +55,18 @@ export const run = mutationGeneric({
 
       case 'createQuestion': {
         const id = await nextCounter(ctx, 'questions');
-        const [questionTitle, questionDescription, time, date, userId] = values;
+        const hasImage = values.length >= 6;
+        const questionTitle = values[0];
+        const questionDescription = values[1];
+        const imageUrl = hasImage ? values[2] : '';
+        const time = hasImage ? values[3] : values[2];
+        const date = hasImage ? values[4] : values[3];
+        const userId = hasImage ? values[5] : values[4];
         const doc = {
           id,
           questiontitle: questionTitle,
           questiondescription: questionDescription,
+          imageurl: imageUrl || '',
           time,
           date,
           userid: toNumber(userId)
@@ -70,13 +77,23 @@ export const run = mutationGeneric({
 
       case 'createAnswer': {
         const id = await nextCounter(ctx, 'answers');
-        const [answer, upvotes, downvotes, approved, time, date, questionId, userId] = values;
+        const hasImage = values.length >= 9;
+        const answer = values[0];
+        const upvotes = values[1];
+        const downvotes = values[2];
+        const approved = values[3];
+        const imageUrl = hasImage ? values[4] : '';
+        const time = hasImage ? values[5] : values[4];
+        const date = hasImage ? values[6] : values[5];
+        const questionId = hasImage ? values[7] : values[6];
+        const userId = hasImage ? values[8] : values[7];
         const doc = {
           id,
           answer,
           upvotes: Number(upvotes),
           downvotes: Number(downvotes),
           approved: Boolean(approved),
+          imageurl: imageUrl || '',
           time,
           date,
           questionid: toNumber(questionId),

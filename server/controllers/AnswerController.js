@@ -26,9 +26,14 @@ class AnswerController {
     * @memberOf AnswerController
     */
   static addAnswer(request, response) {
-    const { answer } = request.body;
+    const {
+      answer,
+      image_url: imageUrlFromSnakeCase,
+      imageUrl: imageUrlFromCamelCase
+    } = request.body;
+    const imageUrl = imageUrlFromSnakeCase || imageUrlFromCamelCase || '';
     const questionId = request.data.id;
-    dbConnect.query(createAnswer(answer, request.id, questionId))
+    dbConnect.query(createAnswer(answer, request.id, questionId, imageUrl))
       .then(data => response.status(201).json({
         status: 'success',
         data: { newAnswer: formatAnswers(data.rows)[0] }

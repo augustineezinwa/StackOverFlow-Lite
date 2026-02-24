@@ -46,7 +46,9 @@ class QuestionController {
           }
         }
       })
-      .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(error, response)
+      );
   }
 
   /**
@@ -79,7 +81,9 @@ class QuestionController {
           }
         }
       })
-      .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(error, response)
+      );
   }
 
   /**
@@ -114,7 +118,9 @@ class QuestionController {
           }
         }
       })
-      .catch(error => catchDatabaseConnectionError(`error reading from questions table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(error, response)
+      );
   }
 
 
@@ -150,7 +156,9 @@ class QuestionController {
           }
         }
       })
-      .catch(error => catchDatabaseConnectionError(`Error reading questions table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(`Error reading questions table ${error}`, response)
+      );
   }
 
   /**
@@ -184,7 +192,9 @@ class QuestionController {
           }
         }
       })
-      .catch(error => catchDatabaseConnectionError(`Error reading questions table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(`Error reading questions table ${error}`, response)
+      );
   }
 
 
@@ -200,8 +210,14 @@ class QuestionController {
     * @memberOf QuestionController
     */
   static addQuestion(request, response) {
-    const { questionTitle, questionDescription } = request.body;
-    dbConnect.query(createQuestion(questionTitle, questionDescription, request.id))
+    const {
+      questionTitle,
+      questionDescription,
+      image_url: imageUrlFromSnakeCase,
+      imageUrl: imageUrlFromCamelCase
+    } = request.body;
+    const imageUrl = imageUrlFromSnakeCase || imageUrlFromCamelCase || '';
+    dbConnect.query(createQuestion(questionTitle, questionDescription, request.id, imageUrl))
       .then(data => response.status(201).json({
         status: 'success',
         data: {
@@ -226,11 +242,16 @@ class QuestionController {
   static deleteQuestion(request, response) {
     const { questionId } = request.params;
     dbConnect.query(deleteAQuestion(questionId))
-      .then(data => response.status(200).json({
+      .then(() => response.status(200).json({
         status: 'success',
         message: 'you have successfully deleted this question'
       }))
-      .catch(error => catchDatabaseConnectionError(`error deleting question on questions table ${error}`, response));
+      .catch(
+        error => catchDatabaseConnectionError(
+          `error deleting question on questions table ${error}`,
+          response
+        )
+      );
   }
 }
 export default QuestionController;

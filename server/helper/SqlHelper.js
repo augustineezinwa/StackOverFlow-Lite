@@ -156,10 +156,17 @@ class SqlHelper {
     * @description This method creates a question in the database
     * @memberOf SqlHelper
     */
-  static createQuestion(questionTitle, questionDescription, id) {
-    const values = [questionTitle, questionDescription, (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(), id];
-    return buildConvexRequest('mutation', 'createQuestion', `INSERT INTO questions(questionTitle, questionDescription, time, date, userId)
-           VALUES($1, $2, $3, $4, $5) RETURNING * `, values);
+  static createQuestion(questionTitle, questionDescription, id, imageUrl = '') {
+    const values = [
+      questionTitle,
+      questionDescription,
+      imageUrl,
+      (new Date(Date.now())).toTimeString(),
+      (new Date(Date.now())).toDateString(),
+      id
+    ];
+    return buildConvexRequest('mutation', 'createQuestion', `INSERT INTO questions(questionTitle, questionDescription, image_url, time, date, userId)
+           VALUES($1, $2, $3, $4, $5, $6) RETURNING * `, values);
   }
 
   /**
@@ -187,10 +194,20 @@ class SqlHelper {
     * @description This method creates an answer in the database
     * @memberOf SqlHelper
     */
-  static createAnswer(answer, id, questionId) {
-    const values = [answer, 0, 0, false, (new Date(Date.now())).toTimeString(), (new Date(Date.now())).toDateString(), questionId, id];
-    return buildConvexRequest('mutation', 'createAnswer', `INSERT INTO answers(answer, upvotes, downvotes, approved, time, date, questionid,  userid)
-           VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * `, values);
+  static createAnswer(answer, id, questionId, imageUrl = '') {
+    const values = [
+      answer,
+      0,
+      0,
+      false,
+      imageUrl,
+      (new Date(Date.now())).toTimeString(),
+      (new Date(Date.now())).toDateString(),
+      questionId,
+      id
+    ];
+    return buildConvexRequest('mutation', 'createAnswer', `INSERT INTO answers(answer, upvotes, downvotes, approved, image_url, time, date, questionid,  userid)
+           VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING * `, values);
   }
 
   /**

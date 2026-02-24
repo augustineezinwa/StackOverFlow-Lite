@@ -20,6 +20,7 @@ export default defineSchema({
     id: v.number(),
     questiontitle: v.string(),
     questiondescription: v.string(),
+    imageurl: v.optional(v.string()),
     time: v.string(),
     date: v.string(),
     userid: v.number()
@@ -32,6 +33,7 @@ export default defineSchema({
     upvotes: v.number(),
     downvotes: v.number(),
     approved: v.boolean(),
+    imageurl: v.optional(v.string()),
     time: v.string(),
     date: v.string(),
     questionid: v.number(),
