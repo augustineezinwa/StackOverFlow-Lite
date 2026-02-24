@@ -11,7 +11,7 @@
     "test": "npm run db:initialize --exit --exit --exit && cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 10000000 server/tests/**/*.js --exit",
     "start": "node server/start.js",
     "build": "npm run build-client && npm run build:cjs",
-    "build:cjs": "rm -rf build && mkdir -p build && echo '{\"type\":\"commonjs\"}' > build/package.json && babel server --out-dir build/server --copy-files && babel netlify/functions --out-dir build/netlify/functions --copy-files",
+    "build:cjs": "rm -rf build && mkdir -p build && echo '{\"type\":\"commonjs\"}' > build/package.json && babel server --out-dir build/server --copy-files && babel netlify/functions --out-dir build/netlify/functions --copy-files && cp swagger.yaml build/server/swagger.yaml",
     "db:initialize": "cross-env NODE_ENV=test babel-node server/migrations/index.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "npm run db:initialize --exit && cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit ",

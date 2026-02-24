@@ -11,14 +11,23 @@ import baseRouter from './router/baseRouter.js';
 const app = express();
 
 let swaggerDocument = null;
-const swaggerPath = `${process.cwd()}/swagger.yaml`;
-if (fs.existsSync(swaggerPath)) {
-  try {
-    swaggerDocument = YAML.load(swaggerPath);
-  } catch (error) {
-    swaggerDocument = null;
+const swaggerPaths = [
+  `${process.cwd()}/swagger.yaml`,
+  `${process.cwd()}/server/swagger.yaml`,
+  `${process.cwd()}/build/server/swagger.yaml`
+];
+
+swaggerPaths.some((swaggerPath) => {
+  if (fs.existsSync(swaggerPath)) {
+    try {
+      swaggerDocument = YAML.load(swaggerPath);
+      return true;
+    } catch (error) {
+      swaggerDocument = null;
+    }
   }
-}
+  return false;
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));

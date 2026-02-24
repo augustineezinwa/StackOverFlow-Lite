@@ -9,6 +9,11 @@
   status = 200
 
 [[redirects]]
+  from = "/docs"
+  to = "/.netlify/functions/api/docs"
+  status = 200
+
+[[redirects]]
   from = "/docs/*"
   to = "/.netlify/functions/api/docs/:splat"
   status = 200
