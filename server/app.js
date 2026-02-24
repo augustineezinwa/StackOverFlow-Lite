@@ -29,19 +29,24 @@ swaggerPaths.some((swaggerPath) => {
   return false;
 });
 
-if (!swaggerDocument) {
-  swaggerDocument = YAML.load(appRootPath.resolve('/client/public/swagger.yaml'));
-}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors());
+
+app.use('/api/v1', baseRouter);
+app.use(express.static(appRootPath.resolve('/client/public')));
+
+if (!swaggerDocument) {
+  console.log('Swagger document not found, loading from client/public/swagger.yaml');
+  swaggerDocument = YAML.load(appRootPath.resolve('/client/public/swagger.yaml'));
+}
+
 if (swaggerDocument) {
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
-app.use('/api/v1', baseRouter);
-app.use(express.static(appRootPath.resolve('/client/public')));
+
 app.get('/', (request, response) => {
   response.sendFile(appRootPath.resolve('/client/public/index.html'));
 });
