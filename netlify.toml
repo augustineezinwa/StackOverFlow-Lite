@@ -1,3 +1,9 @@
+[functions]
+  node_bundler = "esbuild"
+
+[functions.api]
+  external_node_modules = ["swagger-ui-express"]
+
 [build]
   command = "npm run build"
   publish = "client/public"

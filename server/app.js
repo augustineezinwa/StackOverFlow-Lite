@@ -10,24 +10,6 @@ import baseRouter from './router/baseRouter.js';
 
 const app = express();
 
-let swaggerDocument = null;
-const swaggerPaths = [
-  `${process.cwd()}/swagger.yaml`,
-  `${process.cwd()}/server/swagger.yaml`,
-  `${process.cwd()}/build/server/swagger.yaml`
-];
-
-swaggerPaths.some((swaggerPath) => {
-  if (fs.existsSync(swaggerPath)) {
-    try {
-      swaggerDocument = YAML.load(swaggerPath);
-      return true;
-    } catch (error) {
-      swaggerDocument = null;
-    }
-  }
-  return false;
-});
 
 
 app.use(bodyParser.json());
@@ -38,14 +20,15 @@ app.use(cors());
 app.use('/api/v1', baseRouter);
 app.use(express.static(appRootPath.resolve('/client/public')));
 
-if (!swaggerDocument) {
-  console.log('Swagger document not found, loading from client/public/swagger.yaml');
-  swaggerDocument = YAML.load(appRootPath.resolve('/client/public/swagger.yaml'));
-}
-
-if (swaggerDocument) {
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-}
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(null, {
+    swaggerOptions: {
+      url: "/swagger.yaml",
+    },
+  })
+);
 
 app.get('/', (request, response) => {
   response.sendFile(appRootPath.resolve('/client/public/index.html'));
