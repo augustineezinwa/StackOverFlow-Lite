@@ -30,6 +30,8 @@ const withQuestionAggregates = (questions, answers) => {
   });
 };
 
+const isNotArchived = (q) => q.archived !== true;
+
 const withAskerInfo = async (ctx, questions) => {
   if (!questions || questions.length === 0) return questions;
   const users = await getAll(ctx, 'users');
@@ -159,7 +161,7 @@ export const run = queryGeneric({
         const cursor = values[1] != null && values[1] !== '' ? toNumber(values[1]) : null;
         const categoryName = values[2] != null && String(values[2]).trim() !== '' ? String(values[2]).trim().toLowerCase() : null;
 
-        let questions = await getAll(ctx, 'questions');
+        let questions = (await getAll(ctx, 'questions')).filter(isNotArchived);
         if (categoryName) {
           const category = await firstByField(ctx, 'categories', 'by_name', 'name', categoryName);
           if (!category) {
@@ -184,7 +186,7 @@ export const run = queryGeneric({
 
       case 'getAllUserQuestions': {
         const userId = toNumber(values[0]);
-        const questions = await findByField(ctx, 'questions', 'by_userid', 'userid', userId);
+        const questions = (await findByField(ctx, 'questions', 'by_userid', 'userid', userId)).filter(isNotArchived);
         const answers = await getAll(ctx, 'answers');
         const aggregated = withQuestionAggregates(questions, answers);
         return withAskerInfo(ctx, aggregated);
@@ -204,7 +206,7 @@ export const run = queryGeneric({
 
       case 'searchQuestion': {
         const search = String(values[0] || '').toLowerCase();
-        const questions = await getAll(ctx, 'questions');
+        const questions = (await getAll(ctx, 'questions')).filter(isNotArchived);
         const answers = await getAll(ctx, 'answers');
         const filtered = withQuestionAggregates(questions, answers).filter(item =>
           item.questiontitle.toLowerCase().includes(search)
@@ -213,7 +215,7 @@ export const run = queryGeneric({
       }
 
       case 'getQuestionsWithMostAnswers': {
-        const questions = await getAll(ctx, 'questions');
+        const questions = (await getAll(ctx, 'questions')).filter(isNotArchived);
         const answers = await getAll(ctx, 'answers');
         const aggregated = withQuestionAggregates(questions, answers)
           .sort((a, b) => Number(b.answersnumber) - Number(a.answersnumber))
@@ -237,6 +239,19 @@ export const run = queryGeneric({
         const answers = await getAll(ctx, 'answers');
         const questions = await getAll(ctx, 'questions');
         return withUserAggregates(users, answers, questions);
+      }
+
+      case 'getPinnedQuestionsForUser': {
+        const userId = toNumber(values[0]);
+        const pinnedList = await findByField(ctx, 'pinned', 'by_userid', 'userid', userId);
+        const questionIds = new Set(pinnedList.map(p => p.questionid));
+        if (questionIds.size === 0) return [];
+        const allQuestions = await getAll(ctx, 'questions');
+        const questions = allQuestions.filter(q => questionIds.has(q.id) && isNotArchived(q));
+        const answers = await getAll(ctx, 'answers');
+        const aggregated = withQuestionAggregates(questions, answers)
+          .sort((a, b) => b.id - a.id);
+        return withAskerInfo(ctx, aggregated);
       }
 
       default:

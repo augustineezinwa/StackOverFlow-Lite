@@ -269,6 +269,75 @@ class QuestionController {
 
   /**
     * @static
+    * @description Archive or unarchive a question (owner only). Send body { archived: true } or { archived: false }. Protected by validatePermissionToDeleteQuestion.
+    */
+  static archiveQuestion(request, response) {
+    const { questionId } = request.params;
+    const userId = request.id;
+    const archived = request.body && typeof request.body.archived === 'boolean'
+      ? request.body.archived
+      : (request.body && (request.body.archived === 'true' || request.body.archived === 'false')
+        ? request.body.archived === 'true'
+        : true);
+    dbConnect.query(SqlHelper.archiveQuestion(questionId, userId, archived))
+      .then((data) => {
+        const result = (data.rows && data.rows[0]) || (Array.isArray(data) && data[0]);
+        if (result && result.error === 'forbidden') {
+          return response.status(403).json({
+            status: 'fail',
+            message: 'You do not have permission to archive or unarchive this question'
+          });
+        }
+        const message = archived ? 'Question archived successfully' : 'Question unarchived successfully';
+        return response.status(200).json({
+          status: 'success',
+          message,
+          data: { questionId: Number(questionId), archived: result.archived }
+        });
+      })
+      .catch(error => catchDatabaseConnectionError(error, response));
+  }
+
+  /**
+    * @static
+    * @description Pin a question for the authenticated user.
+    */
+  static pinQuestion(request, response) {
+    const { questionId } = request.params;
+    const userId = request.id;
+    dbConnect.query(SqlHelper.pinQuestion(questionId, userId))
+      .then((data) => {
+        const rows = Array.isArray(data) ? data : (data.rows || []);
+        const pin = rows[0];
+        return response.status(201).json({
+          status: 'success',
+          message: 'Question pinned successfully',
+          data: pin ? { id: pin.id, questionId: pin.questionid, userId: pin.userid } : {}
+        });
+      })
+      .catch(error => catchDatabaseConnectionError(error, response));
+  }
+
+  /**
+    * @static
+    * @description Get all pinned questions for the authenticated user.
+    */
+  static fetchPinnedQuestions(request, response) {
+    const userId = request.id;
+    dbConnect.query(SqlHelper.getPinnedQuestionsForUser(userId))
+      .then((data) => {
+        const questions = Array.isArray(data) ? data : (data.rows || []);
+        const formatted = formatAllQuestions(questions);
+        response.status(200).json({
+          status: 'success',
+          data: { questions: formatted }
+        });
+      })
+      .catch(error => catchDatabaseConnectionError(error, response));
+  }
+
+  /**
+    * @static
     *
     * @param {object} request - The request payload sent to the controller
     * @param {object} response - The response payload sent back from the controller

@@ -30,11 +30,21 @@ export default defineSchema({
     time: v.string(),
     date: v.string(),
     userid: v.number(),
-    categoryid: v.optional(v.number())
+    categoryid: v.optional(v.number()),
+    archived: v.optional(v.boolean())
   })
     .index('by_legacy_id', ['id'])
     .index('by_userid', ['userid'])
-    .index('by_categoryid', ['categoryid']),
+    .index('by_categoryid', ['categoryid'])
+    .index('by_archived', ['archived']),
+  pinned: defineTable({
+    id: v.number(),
+    questionid: v.number(),
+    userid: v.number()
+  })
+    .index('by_legacy_id', ['id'])
+    .index('by_userid', ['userid'])
+    .index('by_questionid_userid', ['questionid', 'userid']),
   answers: defineTable({
     id: v.number(),
     answer: v.string(),

@@ -35,6 +35,8 @@ export const run = mutationGeneric({
         return resetTable(ctx, 'votes', 'votes');
       case 'resetCategories':
         return resetTable(ctx, 'categories', 'categories');
+      case 'resetPinned':
+        return resetTable(ctx, 'pinned', 'pinned');
 
       case 'createCategory': {
         const id = await nextCounter(ctx, 'categories');
@@ -83,9 +85,31 @@ export const run = mutationGeneric({
           time,
           date,
           userid: toNumber(userId),
+          archived: false,
           ...(categoryId !== undefined && { categoryid: categoryId })
         };
         await ctx.db.insert('questions', doc);
+        return [doc];
+      }
+
+      case 'archiveQuestion': {
+        const questionId = toNumber(values[0]);
+        const userId = toNumber(values[1]);
+        const archived = values[2] === true || values[2] === 'true';
+        const question = await firstByField(ctx, 'questions', 'by_legacy_id', 'id', questionId);
+        if (!question || question.userid !== userId) return [{ error: 'forbidden' }];
+        await ctx.db.patch(question._id, { archived });
+        return [{ id: questionId, archived }];
+      }
+
+      case 'pinQuestion': {
+        const questionId = toNumber(values[0]);
+        const userId = toNumber(values[1]);
+        const existingPin = await ctx.db.query('pinned').withIndex('by_questionid_userid', q => q.eq('questionid', questionId).eq('userid', userId)).first();
+        if (existingPin) return [existingPin];
+        const id = await nextCounter(ctx, 'pinned');
+        const doc = { id, questionid: questionId, userid: userId };
+        await ctx.db.insert('pinned', doc);
         return [doc];
       }
 

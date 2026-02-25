@@ -122,7 +122,7 @@ paths:
       tags:
         - Questions
       summary: Get all questions (with optional category filter and cursor pagination)
-      description: Returns a paginated list of questions. Use category to filter by category name (e.g. science). Use limit and cursor for cursor-based pagination.
+      description: Returns a paginated list of non-archived questions. Use category to filter by category name (e.g. science). Use limit and cursor for cursor-based pagination. Archived questions are excluded.
       operationId: getAllQuestions
       produces:
         - application/json
@@ -203,12 +203,97 @@ paths:
           description: 'Unauthorized, please provide a valid token'
         '404':
           description: This question does not exist.
+  '/questions/{questionId}/archive':
+    patch:
+      tags:
+        - Questions
+      summary: Archive or unarchive a question
+      description: Set the question's archived state. Only the question owner can archive or unarchive. Send body archived true to archive, false to unarchive. Archived questions are excluded from GET /questions and GET /users/questions.
+      operationId: archiveQuestion
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: questionId
+          in: path
+          required: true
+          type: integer
+          description: The id of the question
+        - name: token
+          in: query
+          required: true
+          type: string
+          description: Bearer token (must be question owner)
+        - in: body
+          name: body
+          description: Set archived to true to archive, false to unarchive. Defaults to true if omitted.
+          schema:
+            $ref: '#/definitions/ArchiveQuestionRequest'
+      responses:
+        '200':
+          description: Question archived or unarchived successfully
+          schema:
+            $ref: '#/definitions/ArchiveQuestionResponse'
+        '403':
+          description: You do not have permission to archive or unarchive this question
+        '404':
+          description: This question does not exist
+  '/questions/{questionId}/pin':
+    post:
+      tags:
+        - Questions
+      summary: Pin a question
+      description: Pins the question for the authenticated user. Idempotent (re-pinning returns existing pin). Use GET /users/questions/pinned to list pinned questions.
+      operationId: pinQuestion
+      produces:
+        - application/json
+      parameters:
+        - name: questionId
+          in: path
+          required: true
+          type: integer
+          description: The id of the question to pin
+        - name: token
+          in: query
+          required: true
+          type: string
+          description: Bearer token
+      responses:
+        '201':
+          description: Question pinned successfully
+          schema:
+            $ref: '#/definitions/PinQuestionResponse'
+        '404':
+          description: This question does not exist
+  /users/questions/pinned:
+    get:
+      tags:
+        - Questions
+      summary: Get pinned questions
+      description: Returns all questions pinned by the authenticated user. Only non-archived questions are included. Requires token.
+      operationId: getPinnedQuestions
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: query
+          required: true
+          type: string
+          description: Bearer token
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/UserQuestionsResponse'
+        '401':
+          description: Unauthorized
   /users/questions:
     get:
       tags:
         - Questions
       summary: Get questions for the authenticated user
-      description: Returns all questions asked by the logged-in user. Each question includes imageUrl (asker photo), askedBy (asker name), and categoryId when set.
+      description: Returns non-archived questions asked by the logged-in user. Each question includes photoUrl (owner profile photo), imageUrl (question cover image), askedBy, and categoryId when set.
       operationId: getAUserQuestion
       produces:
         - application/json
@@ -553,9 +638,12 @@ definitions:
         type: string
       questionDescription:
         type: string
+      photoUrl:
+        type: string
+        description: Profile photo URL of the question owner (from users table)
       imageUrl:
         type: string
-        description: Photo URL of the user who asked the question
+        description: Cover image URL attached to the question
       askedBy:
         type: string
         description: Full name (first + last) of the user who asked the question
@@ -572,7 +660,7 @@ definitions:
         type: integer
   QuestionListItem:
     type: object
-    description: A question in list endpoints (GET /questions, GET /users/questions)
+    description: A question in list endpoints (GET /questions, GET /users/questions, GET /users/questions/pinned)
     properties:
       id:
         type: integer
@@ -580,9 +668,12 @@ definitions:
         type: string
       questionDescription:
         type: string
+      photoUrl:
+        type: string
+        description: Profile photo URL of the question owner (from users table)
       imageUrl:
         type: string
-        description: Photo URL of the user who asked the question
+        description: Cover image URL attached to the question
       askedBy:
         type: string
         description: Full name of the user who asked the question
@@ -601,6 +692,53 @@ definitions:
         type: string
       date:
         type: string
+  ArchiveQuestionRequest:
+    type: object
+    description: Request body for PATCH /questions/{questionId}/archive
+    properties:
+      archived:
+        type: boolean
+        description: true to archive, false to unarchive. Defaults to true if body omitted.
+    example:
+      archived: false
+  ArchiveQuestionResponse:
+    type: object
+    description: Response for PATCH /questions/{questionId}/archive
+    properties:
+      status:
+        type: string
+        example: success
+      message:
+        type: string
+        example: Question unarchived successfully
+      data:
+        type: object
+        properties:
+          questionId:
+            type: integer
+          archived:
+            type: boolean
+            description: Current archived state after the update
+  PinQuestionResponse:
+    type: object
+    description: Response for POST /questions/{questionId}/pin
+    properties:
+      status:
+        type: string
+        example: success
+      message:
+        type: string
+        example: Question pinned successfully
+      data:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Pin record id
+          questionId:
+            type: integer
+          userId:
+            type: integer
   QuestionsListResponse:
     type: object
     description: Response for GET /questions (with cursor pagination)

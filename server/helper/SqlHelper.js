@@ -308,6 +308,36 @@ class SqlHelper {
 
   /**
     * @static
+    * @param {number} questionId - Question id
+    * @param {number} userId - User id (must be question owner)
+    * @param {boolean} archived - true to archive, false to unarchive
+    * @returns {object} - Convex mutation request
+    */
+  static archiveQuestion(questionId, userId, archived = true) {
+    return buildConvexRequest('mutation', 'archiveQuestion', '', [questionId, userId, archived]);
+  }
+
+  /**
+    * @static
+    * @param {number} questionId - Question id to pin
+    * @param {number} userId - User id
+    * @returns {object} - Convex mutation request
+    */
+  static pinQuestion(questionId, userId) {
+    return buildConvexRequest('mutation', 'pinQuestion', '', [questionId, userId]);
+  }
+
+  /**
+    * @static
+    * @param {number} userId - User id
+    * @returns {object} - Convex query request for pinned questions
+    */
+  static getPinnedQuestionsForUser(userId) {
+    return buildConvexRequest('query', 'getPinnedQuestionsForUser', '', [userId]);
+  }
+
+  /**
+    * @static
     *
     * @param {integer} answerId - The id of the question that bears the answer
     * @param {integer} questionId - The id of the answer that you want to get
