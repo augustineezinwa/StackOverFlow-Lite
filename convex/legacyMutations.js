@@ -105,12 +105,17 @@ export const run = mutationGeneric({
       case 'pinQuestion': {
         const questionId = toNumber(values[0]);
         const userId = toNumber(values[1]);
+        const pinned = values[2] !== false && values[2] !== 'false';
         const existingPin = await ctx.db.query('pinned').withIndex('by_questionid_userid', q => q.eq('questionid', questionId).eq('userid', userId)).first();
-        if (existingPin) return [existingPin];
+        if (!pinned) {
+          if (existingPin) await ctx.db.delete(existingPin._id);
+          return [{ pinned: false, questionId, userId }];
+        }
+        if (existingPin) return [{ ...existingPin, pinned: true }];
         const id = await nextCounter(ctx, 'pinned');
         const doc = { id, questionid: questionId, userid: userId };
         await ctx.db.insert('pinned', doc);
-        return [doc];
+        return [{ ...doc, pinned: true }];
       }
 
       case 'createAnswer': {

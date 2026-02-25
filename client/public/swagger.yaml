@@ -243,9 +243,11 @@ paths:
     post:
       tags:
         - Questions
-      summary: Pin a question
-      description: Pins the question for the authenticated user. Idempotent (re-pinning returns existing pin). Use GET /users/questions/pinned to list pinned questions.
+      summary: Pin or unpin a question
+      description: Pin or unpin the question for the authenticated user. Send body pinned true to pin, false to unpin. Defaults to pin if body omitted. Re-pinning is idempotent. Use GET /users/questions/pinned to list pinned questions.
       operationId: pinQuestion
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -253,15 +255,20 @@ paths:
           in: path
           required: true
           type: integer
-          description: The id of the question to pin
+          description: The id of the question to pin or unpin
         - name: token
           in: query
           required: true
           type: string
           description: Bearer token
+        - in: body
+          name: body
+          description: Set pinned to true to pin, false to unpin. Defaults to true if omitted.
+          schema:
+            $ref: '#/definitions/PinQuestionRequest'
       responses:
-        '201':
-          description: Question pinned successfully
+        '200':
+          description: Question pinned or unpinned successfully
           schema:
             $ref: '#/definitions/PinQuestionResponse'
         '404':
@@ -719,26 +726,39 @@ definitions:
           archived:
             type: boolean
             description: Current archived state after the update
+  PinQuestionRequest:
+    type: object
+    description: Request body for POST /questions/{questionId}/pin
+    properties:
+      pinned:
+        type: boolean
+        description: true to pin, false to unpin. Defaults to true if body omitted.
+    example:
+      pinned: false
   PinQuestionResponse:
     type: object
-    description: Response for POST /questions/{questionId}/pin
+    description: Response for POST /questions/{questionId}/pin (pin or unpin)
     properties:
       status:
         type: string
         example: success
       message:
         type: string
-        example: Question pinned successfully
+        example: Question unpinned successfully
       data:
         type: object
+        description: When pinned true, includes id, questionId, userId, pinned. When pinned false, includes questionId, userId, pinned.
         properties:
           id:
             type: integer
-            description: Pin record id
+            description: Pin record id (present when pinned)
           questionId:
             type: integer
           userId:
             type: integer
+          pinned:
+            type: boolean
+            description: Current pinned state after the update
   QuestionsListResponse:
     type: object
     description: Response for GET /questions (with cursor pagination)

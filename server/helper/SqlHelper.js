@@ -319,12 +319,13 @@ class SqlHelper {
 
   /**
     * @static
-    * @param {number} questionId - Question id to pin
+    * @param {number} questionId - Question id to pin or unpin
     * @param {number} userId - User id
+    * @param {boolean} pinned - true to pin, false to unpin (default true)
     * @returns {object} - Convex mutation request
     */
-  static pinQuestion(questionId, userId) {
-    return buildConvexRequest('mutation', 'pinQuestion', '', [questionId, userId]);
+  static pinQuestion(questionId, userId, pinned = true) {
+    return buildConvexRequest('mutation', 'pinQuestion', '', [questionId, userId, pinned]);
   }
 
   /**

@@ -300,19 +300,28 @@ class QuestionController {
 
   /**
     * @static
-    * @description Pin a question for the authenticated user.
+    * @description Pin or unpin a question for the authenticated user. Send body { pinned: true } to pin, { pinned: false } to unpin. Defaults to pin if body omitted.
     */
   static pinQuestion(request, response) {
     const { questionId } = request.params;
     const userId = request.id;
-    dbConnect.query(SqlHelper.pinQuestion(questionId, userId))
+    const pinned = request.body && typeof request.body.pinned === 'boolean'
+      ? request.body.pinned
+      : (request.body && (request.body.pinned === 'true' || request.body.pinned === 'false')
+        ? request.body.pinned === 'true'
+        : true);
+    dbConnect.query(SqlHelper.pinQuestion(questionId, userId, pinned))
       .then((data) => {
         const rows = Array.isArray(data) ? data : (data.rows || []);
-        const pin = rows[0];
-        return response.status(201).json({
+        const result = rows[0];
+        const message = pinned ? 'Question pinned successfully' : 'Question unpinned successfully';
+        const payload = result && result.pinned === false
+          ? { questionId: Number(questionId), userId: result.userid, pinned: false }
+          : (result ? { id: result.id, questionId: result.questionid, userId: result.userid, pinned: true } : {});
+        return response.status(200).json({
           status: 'success',
-          message: 'Question pinned successfully',
-          data: pin ? { id: pin.id, questionId: pin.questionid, userId: pin.userid } : {}
+          message,
+          data: payload
         });
       })
       .catch(error => catchDatabaseConnectionError(error, response));
