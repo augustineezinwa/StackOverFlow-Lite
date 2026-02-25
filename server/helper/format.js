@@ -94,7 +94,9 @@ const formatAnswers = (data) => {
     newAnswers.push({
       id: x.id,
       answer: x.answer,
-      imageUrl: x.imageurl || '',
+      imageUrl: x.imageurl != null ? x.imageurl : '',
+      photoUrl: x.photoUrl != null ? x.photoUrl : '',
+      answeredBy: x.answeredBy != null ? x.answeredBy : '',
       upvotes: x.upvotes,
       downvotes: x.downvotes,
       approved: x.approved,
@@ -115,6 +117,8 @@ const formatComments = (data) => {
     newComments.push({
       id: x.id,
       comment: x.comment,
+      photoUrl: x.photoUrl != null ? x.photoUrl : '',
+      commentedBy: x.commentedBy != null ? x.commentedBy : '',
       upvotes: x.upvotes,
       downvotes: x.downvotes,
       time: x.time,

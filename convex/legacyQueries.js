@@ -49,6 +49,34 @@ const withAskerInfo = async (ctx, questions) => {
   });
 };
 
+const withAnswererInfo = async (ctx, answers) => {
+  if (!answers || answers.length === 0) return answers;
+  const users = await getAll(ctx, 'users');
+  const userById = new Map(users.map(u => [u.id, u]));
+  return answers.map((a) => {
+    const user = userById.get(a.userid);
+    return {
+      ...a,
+      photoUrl: user ? (user.photo || '') : '',
+      answeredBy: user ? `${user.firstname || ''} ${user.lastname || ''}`.trim() : ''
+    };
+  });
+};
+
+const withCommenterInfo = async (ctx, comments) => {
+  if (!comments || comments.length === 0) return comments;
+  const users = await getAll(ctx, 'users');
+  const userById = new Map(users.map(u => [u.id, u]));
+  return comments.map((c) => {
+    const user = userById.get(c.userid);
+    return {
+      ...c,
+      photoUrl: user ? (user.photo || '') : '',
+      commentedBy: user ? `${user.firstname || ''} ${user.lastname || ''}`.trim() : ''
+    };
+  });
+};
+
 const withUserAggregates = (users, answers, questions) => {
   const answersByUser = new Map();
   answers.forEach((answer) => {
@@ -144,11 +172,14 @@ export const run = queryGeneric({
           }
           commentsByAnswer.set(comment.answerid, commentsByAnswer.get(comment.answerid) + 1);
         });
-        return answers.map(answer => ({ ...answer, commentsnumber: commentsByAnswer.get(answer.id) || 0 }));
+        const withCount = answers.map(answer => ({ ...answer, commentsnumber: commentsByAnswer.get(answer.id) || 0 }));
+        return withAnswererInfo(ctx, withCount);
       }
 
-      case 'getAllCommentsForAnAnswer':
-        return findByField(ctx, 'comments', 'by_answerid', 'answerid', toNumber(values[0]));
+      case 'getAllCommentsForAnAnswer': {
+        const comments = await findByField(ctx, 'comments', 'by_answerid', 'answerid', toNumber(values[0]));
+        return withCommenterInfo(ctx, comments);
+      }
 
       case 'getAUserComment': {
         const comment = await firstByField(ctx, 'comments', 'by_legacy_id', 'id', toNumber(values[0]));
