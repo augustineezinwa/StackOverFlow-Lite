@@ -49,6 +49,17 @@ class QuestionController {
       .catch(error => catchDatabaseConnectionError(error, response));
   }
 
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload sent to the controller
+    * @param {object} response - The respons payload sent back from the controller
+    *
+    * @returns {object} - status Message and the question
+    *
+    * @description This method returns all question object
+    * @memberOf QuestionController
+    */
   static fetchQuestions(request, response) {
     const limit = Math.min(100, Math.max(1, Number.parseInt(request.query.limit, 10) || 20));
     const cursor = request.query.cursor != null && request.query.cursor !== ''
@@ -58,8 +69,16 @@ class QuestionController {
 
     dbConnect.query(getAllQuestions(limit, cursor, category))
       .then((data) => {
-        const questions = data.questions != null ? data.questions : (data.rows || []);
-        const nextCursor = data.nextCursor != null ? data.nextCursor : null;
+        let questions = data.questions;
+        let nextCursor = data.nextCursor != null ? data.nextCursor : null;
+        if (questions == null && Array.isArray(data.rows) && data.rows.length > 0) {
+          const first = data.rows[0];
+          if (first && typeof first === 'object' && Array.isArray(first.questions)) {
+            questions = first.questions;
+            nextCursor = first.nextCursor != null ? first.nextCursor : null;
+          }
+        }
+        if (questions == null) questions = data.rows || [];
         const formatted = formatAllQuestions(questions);
         const body = { questions: formatted };
         if (nextCursor != null) body.nextCursor = String(nextCursor);

@@ -35,24 +35,32 @@ const formatQuestions = (data) => {
   return newQuestions;
 };
 
+const safeInt = (v, def = 0) => {
+  const n = Number.parseInt(v, 10);
+  return Number.isNaN(n) ? def : n;
+};
+
 const formatAllQuestions = (data) => {
+  if (!Array.isArray(data)) return [];
   const newQuestions = [];
   data.forEach((x) => {
-    newQuestions.push({
+    if (!x || typeof x !== 'object') return;
+    const q = {
       id: x.id,
-      questionTitle: x.questiontitle,
-      questionDescription: x.questiondescription,
-      imageUrl: x.imageUrl || '',
-      askedBy: x.askedBy || '',
+      questionTitle: x.questiontitle != null ? x.questiontitle : '',
+      questionDescription: x.questiondescription != null ? x.questiondescription : '',
+      imageUrl: x.imageUrl != null ? x.imageUrl : '',
+      askedBy: x.askedBy != null ? x.askedBy : '',
       answers: [],
-      numberOfAnswers: Number.parseInt(x.answersnumber, 10),
-      upvotes: Number.parseInt(Number(x.upvotes), 10),
-      downvotes: Number.parseInt(Number(x.downvotes), 10),
-      time: x.time,
-      date: x.date,
-      userId: x.userid,
-      ...(x.categoryid != null && { categoryId: x.categoryid })
-    });
+      numberOfAnswers: safeInt(x.answersnumber, 0),
+      upvotes: safeInt(x.upvotes, 0),
+      downvotes: safeInt(x.downvotes, 0),
+      time: x.time != null ? x.time : '',
+      date: x.date != null ? x.date : '',
+      userId: x.userid
+    };
+    if (x.categoryid != null) q.categoryId = x.categoryid;
+    newQuestions.push(q);
   });
   return newQuestions;
 };
