@@ -87,6 +87,11 @@ export const run = queryGeneric({
         return user ? [user] : [];
       }
 
+      case 'getAllCategories': {
+        const categories = await getAll(ctx, 'categories');
+        return categories.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      }
+
       case 'getAUserQuestion': {
         const userId = toNumber(values[0]);
         const questionId = toNumber(values[1]);

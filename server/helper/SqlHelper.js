@@ -415,6 +415,18 @@ class SqlHelper {
     * @description This method gets questions with optional category filter and cursor pagination
     * @memberOf SqlHelper
     */
+  /**
+    * @static
+    *
+    * @returns {object} - Convex request for getAllCategories
+    *
+    * @description Returns all categories
+    * @memberOf SqlHelper
+    */
+  static getAllCategories() {
+    return buildConvexRequest('query', 'getAllCategories', '', []);
+  }
+
   static getAllQuestions(limit = 20, cursor = null, category = null) {
     const text = '';
     const values = [limit, cursor !== undefined && cursor !== null ? cursor : '', category || ''];

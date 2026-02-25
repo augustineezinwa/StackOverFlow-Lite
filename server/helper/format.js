@@ -151,7 +151,12 @@ const formatUserUpdate = (data) => {
   return newUsers;
 };
 
+const formatCategories = (data) => {
+  if (!Array.isArray(data)) return [];
+  return data.map((x) => ({ id: x.id, name: x.name || '' }));
+};
+
 export {
   formatQuestions, formatAnswers, formatComments, formatMostAnsweredQuestions, formatQuestionsWithAnswers,
-  formatAllQuestions, formatUsers, formatUserUpdate
+  formatAllQuestions, formatUsers, formatUserUpdate, formatCategories
 };

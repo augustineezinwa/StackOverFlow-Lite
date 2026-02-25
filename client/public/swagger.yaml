@@ -14,6 +14,8 @@ basePath: /api/v1
 tags:
   - name: Users
     description: API for user
+  - name: Categories
+    description: API for question categories (filter questions, create questions with category)
   - name: Questions
     description: API for questions
   - name: Answers
@@ -72,6 +74,20 @@ paths:
           description: password is incorrect.
         '404':
           description: email doesnt exist on the system. Login or signup
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all categories
+      description: Returns all categories sorted by name. Use category names when filtering GET /questions (e.g. ?category=science) or set categoryId when creating a question.
+      operationId: getAllCategories
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/CategoriesListResponse'
   /questions:
     post:
       tags:
@@ -616,6 +632,41 @@ definitions:
             type: array
             items:
               $ref: '#/definitions/QuestionListItem'
+  CategoryItem:
+    type: object
+    description: A single category (id and name)
+    properties:
+      id:
+        type: integer
+        description: Category id (use when creating a question with categoryId)
+      name:
+        type: string
+        description: Category name (use in GET /questions?category=name to filter)
+    example:
+      id: 1
+      name: science
+  CategoriesListResponse:
+    type: object
+    description: Response for GET /categories
+    properties:
+      status:
+        type: string
+        example: success
+      data:
+        type: object
+        properties:
+          categories:
+            type: array
+            items:
+              $ref: '#/definitions/CategoryItem'
+    example:
+      status: success
+      data:
+        categories:
+          - id: 1
+            name: science
+          - id: 2
+            name: technology
   AnswerFoundModel:
     type: object
     required:

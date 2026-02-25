@@ -2,14 +2,14 @@ import dbConnect from '../connections/dbConnect.js';
 import SqlHelper from '../helper/SqlHelper.js';
 import {
   formatMostAnsweredQuestions, formatQuestionsWithAnswers,
-  formatAllQuestions
+  formatAllQuestions, formatCategories
 } from '../helper/format.js';
 import CatchErrors from '../helper/CatchErrors.js';
 
 const { catchDatabaseConnectionError } = CatchErrors;
 const {
   createQuestion, getAllQuestions, getAQuestion, deleteAQuestion, getAllUserQuestions,
-  searchQuestion, getQuestionsWithMostAnswers
+  searchQuestion, getQuestionsWithMostAnswers, getAllCategories
 } = SqlHelper;
 /**
   * @class QuestionController
@@ -28,6 +28,27 @@ class QuestionController {
     * @description This method returns the question object
     * @memberOf QuestionController
     */
+  /**
+    * @static
+    *
+    * @param {object} request - The request payload
+    * @param {object} response - The response payload
+    *
+    * @description Returns all categories
+    * @memberOf QuestionController
+    */
+  static fetchCategories(request, response) {
+    dbConnect.query(getAllCategories())
+      .then((data) => {
+        const rows = Array.isArray(data) ? data : (data.rows || []);
+        response.status(200).json({
+          status: 'success',
+          data: { categories: formatCategories(rows) }
+        });
+      })
+      .catch(error => catchDatabaseConnectionError(error, response));
+  }
+
   static fetchQuestions(request, response) {
     const limit = Math.min(100, Math.max(1, Number.parseInt(request.query.limit, 10) || 20));
     const cursor = request.query.cursor != null && request.query.cursor !== ''
