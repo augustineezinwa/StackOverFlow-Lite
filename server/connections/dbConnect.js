@@ -7,6 +7,9 @@ const formatRows = (result) => {
   if (result && Array.isArray(result.rows)) {
     return result;
   }
+  if (result && typeof result === 'object' && 'questions' in result) {
+    return result;
+  }
   if (result === null || result === undefined) {
     return { rows: [] };
   }

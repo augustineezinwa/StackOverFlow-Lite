@@ -5,7 +5,8 @@ const formatQuestionsWithAnswers = (data) => {
       id: x.id,
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
-      image_url: x.imageurl || '',
+      imageUrl: x.imageUrl || '',
+      askedBy: x.askedBy || '',
       answers: [],
       time: x.time,
       date: x.date,
@@ -22,7 +23,8 @@ const formatQuestions = (data) => {
       id: x.id,
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
-      image_url: x.imageurl || '',
+      imageUrl: x.imageUrl || '',
+      askedBy: x.askedBy || '',
       answers: [],
       numberOfAnswers: Number.parseInt(x.answersnumber, 10),
       time: x.time,
@@ -40,14 +42,16 @@ const formatAllQuestions = (data) => {
       id: x.id,
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
-      image_url: x.imageurl || '',
+      imageUrl: x.imageUrl || '',
+      askedBy: x.askedBy || '',
       answers: [],
       numberOfAnswers: Number.parseInt(x.answersnumber, 10),
       upvotes: Number.parseInt(Number(x.upvotes), 10),
       downvotes: Number.parseInt(Number(x.downvotes), 10),
       time: x.time,
       date: x.date,
-      userId: x.userid
+      userId: x.userid,
+      ...(x.categoryid != null && { categoryId: x.categoryid })
     });
   });
   return newQuestions;
@@ -60,7 +64,8 @@ const formatMostAnsweredQuestions = (data) => {
       id: x.id,
       questionTitle: x.questiontitle,
       questionDescription: x.questiondescription,
-      image_url: x.imageurl || '',
+      imageUrl: x.imageUrl || '',
+      askedBy: x.askedBy || '',
       answers: [],
       numberOfAnswers: Number.parseInt(Number(x.answersnumber), 10),
       time: x.time,
@@ -77,7 +82,7 @@ const formatAnswers = (data) => {
     newAnswers.push({
       id: x.id,
       answer: x.answer,
-      image_url: x.imageurl || '',
+      imageUrl: x.imageurl || '',
       upvotes: x.upvotes,
       downvotes: x.downvotes,
       approved: x.approved,

@@ -33,6 +33,17 @@ export const run = mutationGeneric({
         return resetTable(ctx, 'comments', 'comments');
       case 'resetVotesTable':
         return resetTable(ctx, 'votes', 'votes');
+      case 'resetCategories':
+        return resetTable(ctx, 'categories', 'categories');
+
+      case 'createCategory': {
+        const id = await nextCounter(ctx, 'categories');
+        const name = String(values[0] || '').trim().toLowerCase();
+        if (!name) return [];
+        const doc = { id, name };
+        await ctx.db.insert('categories', doc);
+        return [doc];
+      }
 
       case 'createUser': {
         const id = await nextCounter(ctx, 'users');
@@ -62,6 +73,8 @@ export const run = mutationGeneric({
         const time = hasImage ? values[3] : values[2];
         const date = hasImage ? values[4] : values[3];
         const userId = hasImage ? values[5] : values[4];
+        const categoryIdx = hasImage ? 6 : 5;
+        const categoryId = values.length > categoryIdx && values[categoryIdx] != null ? toNumber(values[categoryIdx]) : undefined;
         const doc = {
           id,
           questiontitle: questionTitle,
@@ -69,7 +82,8 @@ export const run = mutationGeneric({
           imageurl: imageUrl || '',
           time,
           date,
-          userid: toNumber(userId)
+          userid: toNumber(userId),
+          ...(categoryId !== undefined && { categoryid: categoryId })
         };
         await ctx.db.insert('questions', doc);
         return [doc];

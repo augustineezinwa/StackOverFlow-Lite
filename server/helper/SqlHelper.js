@@ -407,19 +407,18 @@ class SqlHelper {
   /**
     * @static
     *
-    * @returns {object} - query string
+    * @param {number} limit - Max number of questions to return (default 20, max 100)
+    * @param {string|null} cursor - Cursor for pagination (question id)
+    * @param {string|null} category - Category name to filter by (e.g. "science")
+    * @returns {object} - Convex request for getAllQuestions
     *
-    * @description This method gets all questions
+    * @description This method gets questions with optional category filter and cursor pagination
     * @memberOf SqlHelper
     */
-  static getAllQuestions() {
-    const text = `SELECT questions.*, count(answers.questionid) as answersnumber,
-      sum(answers.upvotes) as upvotes,
-      sum(answers.downvotes) as downvotes from questions
-      left  join answers on (questions.id =answers.questionid)
-      group by questions.id ORDER BY ID DESC
-    `;
-    return buildConvexRequest('query', 'getAllQuestions', text);
+  static getAllQuestions(limit = 20, cursor = null, category = null) {
+    const text = '';
+    const values = [limit, cursor !== undefined && cursor !== null ? cursor : '', category || ''];
+    return buildConvexRequest('query', 'getAllQuestions', text, values);
   }
 
   /**

@@ -29,22 +29,23 @@ class QuestionController {
     * @memberOf QuestionController
     */
   static fetchQuestions(request, response) {
-    dbConnect.query(getAllQuestions())
-      .then((data) => {
-        switch (data.rows.length) {
-          case 0: response.status(200).json({
-            status: 'success',
-            data: { questions: [] }
-          });
-            break;
+    const limit = Math.min(100, Math.max(1, Number.parseInt(request.query.limit, 10) || 20));
+    const cursor = request.query.cursor != null && request.query.cursor !== ''
+      ? request.query.cursor : null;
+    const category = request.query.category != null && request.query.category !== ''
+      ? request.query.category : null;
 
-          default: {
-            response.status(200).json({
-              status: 'success',
-              data: { questions: formatAllQuestions(data.rows) }
-            });
-          }
-        }
+    dbConnect.query(getAllQuestions(limit, cursor, category))
+      .then((data) => {
+        const questions = data.questions != null ? data.questions : (data.rows || []);
+        const nextCursor = data.nextCursor != null ? data.nextCursor : null;
+        const formatted = formatAllQuestions(questions);
+        const body = { questions: formatted };
+        if (nextCursor != null) body.nextCursor = String(nextCursor);
+        response.status(200).json({
+          status: 'success',
+          data: body
+        });
       })
       .catch(
         error => catchDatabaseConnectionError(error, response)

@@ -16,6 +16,12 @@ export default defineSchema({
   })
     .index('by_legacy_id', ['id'])
     .index('by_email', ['email']),
+  categories: defineTable({
+    id: v.number(),
+    name: v.string()
+  })
+    .index('by_legacy_id', ['id'])
+    .index('by_name', ['name']),
   questions: defineTable({
     id: v.number(),
     questiontitle: v.string(),
@@ -23,10 +29,12 @@ export default defineSchema({
     imageurl: v.optional(v.string()),
     time: v.string(),
     date: v.string(),
-    userid: v.number()
+    userid: v.number(),
+    categoryid: v.optional(v.number())
   })
     .index('by_legacy_id', ['id'])
-    .index('by_userid', ['userid']),
+    .index('by_userid', ['userid'])
+    .index('by_categoryid', ['categoryid']),
   answers: defineTable({
     id: v.number(),
     answer: v.string(),

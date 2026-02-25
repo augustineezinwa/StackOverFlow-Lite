@@ -30,6 +30,20 @@ const withQuestionAggregates = (questions, answers) => {
   });
 };
 
+const withAskerInfo = async (ctx, questions) => {
+  if (!questions || questions.length === 0) return questions;
+  const users = await getAll(ctx, 'users');
+  const userById = new Map(users.map(u => [u.id, u]));
+  return questions.map((q) => {
+    const user = userById.get(q.userid);
+    return {
+      ...q,
+      imageUrl: user ? (user.photo || '') : '',
+      askedBy: user ? `${user.firstname || ''} ${user.lastname || ''}`.trim() : ''
+    };
+  });
+};
+
 const withUserAggregates = (users, answers, questions) => {
   const answersByUser = new Map();
   answers.forEach((answer) => {
@@ -99,7 +113,8 @@ export const run = queryGeneric({
 
       case 'getAQuestion': {
         const question = await firstByField(ctx, 'questions', 'by_legacy_id', 'id', toNumber(values[0]));
-        return question ? [question] : [];
+        const withAsker = question ? await withAskerInfo(ctx, [question]) : [];
+        return withAsker;
       }
 
       case 'getAnAnswer': {
@@ -132,17 +147,39 @@ export const run = queryGeneric({
       }
 
       case 'getAllQuestions': {
-        const questions = await getAll(ctx, 'questions');
+        const limit = Math.min(Math.max(1, Number(values[0]) || 20), 100);
+        const cursor = values[1] != null && values[1] !== '' ? toNumber(values[1]) : null;
+        const categoryName = values[2] != null && String(values[2]).trim() !== '' ? String(values[2]).trim().toLowerCase() : null;
+
+        let questions = await getAll(ctx, 'questions');
+        if (categoryName) {
+          const category = await firstByField(ctx, 'categories', 'by_name', 'name', categoryName);
+          if (!category) {
+            return { questions: [], nextCursor: null };
+          }
+          questions = questions.filter(q => q.categoryid === category.id);
+        }
         const answers = await getAll(ctx, 'answers');
-        return withQuestionAggregates(questions, answers)
+        let aggregated = withQuestionAggregates(questions, answers)
           .sort((a, b) => b.id - a.id);
+        if (cursor != null) {
+          aggregated = aggregated.filter(q => q.id < cursor);
+        }
+        const take = limit + 1;
+        const slice = aggregated.slice(0, take);
+        const hasMore = slice.length > limit;
+        const page = slice.slice(0, limit);
+        const nextCursor = hasMore ? page[page.length - 1].id : null;
+        const withAsker = await withAskerInfo(ctx, page);
+        return { questions: withAsker, nextCursor };
       }
 
       case 'getAllUserQuestions': {
         const userId = toNumber(values[0]);
         const questions = await findByField(ctx, 'questions', 'by_userid', 'userid', userId);
         const answers = await getAll(ctx, 'answers');
-        return withQuestionAggregates(questions, answers);
+        const aggregated = withQuestionAggregates(questions, answers);
+        return withAskerInfo(ctx, aggregated);
       }
 
       case 'getUpvotesForAnswer': {
@@ -161,20 +198,22 @@ export const run = queryGeneric({
         const search = String(values[0] || '').toLowerCase();
         const questions = await getAll(ctx, 'questions');
         const answers = await getAll(ctx, 'answers');
-        return withQuestionAggregates(questions, answers).filter(item =>
+        const filtered = withQuestionAggregates(questions, answers).filter(item =>
           item.questiontitle.toLowerCase().includes(search)
           || item.questiondescription.toLowerCase().includes(search));
+        return withAskerInfo(ctx, filtered);
       }
 
       case 'getQuestionsWithMostAnswers': {
         const questions = await getAll(ctx, 'questions');
         const answers = await getAll(ctx, 'answers');
-        return withQuestionAggregates(questions, answers)
+        const aggregated = withQuestionAggregates(questions, answers)
           .sort((a, b) => Number(b.answersnumber) - Number(a.answersnumber))
           .map(item => ({
             ...item,
             answersnumber: Number(item.answersnumber)
           }));
+        return withAskerInfo(ctx, aggregated);
       }
 
       case 'findUser': {

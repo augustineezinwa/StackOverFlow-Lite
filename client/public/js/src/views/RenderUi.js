@@ -1090,7 +1090,8 @@ class RenderUi {
                 <div class = "col-2"> 
                   <div class = "user-icon-div" id ="dummyImage" style ="display:block"> <i class = "fa fa-user user-icon-profile"></i></div>
                   <div class = "mt-1" > <img id ="imageHolder" class ="profilePhoto" src ="${profileArray[0].photo}"></div>
-                  <input type ="file" name =" file"  id= "imageUpload" style ="width:100%; display:none" accept ="images/*">
+                  <input type ="file" name ="file" id ="imageUpload" class ="upload-photo-input" accept ="image/*">
+                  <label for ="imageUpload" class ="upload-photo-btn"><i class ="fa fa-camera"></i> Upload photo</label>
                   </div>
                   
                 <div class = "col-5"> 

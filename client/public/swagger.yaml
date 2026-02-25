@@ -105,14 +105,38 @@ paths:
     get:
       tags:
         - Questions
-      summary: gets all questions in Stack-OverFlow-Lite
-      description: This can only be done by any one visiting the application
+      summary: Get all questions (with optional category filter and cursor pagination)
+      description: Returns a paginated list of questions. Use category to filter by category name (e.g. science). Use limit and cursor for cursor-based pagination.
       operationId: getAllQuestions
       produces:
         - application/json
+      parameters:
+        - name: search
+          in: query
+          description: Search by keywords in title or description (when present, returns all matches; no pagination)
+          required: false
+          type: string
+        - name: category
+          in: query
+          description: Filter questions by category name (e.g. science, technology). Ignored when search is set.
+          required: false
+          type: string
+        - name: limit
+          in: query
+          description: Max number of questions to return (default 20, max 100). Used only when search is not set.
+          required: false
+          type: integer
+          default: 20
+        - name: cursor
+          in: query
+          description: Cursor for next page (use nextCursor from previous response). Used only when search is not set.
+          required: false
+          type: string
       responses:
         '200':
           description: success!
+          schema:
+            $ref: '#/definitions/QuestionsListResponse'
         '404':
           description: No questions found!
   '/questions/{questionId}':
@@ -167,8 +191,8 @@ paths:
     get:
       tags:
         - Questions
-      summary: This gets a question for a user in StackOverFlow-Lite
-      description: This gets a question for a user on Stack-Overflow-Lite
+      summary: Get questions for the authenticated user
+      description: Returns all questions asked by the logged-in user. Each question includes imageUrl (asker photo), askedBy (asker name), and categoryId when set.
       operationId: getAUserQuestion
       produces:
         - application/json
@@ -182,7 +206,7 @@ paths:
         '200':
           description: success
           schema:
-            $ref: '#/definitions/SearchQuestionModel'
+            $ref: '#/definitions/UserQuestionsResponse'
         '404':
           description: No questions were found!
   /questions/:
@@ -506,21 +530,92 @@ definitions:
       - questionTitle
       - questionDescription
     properties:
+      id:
+        type: integer
+        description: Question id
       questionTitle:
         type: string
-        uniqueItems: true
       questionDescription:
         type: string
-        uniqueItems: true
+      imageUrl:
+        type: string
+        description: Photo URL of the user who asked the question
+      askedBy:
+        type: string
+        description: Full name (first + last) of the user who asked the question
+      categoryId:
+        type: integer
+        description: Category id when the question belongs to a category
       numberOfAnswer:
         type: string
-        uniqueItems: true
       time:
         type: string
-        uniqueItems: true
       date:
         type: string
-        uniqueItems: true
+      userId:
+        type: integer
+  QuestionListItem:
+    type: object
+    description: A question in list endpoints (GET /questions, GET /users/questions)
+    properties:
+      id:
+        type: integer
+      questionTitle:
+        type: string
+      questionDescription:
+        type: string
+      imageUrl:
+        type: string
+        description: Photo URL of the user who asked the question
+      askedBy:
+        type: string
+        description: Full name of the user who asked the question
+      userId:
+        type: integer
+      categoryId:
+        type: integer
+        description: Present when question has a category
+      numberOfAnswers:
+        type: integer
+      upvotes:
+        type: integer
+      downvotes:
+        type: integer
+      time:
+        type: string
+      date:
+        type: string
+  QuestionsListResponse:
+    type: object
+    description: Response for GET /questions (with cursor pagination)
+    properties:
+      status:
+        type: string
+        example: success
+      data:
+        type: object
+        properties:
+          questions:
+            type: array
+            items:
+              $ref: '#/definitions/QuestionListItem'
+          nextCursor:
+            type: string
+            description: Cursor for the next page; omit or null when no more pages
+  UserQuestionsResponse:
+    type: object
+    description: Response for GET /users/questions
+    properties:
+      status:
+        type: string
+        example: success
+      data:
+        type: object
+        properties:
+          questions:
+            type: array
+            items:
+              $ref: '#/definitions/QuestionListItem'
   AnswerFoundModel:
     type: object
     required:
@@ -545,42 +640,43 @@ definitions:
         type: string
       questionDescription:
         type: string
+      image_url:
+        type: string
+        description: Optional image URL attached to the question
+      imageUrl:
+        type: string
+        description: Optional image URL (alternative to image_url)
+      categoryId:
+        type: integer
+        description: Optional category id for the question
   AllQuestionFoundModel:
     type: object
-    required:
-      - message
     properties:
-      message:
+      status:
         type: string
-      questions:
-        type: array
+        example: success
+      data:
+        type: object
         properties:
-          id:
-            type: integer
-          questionTitle:
+          questions:
+            type: array
+            items:
+              $ref: '#/definitions/QuestionListItem'
+          nextCursor:
             type: string
-          questionDescription:
-            type: string
-          userId:
-            type: integer
   SearchQuestionModel:
     type: object
-    required:
-      - message
     properties:
-      message:
+      status:
         type: string
-      questions:
-        type: array
+        example: success
+      data:
+        type: object
         properties:
-         id:
-          type: integer
-         questionTitle:
-          type: string
-        questionDescription:
-          type: string
-        userId:
-          type: integer
+          questions:
+            type: array
+            items:
+              $ref: '#/definitions/QuestionListItem'
   PostAnswerModel:
     type: object
     properties:

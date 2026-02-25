@@ -82,6 +82,39 @@ button[type=answer]:hover {
   background-color: hotpink;
   color:white;
 }
+
+.upload-photo-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.upload-photo-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  color: hotpink;
+  background-color: white;
+  border: 1px solid hotpink;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.upload-photo-btn:hover {
+  background-color: hotpink;
+  color: white;
+}
+
+.upload-photo-btn i {
+  margin-right: 6px;
+}
 .alignSymbol {
   font-size: 18pt;
    text-align: center;
