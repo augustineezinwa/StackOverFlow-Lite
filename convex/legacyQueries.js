@@ -38,7 +38,9 @@ const withAskerInfo = async (ctx, questions) => {
     const user = userById.get(q.userid);
     return {
       ...q,
+      // photoUrl = question owner's profile photo (users.photo)
       photoUrl: user ? (user.photo || '') : '',
+      // imageUrl = image uploaded/attached to the question (questions.imageurl)
       imageUrl: q.imageurl != null ? q.imageurl : '',
       askedBy: user ? `${user.firstname || ''} ${user.lastname || ''}`.trim() : ''
     };
