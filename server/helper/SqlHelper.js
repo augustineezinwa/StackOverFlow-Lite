@@ -156,7 +156,7 @@ class SqlHelper {
     * @description This method creates a question in the database
     * @memberOf SqlHelper
     */
-  static createQuestion(questionTitle, questionDescription, id, imageUrl = '') {
+  static createQuestion(questionTitle, questionDescription, id, imageUrl = '', categoryId = null) {
     const values = [
       questionTitle,
       questionDescription,
@@ -165,8 +165,10 @@ class SqlHelper {
       (new Date(Date.now())).toDateString(),
       id
     ];
-    return buildConvexRequest('mutation', 'createQuestion', `INSERT INTO questions(questionTitle, questionDescription, image_url, time, date, userId)
-           VALUES($1, $2, $3, $4, $5, $6) RETURNING * `, values);
+    if (categoryId != null && categoryId !== '') {
+      values.push(Number(categoryId));
+    }
+    return buildConvexRequest('mutation', 'createQuestion', '', values);
   }
 
   /**

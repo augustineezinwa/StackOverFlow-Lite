@@ -265,9 +265,10 @@ class QuestionController {
     const {
       questionTitle,
       questionDescription,
-      imageUrl
+      imageUrl,
+      categoryId
     } = request.body;
-    dbConnect.query(createQuestion(questionTitle, questionDescription, request.id, imageUrl))
+    dbConnect.query(createQuestion(questionTitle, questionDescription, request.id, imageUrl, categoryId))
       .then(data => response.status(201).json({
         status: 'success',
         data: {
