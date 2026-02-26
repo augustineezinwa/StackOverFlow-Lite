@@ -556,22 +556,17 @@ class SqlHelper {
 
   /**
     * @static
-    *
-    * @param {searchQuery} searchQuery - The search string that should contain the keywords in a question
-    *
-    * @returns {object} - query string
-    *
-    * @description This method gets searches for a question using search query
+    * @param {string} searchQuery - Search keywords
+    * @param {number} limit - Max results (default 20, max 100)
+    * @param {string|null} cursor - Cursor for next page
+    * @returns {object} - Convex request (returns { questions, nextCursor })
+    * @description Search questions with cursor pagination
     * @memberOf SqlHelper
     */
-  static searchQuestion(searchQuery) {
-    const text = `SELECT * FROM (SELECT questions.*, count(answers.questionid) as answersnumber,
-      sum(answers.upvotes) as upvotes,
-      sum(answers.downvotes) as downvotes from questions
-      left  join answers on (questions.id =answers.questionid)
-      group by questions.id) as b where b.questiontitle ilike 
-    '%${searchQuery}%' or b.questiondescription ilike '%${searchQuery}%'`;
-    return buildConvexRequest('query', 'searchQuestion', text, [searchQuery]);
+  static searchQuestion(searchQuery, limit = 20, cursor = null) {
+    const text = '';
+    const values = [searchQuery, limit, cursor !== undefined && cursor !== null ? cursor : ''];
+    return buildConvexRequest('query', 'searchQuestion', text, values);
   }
 
   /**

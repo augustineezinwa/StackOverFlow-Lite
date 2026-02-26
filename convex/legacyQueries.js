@@ -237,12 +237,24 @@ export const run = queryGeneric({
 
       case 'searchQuestion': {
         const search = String(values[0] || '').toLowerCase();
+        const limit = Math.min(Math.max(1, Number(values[1]) || 20), 100);
+        const cursor = values[2] != null && values[2] !== '' ? toNumber(values[2]) : null;
         const questions = (await getAll(ctx, 'questions')).filter(isNotArchived);
         const answers = await getAll(ctx, 'answers');
-        const filtered = withQuestionAggregates(questions, answers).filter(item =>
+        let filtered = withQuestionAggregates(questions, answers).filter(item =>
           item.questiontitle.toLowerCase().includes(search)
           || item.questiondescription.toLowerCase().includes(search));
-        return withAskerInfo(ctx, filtered);
+        filtered = filtered.sort((a, b) => b.id - a.id);
+        if (cursor != null) {
+          filtered = filtered.filter(q => q.id < cursor);
+        }
+        const take = limit + 1;
+        const slice = filtered.slice(0, take);
+        const hasMore = slice.length > limit;
+        const page = slice.slice(0, limit);
+        const nextCursor = hasMore ? page[page.length - 1].id : null;
+        const withAsker = await withAskerInfo(ctx, page);
+        return { questions: withAsker, nextCursor };
       }
 
       case 'getQuestionsWithMostAnswers': {

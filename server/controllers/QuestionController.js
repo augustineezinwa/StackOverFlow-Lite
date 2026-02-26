@@ -142,22 +142,33 @@ class QuestionController {
   static fetchSearchedQuestions(request, response, next) {
     const { search } = request.query;
     if (!search) return next();
-    dbConnect.query(searchQuestion(search))
+    const limit = Math.min(100, Math.max(1, Number.parseInt(request.query.limit, 10) || 20));
+    const cursor = request.query.cursor != null && request.query.cursor !== '' ? request.query.cursor : null;
+    dbConnect.query(searchQuestion(search, limit, cursor))
       .then((data) => {
-        switch (data.rows.length) {
-          case 0: response.status(404).json({
+        let questions = data.questions;
+        let nextCursor = data.nextCursor != null ? data.nextCursor : null;
+        if (questions == null && Array.isArray(data.rows) && data.rows.length > 0) {
+          const first = data.rows[0];
+          if (first && typeof first === 'object' && Array.isArray(first.questions)) {
+            questions = first.questions;
+            nextCursor = first.nextCursor != null ? first.nextCursor : null;
+          }
+        }
+        if (questions == null) questions = data.rows || [];
+        const formatted = formatAllQuestions(questions);
+        if (formatted.length === 0) {
+          return response.status(404).json({
             status: 'fail',
             message: 'No questions were found!'
           });
-            break;
-
-          default: {
-            response.status(200).json({
-              status: 'success',
-              data: { questions: formatAllQuestions(data.rows) }
-            });
-          }
         }
+        const body = { questions: formatted };
+        if (nextCursor != null) body.nextCursor = String(nextCursor);
+        response.status(200).json({
+          status: 'success',
+          data: body
+        });
       })
       .catch(
         error => catchDatabaseConnectionError(error, response)
